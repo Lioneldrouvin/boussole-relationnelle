@@ -301,7 +301,6 @@ function onWordsInput(){
   document.getElementById('case-tags').innerHTML=words.map(w=>`<span class="wh${isExcess?' wh-a':''}">${w}</span>`).join('');
   if(words[0]&&words[0].length>2)fetchSyno(words[0]);checkCaseBtn();
 }
-
 function fetchSyno(word){fetch(`https://api.datamuse.com/words?ml=${encodeURIComponent(word)}&v=fr&max=8`).then(r=>r.json()).then(d=>{if(d&&d.length){document.getElementById('syno-tags').innerHTML=d.slice(0,8).map(x=>`<span class="stag" onclick="addSyno('${x.word}')">${x.word}</span>`).join('');document.getElementById('syno-area').style.display='block';}}).catch(()=>{});}
 function addSyno(w){const i=document.getElementById('case-words');i.value=i.value.trim()?i.value.trim()+', '+w:w;onWordsInput();}
 function checkCaseBtn(){const main=document.getElementById('case-main').value.trim();const v=main.length>1;document.getElementById('btn-case').style.display=v?'inline-block':'none';document.getElementById('mot-retenu-note').style.display=v?'block':'none';}
@@ -311,10 +310,12 @@ function saveAndNext(){
   state.data[key]={words:document.getElementById('case-words').value.split(',').map(w=>w.trim()).filter(Boolean),main:document.getElementById('case-main').value.trim()};
   state.step++;if(state.step<4)showCase();else showRecap();
 }
+
 function showRecap(){
   document.getElementById('recap-cases').innerHTML=['S','O','N','E'].map(k=>{const m=META[k];const d=state.data[k];return`<div class="rc"><div class="rc-dir" style="color:${m.color==='SN'?'#1D9E75':'#BA7517'}">${m.dir} — ${m.label}</div><div class="rc-word">${d?'Être '+d.main:'—'}</div>${d&&d.words.length?`<div class="tags">${d.words.map(w=>`<span class="wh${m.color==='OE'?' wh-a':''}">${w}</span>`).join('')}</div>`:''}</div>`;}).join('');
   show('s-recap');
 }
+
 function buildResult(){
   const d=state.data;
   ['N','S','O','E'].forEach(k=>{const el=document.getElementById('rv-'+k);if(el&&d[k])el.textContent=d[k].main;});
@@ -323,10 +324,12 @@ function buildResult(){
   document.getElementById('result-cases').innerHTML=['S','O','N','E'].map(k=>{const m=META[k];const dd=d[k];return`<div class="rc"><div class="rc-dir" style="color:${m.color==='SN'?'#1D9E75':'#BA7517'}">${m.dir} — ${m.label}</div><div class="rc-word">${dd?'Être '+dd.main:'—'}</div>${dd&&dd.words.length?`<div class="tags">${dd.words.map(w=>`<span class="wh${m.color==='OE'?' wh-a':''}">${w}</span>`).join('')}</div>`:''}</div>`;}).join('');
   document.getElementById('besoin-box').style.display='block';
   show('s-result');generateBesoins();generateAI();
-}async function generateBesoins(){
+}
+
+async function generateBesoins(){
   const d=state.data;
   const prompt=`Tu es un accompagnateur bienveillant spécialisé en coaching relationnel.\n\nDeux qualités naturelles :\n- Qualité à stabiliser (Sud) : "${d.S?d.S.main:'?'}" — mots : ${d.S?d.S.words.join(', '):'?'}\n- Qualité à s'autoriser (Nord) : "${d.N?d.N.main:'?'}" — mots : ${d.N?d.N.words.join(', '):'?'}\n\nPour chacune, identifie le besoin réel fondamental sous-jacent. Formule : "Être ${d.S?d.S.main:'?'} exprime un besoin de [besoin]." et "Être ${d.N?d.N.main:'?'} exprime un besoin de [besoin]." Puis une phrase sur ce que leur alliance nourrit profondément. 3 phrases max. Tutoie. Prose simple.`;
-  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},'anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})});const data=await r.json();const text=data.content&&data.content[0]?data.content[0].text:null;document.getElementById('besoin-content').innerHTML=text?text.replace(/\n\n/g,'<br><br>'):"Non disponible.";}catch(e){document.getElementById('besoin-content').textContent="Non disponible.";}
+  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})});const data=await r.json();const text=data.content&&data.content[0]?data.content[0].text:null;document.getElementById('besoin-content').innerHTML=text?text.replace(/\n\n/g,'<br><br>'):"Non disponible.";}catch(e){document.getElementById('besoin-content').textContent="Non disponible.";}
 }
 
 async function generateAI(){
@@ -358,7 +361,7 @@ Rédige une synthèse en prose fluide de 12 à 14 phrases, dans cet ordre strict
 
 Tutoie. Précis, humain, incarné. Prose uniquement, aucune liste ni tiret.`;
 
-  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1800,messages:[{role:'user',content:prompt}]})});const data=await r.json();const text=data.content&&data.content[0]?data.content[0].text:null;document.getElementById('ai-text').innerHTML=text?text.replace(/\n\n/g,'<br><br>'):"La synthèse n'a pas pu être générée.";}catch(e){document.getElementById('ai-text').textContent="La synthèse n'a pas pu être générée.";}
+  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1800,messages:[{role:'user',content:prompt}]})});const data=await r.json();const text=data.content&&data.content[0]?data.content[0].text:null;document.getElementById('ai-text').innerHTML=text?text.replace(/\n\n/g,'<br><br>'):"La synthèse n'a pas pu être générée.";}catch(e){document.getElementById('ai-text').textContent="La synthèse n'a pas pu être générée.";}
 }
 </script>
 </body>
