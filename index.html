@@ -329,7 +329,7 @@ function buildResult(){
 async function generateBesoins(){
   const d=state.data;
   const prompt=`Tu es un accompagnateur bienveillant spécialisé en coaching relationnel.\n\nDeux qualités naturelles :\n- Qualité à stabiliser (Sud) : "${d.S?d.S.main:'?'}" — mots : ${d.S?d.S.words.join(', '):'?'}\n- Qualité à s'autoriser (Nord) : "${d.N?d.N.main:'?'}" — mots : ${d.N?d.N.words.join(', '):'?'}\n\nPour chacune, identifie le besoin réel fondamental sous-jacent. Formule : "Être ${d.S?d.S.main:'?'} exprime un besoin de [besoin]." et "Être ${d.N?d.N.main:'?'} exprime un besoin de [besoin]." Puis une phrase sur ce que leur alliance nourrit profondément. 3 phrases max. Tutoie. Prose simple.`;
-  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})});const data=await r.json();const text=data.content&&data.content[0]?data.content[0].text:null;document.getElementById('besoin-content').innerHTML=text?text.replace(/\n\n/g,'<br><br>'):"Non disponible.";}catch(e){document.getElementById('besoin-content').textContent="Non disponible.";}
+  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:300,messages:[{role:'user',content:prompt}]})});const data=await r.json();const text=data.content&&data.content[0]?data.content[0].text:null;document.getElementById('besoin-content').innerHTML=text?text.replace(/\n\n/g,'<br><br>'):"Non disponible.";}catch(e){document.getElementById('besoin-content').textContent="Non disponible.";}
 }
 
 async function generateAI(){
@@ -361,7 +361,7 @@ Rédige une synthèse en prose fluide de 12 à 14 phrases, dans cet ordre strict
 
 Tutoie. Précis, humain, incarné. Prose uniquement, aucune liste ni tiret.`;
 
-  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1800,messages:[{role:'user',content:prompt}]})});const data=await r.json();const text=data.content&&data.content[0]?data.content[0].text:null;document.getElementById('ai-text').innerHTML=text?text.replace(/\n\n/g,'<br><br>'):"La synthèse n'a pas pu être générée.";}catch(e){document.getElementById('ai-text').textContent="La synthèse n'a pas pu être générée.";}
+  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1800,messages:[{role:'user',content:prompt}]})});const data=await r.json();const text=data.content&&data.content[0]?data.content[0].text:null;document.getElementById('ai-text').innerHTML=text?text.replace(/\n\n/g,'<br><br>'):"La synthèse n'a pas pu être générée.";}catch(e){document.getElementById('ai-text').textContent="La synthèse n'a pas pu être générée.";}
 }
 </script>
 </body>
