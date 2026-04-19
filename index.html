@@ -60,7 +60,9 @@
     .rc{background:var(--br-bg-sec);border-radius:var(--br-radius);padding:1rem;margin-bottom:.75rem;}
     .rc-dir{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;}
     .rc-word{font-size:19px;font-weight:600;color:var(--br-text);margin:.25rem 0;}
-    .ai-box{background:var(--br-bg-sec);border-left:3px solid var(--br-green);border-radius:0 var(--br-radius) var(--br-radius) 0;padding:1rem 1.25rem;font-size:14px;line-height:1.9;color:var(--br-text);margin:1rem 0;}
+    .ai-box{background:var(--br-bg-sec);border-left:3px solid var(--br-green);border-radius:0 var(--br-radius) var(--br-radius) 0;padding:1.25rem 1.5rem;font-size:14px;line-height:2;color:var(--br-text);margin:1rem 0;text-align:justify;} .ai-box p{margin-bottom:1rem;} .ai-box p:last-child{margin-bottom:0;} .ai-mot{font-weight:700;color:var(--br-green-deep);font-style:italic;}
+    .ai-titre{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--br-green);margin-top:1.25rem;margin-bottom:.4rem;}
+    .ai-titre:first-child{margin-top:0;}
     .ai-note{font-size:12px;color:var(--br-text-sec);font-style:italic;margin-top:.5rem;line-height:1.6;}
     .besoin-box{background:linear-gradient(135deg,var(--br-green-light) 0%,var(--br-green-pale) 100%);border-radius:var(--br-radius);padding:1rem 1.25rem;margin:1rem 0;border:1px solid var(--br-green-mid);}
     .besoin-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--br-green-deep);margin-bottom:.5rem;}
@@ -359,9 +361,34 @@ Rédige une synthèse en prose fluide de 12 à 14 phrases, dans cet ordre strict
 
 7. L'INVITATION : Une phrase invitant à quitter l'autoroute réflexe des excès pour le chemin de conscience — chemin de liberté, d'autorité (être auteur de...) et de souveraineté.
 
-Tutoie. Précis, humain, incarné. Prose uniquement, aucune liste ni tiret.`;
+Pour chacun des 7 blocs, commence par une ligne de titre courte (4 à 6 mots maximum) en majuscules précédée du symbole §, par exemple : §LE MÉCANISME EN JEU
+Puis écris le paragraphe correspondant.
+Tutoie. Précis, humain, incarné. Aucune liste ni tiret.`;
 
-  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1800,messages:[{role:'user',content:prompt}]})});const data=await r.json();const text=data.content&&data.content[0]?data.content[0].text:null;document.getElementById('ai-text').innerHTML=text?text.replace(/\n\n/g,'<br><br>'):"La synthèse n'a pas pu être générée.";}catch(e){document.getElementById('ai-text').textContent="La synthèse n'a pas pu être générée.";}
+  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1800,messages:[{role:'user',content:prompt}]})});
+    const data=await r.json();
+    const raw=data.content&&data.content[0]?data.content[0].text:null;
+    if(raw){
+      let html=raw.split(/\n\n+/).map(p=>{
+        p=p.trim();
+        if(p.startsWith('§')){
+          return '<div class="ai-titre">'+p.slice(1).trim()+'</div>';
+        }
+        return '<p>'+p+'</p>';
+      }).join('');
+      [S,N,O,E].forEach(function(mot){
+        var esc=mot.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+        var re1=new RegExp('([Êê]tre\\s+)('+esc+')(?=[\\s,\.;:!?—\\-"])','g');
+        html=html.replace(re1,'être <span class="ai-mot">$2</span>');
+        var re2=new RegExp('"('+esc+')"','g');
+        html=html.replace(re2,'"<span class="ai-mot">$1</span>"');
+      });
+      document.getElementById('ai-text').innerHTML=html;
+    } else {
+      document.getElementById('ai-text').textContent="La synthèse n’a pas pu être générée.";
+    }
+  }catch(e){document.getElementById('ai-text').textContent="La synthèse n’a pas pu être générée.";}
+}
 }
 </script>
 </body>
