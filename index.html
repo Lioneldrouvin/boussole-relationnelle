@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Boussole relationnelle — Lionel Drouvin</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root{
       --g:#1D9E75;--gd:#0F6E56;--gdp:#085041;--gl:#E8F8F3;--gp:#F0FAF6;--gm:#9FE1CB;
-      --or:#E8934A;--orl:#FDF3E3;--go:#C9A84C;--gol:#FDF6E3;
+      --go:#C9A84C;--gol:#FDF6E3;
       --am:#BA7517;--aml:#FAEEDA;--amd:#633806;
       --tx:#1a1a1a;--ts:#6b7280;--bd:#e5e7eb;--bg:#fff;--bgs:#f9fafb;
       --r:10px;--rl:14px;
@@ -41,7 +42,6 @@
     .pb-icon{font-size:20px;flex-shrink:0;}
     .pb-text{font-size:13px;color:var(--ts);line-height:1.5;}
     .pb-mirror{background:var(--gl);border-radius:var(--r);padding:.75rem 1rem;font-size:14px;font-weight:500;color:var(--gdp);text-align:center;margin-bottom:.875rem;border:.5px solid var(--gm);}
-    /* Intention */
     .int-box{background:linear-gradient(135deg,var(--gl),var(--gol));border-radius:var(--rl);padding:1rem;margin-bottom:1rem;border:.5px solid var(--gm);}
     .int-box h3{font-size:14px;font-weight:600;color:var(--gdp);margin-bottom:.4rem;}
     /* Entrée */
@@ -66,11 +66,22 @@
     .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
     .tag{display:inline-block;background:var(--gl);color:var(--gdp);border-radius:6px;padding:2px 9px;font-size:12px;font-weight:500;}
     .tag.am{background:var(--aml);color:var(--amd);}
+    .mot-retenu-wrap{margin-top:.6rem;}
+    .mot-retenu-principal{font-size:15px;font-weight:700;color:var(--gdp);}
+    .mot-retenu-autres{font-size:13px;color:var(--ts);margin-left:6px;}
+    .mot-note{font-size:12px;color:var(--ts);background:var(--bgs);border-radius:8px;padding:.6rem .875rem;margin-top:.5rem;line-height:1.5;border-left:3px solid var(--g);font-style:italic;}
+    /* Bouton synonymes */
+    .syno-btn{font-size:12px;color:var(--g);background:none;border:1px solid var(--gm);border-radius:999px;padding:4px 12px;cursor:pointer;margin-top:.5rem;}
+    .syno-btn:hover{background:var(--gl);}
+    #syno-area{display:none;margin-top:.6rem;}
     .stag{font-size:11px;padding:3px 9px;border-radius:999px;background:var(--bgs);border:1px solid var(--bd);color:var(--ts);cursor:pointer;}
     .stag:hover{border-color:var(--g);color:var(--g);}
-    .mot-note{font-size:12px;color:var(--ts);background:var(--bgs);border-radius:8px;padding:.6rem .875rem;margin-top:.6rem;line-height:1.5;border-left:3px solid var(--g);font-style:italic;}
+    /* Besoins réels inline */
+    .besoin-inline{background:linear-gradient(135deg,var(--gl),var(--gp));border-radius:var(--r);padding:.875rem;margin:1rem 0;border:.5px solid var(--gm);}
+    .besoin-inline-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gdp);margin-bottom:.4rem;}
+    .besoin-inline-content{font-size:13px;color:var(--tx);line-height:1.7;}
     /* CTA intermédiaire */
-    .cta-mid{background:linear-gradient(135deg,var(--gl),var(--gol));border-radius:var(--rl);padding:1rem;margin-top:1rem;border:.5px solid var(--gm);}
+    .cta-mid{background:linear-gradient(135deg,var(--gl),var(--gol));border-radius:var(--rl);padding:1rem;margin-top:.75rem;border:.5px solid var(--gm);}
     .cta-mid-t{font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.4rem;}
     .cta-mid p{font-size:13px;color:var(--ts);margin-bottom:.75rem;line-height:1.6;}
     .cta-mid-btns{display:flex;flex-wrap:wrap;gap:.4rem;}
@@ -80,13 +91,14 @@
     .synth-card:hover{border-color:var(--g);box-shadow:0 2px 8px rgba(29,158,117,.1);}
     .synth-card.sel{border-color:var(--g);background:var(--gl);}
     .synth-card.gold-card{border-color:var(--go);}
-    .synth-card.gold-card:hover{box-shadow:0 2px 8px rgba(201,168,76,.2);}
     .synth-card.gold-card.sel{background:var(--gol);border-color:var(--go);}
     .synth-icon{font-size:24px;margin-bottom:.4rem;}
     .synth-name{font-size:14px;font-weight:600;color:var(--tx);margin-bottom:.2rem;}
     .synth-prix{font-size:13px;font-weight:600;color:var(--g);margin-bottom:.3rem;}
     .synth-prix.go{color:var(--go);}
     .synth-desc{font-size:12px;color:var(--ts);line-height:1.5;}
+    .pay-box{background:var(--gol);border:1px dashed var(--go);border-radius:var(--r);padding:1rem;text-align:center;margin:.5rem 0;}
+    .pay-box p{font-size:13px;color:var(--ts);margin-bottom:.5rem;}
     /* Identité */
     .id-box{background:var(--gl);border-radius:var(--rl);padding:1rem;margin-bottom:1rem;border:.5px solid var(--gm);}
     .id-box h3{font-size:14px;font-weight:600;color:var(--gdp);margin-bottom:.25rem;}
@@ -96,9 +108,6 @@
     /* Schéma */
     .compass-wrap{width:100%;max-width:290px;margin:.875rem auto;display:block;}
     /* Synthèse */
-    .synth-tabs{display:flex;gap:.5rem;margin-bottom:.875rem;}
-    .synth-tab{font-size:12px;padding:5px 12px;border-radius:999px;border:1px solid var(--bd);cursor:pointer;color:var(--ts);background:var(--bg);}
-    .synth-tab.active{background:var(--g);color:#fff;border-color:var(--g);}
     .ai-box{background:var(--bgs);border-left:3px solid var(--g);border-radius:0 var(--r) var(--r) 0;padding:1rem 1.25rem;font-size:13px;line-height:1.9;color:var(--tx);margin:.875rem 0;text-align:justify;}
     .ai-box p{margin-bottom:.875rem;}
     .ai-box p:last-child{margin-bottom:0;}
@@ -106,11 +115,19 @@
     .ai-titre:first-child{margin-top:0;border-top:none;padding-top:0;}
     .ai-mot{font-weight:700;color:var(--gdp);font-style:italic;}
     .ai-note{font-size:11px;color:var(--ts);font-style:italic;line-height:1.5;margin-bottom:.75rem;}
-    /* Besoins */
+    /* Besoins dans résultat */
     .besoin-box{background:linear-gradient(135deg,var(--gl),var(--gp));border-radius:var(--r);padding:.875rem;margin:.875rem 0;border:.5px solid var(--gm);}
     .besoin-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gdp);margin-bottom:.4rem;}
     .besoin-content{font-size:13px;color:var(--tx);line-height:1.7;text-align:justify;}
     .besoin-content p{margin-bottom:.6rem;}
+    /* Boutons PDF / accès */
+    .action-btns{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem;align-items:center;}
+    .pdf-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--g);background:none;border:1px solid var(--gm);border-radius:var(--r);padding:6px 14px;cursor:pointer;}
+    .pdf-btn:hover{background:var(--gl);}
+    .approfondie-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--go);background:none;border:1px solid var(--go);border-radius:var(--r);padding:6px 14px;cursor:pointer;}
+    .approfondie-btn:hover{background:var(--gol);}
+    .site-back-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--ts);background:none;border:1px solid var(--bd);border-radius:var(--r);padding:6px 14px;cursor:pointer;}
+    .site-back-btn:hover{border-color:var(--g);color:var(--g);}
     /* CTA finaux */
     .cta-wrap{background:var(--bgs);border-radius:var(--rl);padding:1rem;}
     .cta-q{font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.6rem;padding:.75rem;background:var(--gl);border-radius:var(--r);border:.5px solid var(--gm);line-height:1.6;}
@@ -123,29 +140,15 @@
     .cta-title{font-size:15px;font-weight:600;color:var(--tx);margin-bottom:.2rem;}
     .cta-prix{font-size:13px;font-weight:600;color:var(--g);margin-bottom:.4rem;}
     .cta-desc{font-size:13px;color:var(--ts);line-height:1.6;margin-bottom:.75rem;}
-    .cta-btns{display:flex;gap:.5rem;flex-wrap:wrap;}
-    /* Bouton retour site */
-    .site-back{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--ts);background:none;border:1px solid var(--bd);border-radius:var(--r);padding:7px 14px;cursor:pointer;margin-top:.5rem;}
-    .site-back:hover{border-color:var(--g);color:var(--g);}
-    /* PDF */
-    .pdf-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--g);background:none;border:1px solid var(--gm);border-radius:var(--r);padding:6px 14px;cursor:pointer;margin-top:.5rem;}
-    .pdf-btn:hover{background:var(--gl);}
-    /* Paiement placeholder */
-    .pay-box{background:var(--gol);border:1px dashed var(--go);border-radius:var(--r);padding:1rem;text-align:center;margin:.5rem 0;}
-    .pay-box p{font-size:13px;color:var(--ts);margin-bottom:.5rem;}
-    @media print{
-      body{background:white;padding:0;}
-      .app{box-shadow:none;border-radius:0;max-width:100%;}
-      .no-print{display:none!important;}
-      .step{display:none!important;}
-      #print-area{display:block!important;}
-    }
-    #print-area{display:none;}
+    .cta-btns{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+    .cta-btns-left{display:flex;gap:.5rem;flex-wrap:wrap;}
+    /* Retour site tout en bas */
+    .footer-site-back{text-align:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--bd);}
+    .br-footer{text-align:center;margin-top:.5rem;font-size:12px;color:var(--ts);}
+    .br-footer a{color:var(--g);text-decoration:none;}
     .loading-dots::after{content:'...';animation:dots 1.2s steps(4,end) infinite;}
     @keyframes dots{0%,100%{content:'.'}33%{content:'..'}66%{content:'...'}}
-    .br-footer{text-align:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--bd);font-size:12px;color:var(--ts);}
-    .br-footer a{color:var(--g);text-decoration:none;}
-    @media(max-width:480px){body{padding:0;}.app{border-radius:0;box-shadow:none;}.id-grid{grid-template-columns:1fr;}.pb-grid{grid-template-columns:1fr;}.synth-choice{grid-template-columns:1fr;}}
+    @media(max-width:480px){body{padding:0;}.app{border-radius:0;box-shadow:none;}.id-grid{grid-template-columns:1fr;}.pb-grid{grid-template-columns:1fr;}.synth-choice{grid-template-columns:1fr;}.cta-btns{flex-direction:column;}.action-btns{flex-direction:column;}}
   </style>
 </head>
 <body>
@@ -194,14 +197,12 @@
       <div class="pb-card"><span class="pb-icon">⚡</span><span class="pb-text">Stress, pression, sensation d'être submergé ou incompris</span></div>
     </div>
     <p class="sub" style="text-align:center;margin-top:.5rem;">La Boussole relationnelle vous aide à voir clairement ce qui se joue — et à choisir votre cap.</p>
-    <div style="text-align:center;margin-top:.875rem;">
-      <button class="btn btn-g" onclick="show('s1')">Commencer &rarr;</button>
-    </div>
+    <div style="text-align:center;margin-top:.875rem;"><button class="btn btn-g" onclick="show('s1')">Commencer &rarr;</button></div>
   </div>
 
   <!-- INTENTION -->
   <div class="step" id="s1">
-    <div class="prog-wrap no-print"><div class="prog-bar"><div class="prog-fill" style="width:14%"></div></div><div class="prog-label">Étape 1 / 7</div></div>
+    <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:14%"></div></div><div class="prog-label">Étape 1 / 7</div></div>
     <h2>Posez votre intention</h2>
     <p class="sub">Un fil conducteur — pas un objectif, une orientation librement choisie.</p>
     <div class="int-box">
@@ -216,7 +217,7 @@
 
   <!-- POINT D'ENTRÉE -->
   <div class="step" id="s2">
-    <div class="prog-wrap no-print"><div class="prog-bar"><div class="prog-fill" style="width:28%"></div></div><div class="prog-label">Étape 2 / 7</div></div>
+    <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:28%"></div></div><div class="prog-label">Étape 2 / 7</div></div>
     <h2>Par laquelle de ces 4 entrées voulez-vous commencer ?</h2>
     <p class="sub">En fonction de ce que vous vivez aujourd'hui — celle qui vous touche le plus.</p>
     <div class="ec" id="ec-S" onclick="chooseAndStart('S')">
@@ -240,30 +241,43 @@
 
   <!-- CASE COURANTE -->
   <div class="step" id="s-case">
-    <div class="prog-wrap no-print"><div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:42%"></div></div><div class="prog-label" id="prog-label">Étape 3 / 7</div></div>
+    <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:42%"></div></div><div class="prog-label" id="prog-label">Étape 3 / 7</div></div>
     <div id="case-badge"></div>
     <div class="qbox" id="case-q"></div>
     <div class="posture" id="posture" style="display:none;"></div>
     <label id="words-lbl">Notez 3 à 5 mots qualificatifs (adjectifs, participes) — séparés par des virgules</label>
     <textarea id="case-words" oninput="onWords()"></textarea>
     <div class="tags" id="case-tags"></div>
-    <div id="syno-area" style="display:none;margin-top:.6rem;">
-      <div style="font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Suggestions</div>
+    <button class="syno-btn" id="syno-btn" onclick="toggleSyno()" style="display:none;">💡 Voir des suggestions de mots</button>
+    <div id="syno-area">
+      <div style="font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Suggestions pour élargir votre champ</div>
       <div class="tags" id="syno-tags"></div>
     </div>
     <hr>
     <label>Le mot qui résonne le plus — dans le corps autant que dans la tête</label>
     <input type="text" id="case-main" placeholder="Mot principal..." oninput="checkCase()">
-    <div class="mot-note" id="mot-note" style="display:none;">Ce mot porte en lui le sens de tous les autres — ils lui donnent de la consistance.</div>
-    <div class="cta-mid no-print" id="cta-mid" style="display:none;">
+    <div class="mot-retenu-wrap" id="mot-retenu-wrap" style="display:none;">
+      <span class="mot-retenu-principal" id="mot-retenu-principal"></span>
+      <span class="mot-retenu-autres" id="mot-retenu-autres"></span>
+      <div class="mot-note">Ce mot porte en lui le sens de tous les autres — ils lui donnent de la consistance.</div>
+    </div>
+
+    <!-- Besoins réels inline (après dernière case) -->
+    <div class="besoin-inline" id="besoin-inline" style="display:none;">
+      <div class="besoin-inline-title">✦ Vos besoins réels</div>
+      <div class="besoin-inline-content" id="besoin-inline-content"><span class="loading-dots">Identification en cours</span></div>
+    </div>
+
+    <!-- CTA intermédiaire (après dernière case) -->
+    <div class="cta-mid" id="cta-mid" style="display:none;">
       <div class="cta-mid-t">✦ Vous percevez déjà quelque chose d'important ?</div>
       <p>Si votre Boussole éclaire déjà une difficulté ou un questionnement — ne différez pas.</p>
       <div class="cta-mid-btns">
-        <button class="btn btn-g btn-sm" onclick="window.open('https://calendly.com/contact-8hjw/speed-coaching-60mn','_blank')">⚡ Speed-coaching 1h — 80€</button>
-        <button class="btn btn-g btn-sm" onclick="window.open('https://calendly.com/contact-8hjw/accompagnement-3-seances','_blank')">🧭 3 séances — 330€</button>
-        <button class="btn btn-sm" style="border-color:var(--go);color:var(--go);" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">✦ Offre signature</button>
+        <button class="btn btn-g btn-sm" onclick="window.open('https://calendly.com/contact-8hjw/speed-coaching-60mn','_blank')">⚡ Speed-coaching 1h</button>
+        <button class="btn btn-g btn-sm" onclick="window.open('https://calendly.com/contact-8hjw/accompagnement-3-seances','_blank')">🧭 Accompagnement 3 séances</button>
       </div>
     </div>
+
     <div class="nav">
       <button class="btn-back" onclick="goBackCase()">← Retour</button>
       <button class="btn btn-g" id="btn-case" style="display:none;" onclick="saveAndNext()">Continuer &rarr;</button>
@@ -273,7 +287,7 @@
 
   <!-- CHOIX SYNTHÈSE -->
   <div class="step" id="s-choice">
-    <div class="prog-wrap no-print"><div class="prog-bar"><div class="prog-fill" style="width:72%"></div></div><div class="prog-label">Étape 5 / 7</div></div>
+    <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:72%"></div></div><div class="prog-label">Étape 5 / 7</div></div>
     <h2>Choisissez votre synthèse</h2>
     <p class="sub">Deux niveaux de lecture pour explorer ce que votre Boussole a révélé.</p>
     <div class="synth-choice">
@@ -296,13 +310,12 @@
     </div>
     <div class="nav">
       <button class="btn-back" onclick="goBackToLastCase()">← Retour</button>
-      <button class="btn btn-g" id="btn-choice" style="display:none;opacity:.5;pointer-events:none;" onclick="show('s-id')">Continuer &rarr;</button>
     </div>
   </div>
 
   <!-- IDENTITÉ -->
   <div class="step" id="s-id">
-    <div class="prog-wrap no-print"><div class="prog-bar"><div class="prog-fill" style="width:86%"></div></div><div class="prog-label">Étape 6 / 7</div></div>
+    <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:86%"></div></div><div class="prog-label">Étape 6 / 7</div></div>
     <h2>Votre synthèse personnalisée est prête</h2>
     <p class="sub">Renseignez vos coordonnées pour y accéder et la télécharger en PDF.</p>
     <div class="id-box">
@@ -327,10 +340,11 @@
 
   <!-- RÉSULTAT -->
   <div class="step" id="s-result">
-    <div class="prog-wrap no-print"><div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div><div class="prog-label">Votre synthèse</div></div>
+    <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div><div class="prog-label">Votre synthèse</div></div>
     <h2 id="result-title">Votre Boussole relationnelle</h2>
-    <p class="sub">Votre Boussole d'aujourd'hui vous donne des indications qui vous sont propres. Précieuses, elles vous permettent d'avancer en connaissance de cause, avec plus de conscience et de sécurité.</p>
+    <p class="sub">Votre Boussole d'aujourd'hui vous donne des indications précieuses sur ce que vous vivez dans votre situation actuelle. Elles vous permettent d'avancer en connaissance de cause, avec plus de conscience et de sécurité.</p>
 
+    <!-- SCHÉMA -->
     <svg class="compass-wrap" viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
       <circle cx="0" cy="0" r="140" fill="none" stroke="#9FE1CB" stroke-width="1"/>
       <path d="M0,0 L-99,-99 A140,140 0 0,1 99,-99 Z" fill="#E8F8F3" stroke="white" stroke-width="2"/>
@@ -382,13 +396,15 @@
     <p class="ai-note">Cette synthèse découle de l'outil développé par Lionel Drouvin et de sa vision de ce qui se joue dans la relation à soi et avec les autres. Elle est personnalisée selon vos mots, rédigée avec l'aide de l'IA. Première lecture, non un diagnostic.</p>
     <div class="ai-box" id="ai-text"><span class="loading-dots">Analyse en cours</span></div>
 
-    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem;" class="no-print">
-      <button class="pdf-btn" onclick="printPDF()">⬇ Télécharger en PDF</button>
-      <button class="site-back" onclick="window.open('https://www.lioneldrouvin.com/coaching-relationnel/boussole-relationnelle-et-qualites-naturelles','_blank')">← Retour au site</button>
+    <!-- Boutons action sous synthèse -->
+    <div class="action-btns">
+      <button class="pdf-btn" onclick="downloadPDF()">⬇ Télécharger en PDF</button>
+      <button class="approfondie-btn" id="btn-approfondie" onclick="switchToApprofondie()" style="display:none;">🔍 Synthèse Approfondie — 10€</button>
+      <button class="site-back-btn" onclick="window.open('https://www.lioneldrouvin.com/coaching-relationnel/boussole-relationnelle-et-qualites-naturelles','_blank')">← Retour au site</button>
     </div>
 
     <hr>
-    <div class="cta-wrap no-print">
+    <div class="cta-wrap">
       <div class="cta-q">
         Quelle difficulté ou quel point de progression avez-vous mis en lumière grâce à votre Boussole ?
         <textarea class="cta-reflexion" id="reflexion" placeholder="Quelques mots librement... (facultatif)"></textarea>
@@ -401,7 +417,9 @@
         <div class="cta-prix">80 € — Google Meet</div>
         <div class="cta-desc">Une heure ensemble pour explorer votre synthèse en profondeur, nommer les confusions, poser les premières alliances. Vous repartez avec des repères clairs et incarnés.</div>
         <div class="cta-btns">
-          <button class="btn btn-g btn-sm" onclick="window.open('https://calendly.com/contact-8hjw/speed-coaching-60mn','_blank')">Prendre rendez-vous &rarr;</button>
+          <div class="cta-btns-left">
+            <button class="btn btn-g btn-sm" onclick="window.open('https://calendly.com/contact-8hjw/speed-coaching-60mn','_blank')">Prendre rendez-vous &rarr;</button>
+          </div>
           <button class="btn-out btn-sm" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter</button>
         </div>
       </div>
@@ -412,7 +430,9 @@
         <div class="cta-prix">330 € — Google Meet</div>
         <div class="cta-desc">Trois séances pour vivre et intégrer ce que votre Boussole a mis en lumière — mentalement, émotionnellement, corporellement. Vous repartez avec l'outil maîtrisé et une nouvelle dynamique relationnelle.</div>
         <div class="cta-btns">
-          <button class="btn btn-g btn-sm" onclick="window.open('https://calendly.com/contact-8hjw/accompagnement-3-seances','_blank')">Prendre rendez-vous &rarr;</button>
+          <div class="cta-btns-left">
+            <button class="btn btn-g btn-sm" onclick="window.open('https://calendly.com/contact-8hjw/accompagnement-3-seances','_blank')">Prendre rendez-vous &rarr;</button>
+          </div>
           <button class="btn-out btn-sm" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter</button>
         </div>
       </div>
@@ -427,19 +447,23 @@
         </div>
       </div>
     </div>
+
+    <!-- Retour au site tout en bas -->
+    <div class="footer-site-back">
+      <button class="site-back-btn" onclick="window.open('https://www.lioneldrouvin.com/coaching-relationnel/boussole-relationnelle-et-qualites-naturelles','_blank')">← Retour à la page Boussole relationnelle</button>
+    </div>
     <div class="br-footer">
       Lionel Drouvin — Coach relation &amp; Médiateur<br>
-      <a href="https://www.lioneldrouvin.com">www.lioneldrouvin.com</a><br>
-      <button class="site-back no-print" style="margin-top:.5rem;" onclick="window.open('https://www.lioneldrouvin.com/coaching-relationnel/boussole-relationnelle-et-qualites-naturelles','_blank')">← Retour à la page Boussole relationnelle</button>
+      <a href="https://www.lioneldrouvin.com">www.lioneldrouvin.com</a>
     </div>
   </div>
 
 </div>
-<div id="print-area"></div>
 
 <script>
 var API_KEY=atob('c2stYW50LWFwaTAzLWpqRkdvTHpVeHh4Z2xDY2FWWFBWZUR1NU9QdFBYbnFnbUJvQ2Z0ME9jWk9CT25SZy12RmFTYVdzZF9URjR1TmVoSVRrZDdnWGE5Qzg1d2xzeU1UY0lnLXVScElkUUFB');
 var API_URL='https://api.anthropic.com/v1/messages';
+var FORMSPREE_ID='xjgjpbyw'; // Remplacer par votre ID Formspree ex: xpwzvkgr
 var CIRCUIT=['S','O','N','E'];
 var META={
   S:{label:'Qualité à stabiliser',color:'SN'},
@@ -447,7 +471,9 @@ var META={
   O:{label:'Piège-refuge',color:'OE'},
   E:{label:'Allergie-dépendance',color:'OE'}
 };
-var state={entry:null,order:[],step:0,data:{S:null,N:null,O:null,E:null},synthType:'essentiel'};
+var state={entry:null,order:[],step:0,data:{S:null,N:null,O:null,E:null},synthType:'essentiel',synthHtml:'',besoinsHtml:''};
+var synoVisible=false;
+var synoWords=[];
 
 function show(id){
   document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});
@@ -477,26 +503,18 @@ function showCase(){
   qbox.className='qbox'+(m.color==='OE'?' am':'');
   qbox.innerHTML=state.step===0?getEntryQ(key):buildTransQ(prev,key,state.data[prev]?state.data[prev].main:'…');
   var posture=document.getElementById('posture');
-  if(key==='O'){
-    posture.style.display='block';
-    posture.innerHTML="Observez depuis l'extérieur — sans jugement. Ce n'est pas un défaut : c'est un réflexe adaptatif. Notez ce qui vient dans le corps et les sensations.";
-  } else if(key==='E'){
-    posture.style.display='block';
-    posture.innerHTML="Ce qui vous agace chez l'autre est un signal précieux. Laissez venir les mots depuis les sensations, pas depuis le jugement.";
-  } else {
-    posture.style.display='none';
-  }
+  if(key==='O'){posture.style.display='block';posture.innerHTML="Observez depuis l'extérieur — sans jugement. Ce n'est pas un défaut : c'est un réflexe adaptatif. Notez ce qui vient dans le corps et les sensations.";}
+  else if(key==='E'){posture.style.display='block';posture.innerHTML="Ce qui vous agace chez l'autre est un signal précieux. Laissez venir les mots depuis les sensations, pas depuis le jugement.";}
+  else posture.style.display='none';
   var isExcess=(key==='O'||key==='E');
   document.getElementById('words-lbl').textContent=isExcess
     ?'Notez 3 à 5 mots qualificatifs — depuis ce que vous ressentez (séparés par des virgules)'
     :'Notez 3 à 5 mots qualificatifs qui donnent du corps à cette qualité (séparés par des virgules)';
-
-  // Restaurer les données existantes si retour en arrière
+  // Restaurer données existantes
   var existing=state.data[key];
   if(existing){
     document.getElementById('case-words').value=existing.words.join(', ');
     document.getElementById('case-main').value=existing.main;
-    // Reconstruire les tags
     var tagsHtml=existing.words.map(function(w){return '<span class="tag'+(isExcess?' am':'')+'">'+w+'</span>';}).join('');
     document.getElementById('case-tags').innerHTML=tagsHtml;
   } else {
@@ -504,7 +522,14 @@ function showCase(){
     document.getElementById('case-tags').innerHTML='';
     document.getElementById('case-main').value='';
   }
+  // Reset synonymes
+  synoVisible=false;
+  synoWords=[];
   document.getElementById('syno-area').style.display='none';
+  document.getElementById('syno-btn').style.display='none';
+  document.getElementById('syno-tags').innerHTML='';
+  document.getElementById('cta-mid').style.display='none';
+  document.getElementById('besoin-inline').style.display='none';
   checkCase();
   show('s-case');
 }
@@ -530,19 +555,49 @@ function onWords(){
   var words=val.split(',').map(function(w){return w.trim();}).filter(function(w){return w.length>1;});
   var isExcess=META[state.order[state.step]].color==='OE';
   document.getElementById('case-tags').innerHTML=words.map(function(w){return '<span class="tag'+(isExcess?' am':'')+'">'+w+'</span>';}).join('');
-  if(words[0]&&words[0].length>2) fetchSyno(words[0]);
+  // Bouton synonymes
+  if(words[0]&&words[0].length>2){
+    document.getElementById('syno-btn').style.display='inline-block';
+    fetchSynoWords(words[0]);
+  } else {
+    document.getElementById('syno-btn').style.display='none';
+  }
   checkCase();
 }
 
-function fetchSyno(word){
-  fetch('https://api.datamuse.com/words?ml='+encodeURIComponent(word)+'&ql=fr&max=6')
+function fetchSynoWords(word){
+  // Utiliser Datamuse avec paramètres français + ML
+  fetch('https://api.datamuse.com/words?ml='+encodeURIComponent(word)+'&v=fr&max=10')
     .then(function(r){return r.json();})
     .then(function(d){
-      if(d&&d.length){
-        document.getElementById('syno-tags').innerHTML=d.slice(0,6).map(function(x){return '<span class="stag" onclick="addSyno(\''+x.word+'\')">'+x.word+'</span>';}).join('');
-        document.getElementById('syno-area').style.display='block';
+      if(!d||!d.length){
+        // Fallback sans filtre langue
+        return fetch('https://api.datamuse.com/words?ml='+encodeURIComponent(word)+'&max=10');
       }
-    }).catch(function(){});
+      return Promise.resolve({json:function(){return Promise.resolve(d);}});
+    })
+    .then(function(r){return typeof r.json==='function'?r.json():r;})
+    .then(function(d){
+      synoWords=d||[];
+      if(synoVisible) renderSyno();
+    }).catch(function(){synoWords=[];});
+}
+
+function toggleSyno(){
+  synoVisible=!synoVisible;
+  document.getElementById('syno-area').style.display=synoVisible?'block':'none';
+  document.getElementById('syno-btn').textContent=synoVisible?'💡 Masquer les suggestions':'💡 Voir des suggestions de mots';
+  if(synoVisible) renderSyno();
+}
+
+function renderSyno(){
+  if(!synoWords.length){
+    document.getElementById('syno-tags').innerHTML='<span style="font-size:12px;color:var(--ts);">Aucune suggestion disponible pour ce mot.</span>';
+    return;
+  }
+  document.getElementById('syno-tags').innerHTML=synoWords.slice(0,8).map(function(x){
+    return '<span class="stag" onclick="addSyno(\''+x.word+'\')">'+x.word+'</span>';
+  }).join('');
 }
 
 function addSyno(w){
@@ -554,12 +609,52 @@ function addSyno(w){
 function checkCase(){
   var main=document.getElementById('case-main').value.trim();
   var v=main.length>1;
-  document.getElementById('mot-note').style.display=v?'block':'none';
   var isLast=(state.step===3);
+  // Mot retenu en gras + autres mots sans le mot retenu
+  if(v){
+    var allWords=document.getElementById('case-words').value.split(',').map(function(w){return w.trim();}).filter(Boolean);
+    var autres=allWords.filter(function(w){return w.toLowerCase()!==main.toLowerCase();});
+    document.getElementById('mot-retenu-principal').textContent='Être '+main;
+    document.getElementById('mot-retenu-autres').textContent=autres.length?'— '+autres.join(', '):'';
+    document.getElementById('mot-retenu-wrap').style.display='block';
+  } else {
+    document.getElementById('mot-retenu-wrap').style.display='none';
+  }
   document.getElementById('btn-case').style.display=(v&&!isLast)?'inline-block':'none';
   document.getElementById('btn-synthese').style.display=(v&&isLast)?'inline-block':'none';
-  document.getElementById('cta-mid').style.display=(v&&isLast)?'block':'none';
+  if(v&&isLast){
+    document.getElementById('cta-mid').style.display='block';
+    // Déclencher besoins réels inline si pas encore fait
+    if(document.getElementById('besoin-inline').style.display==='none'){
+      saveCurrent();
+      document.getElementById('besoin-inline').style.display='block';
+      generateBesoinsInline();
+    }
+  } else {
+    document.getElementById('cta-mid').style.display='none';
+  }
 }
+
+function saveCurrent(){
+  var key=state.order[state.step];
+  state.data[key]={
+    words:document.getElementById('case-words').value.split(',').map(function(w){return w.trim();}).filter(Boolean),
+    main:document.getElementById('case-main').value.trim()
+  };
+}
+
+function saveAndNext(){
+  saveCurrent();
+  state.step++;
+  showCase();
+}
+
+function goBackCase(){
+  if(state.step===0){show('s2');}
+  else{state.step--;showCase();}
+}
+
+function goBackToLastCase(){state.step=3;showCase();}
 
 function checkId(){
   var p=document.getElementById('id-prenom').value.trim();
@@ -577,122 +672,144 @@ function selectSynth(type){
   document.getElementById('choice-essentiel').classList.toggle('sel',type==='essentiel');
   document.getElementById('choice-approfondie').classList.toggle('sel',type==='approfondie');
   document.getElementById('pay-box').style.display=type==='approfondie'?'block':'none';
-  var btn=document.getElementById('btn-choice');
-  // Pour approfondie, paiement requis — pour l'instant placeholder = accès direct
-  btn.style.display='inline-block';
-  btn.style.opacity='1';
-  btn.style.pointerEvents='auto';
-}
-
-function saveAndNext(){
-  var key=state.order[state.step];
-  state.data[key]={
-    words:document.getElementById('case-words').value.split(',').map(function(w){return w.trim();}).filter(Boolean),
-    main:document.getElementById('case-main').value.trim()
-  };
-  state.step++;
-  showCase();
-}
-
-function goBackCase(){
-  if(state.step===0){show('s2');}
-  else{state.step--;showCase();}
-}
-
-function goBackToLastCase(){
-  state.step=3;
-  showCase();
+  // Lancer directement au clic sans bouton continuer
+  saveCurrent();
+  show('s-id');
 }
 
 function buildResult(){
+  saveCurrent();
   var d=state.data;
-  // Sauvegarder la dernière case si on arrive depuis btn-synthese
-  var key=state.order[3];
-  if(!d[key]){
-    d[key]={
-      words:document.getElementById('case-words').value.split(',').map(function(w){return w.trim();}).filter(Boolean),
-      main:document.getElementById('case-main').value.trim()
-    };
-  }
   ['N','S','O','E'].forEach(function(k){
     var el=document.getElementById('rv-'+k);
     if(el&&d[k]) el.textContent=d[k].main;
   });
-  var si=document.getElementById('rv-S-in');
-  var ni=document.getElementById('rv-N-in');
+  var si=document.getElementById('rv-S-in');var ni=document.getElementById('rv-N-in');
   if(si&&d.S) si.textContent=d.S.main;
   if(ni&&d.N) ni.textContent=d.N.main;
   var prenom=document.getElementById('id-prenom').value.trim();
-  if(prenom){
-    document.getElementById('result-title').textContent='Boussole de '+prenom;
-  }
+  if(prenom) document.getElementById('result-title').textContent='Boussole de '+prenom;
   var isApprofondie=state.synthType==='approfondie';
   document.getElementById('synth-label').textContent=isApprofondie?'Synthèse Approfondie':'Synthèse Essentielle';
+  document.getElementById('btn-approfondie').style.display=isApprofondie?'none':'inline-flex';
   document.getElementById('besoin-box').style.display='block';
   show('s-result');
+  submitFormspree();
   generateBesoins();
   generateAI(isApprofondie);
+}
+
+function submitFormspree(){
+  var prenom=document.getElementById('id-prenom').value.trim();
+  var nom=document.getElementById('id-nom').value.trim();
+  var email=document.getElementById('id-email').value.trim();
+  var synthType=state.synthType==='approfondie'?'Synthèse Approfondie (10€)':'Synthèse Essentielle (offerte)';
+  var d=state.data;
+  var resume='S:'+( d.S?d.S.main:'?')+' O:'+(d.O?d.O.main:'?')+' N:'+(d.N?d.N.main:'?')+' E:'+(d.E?d.E.main:'?');
+  if(FORMSPREE_ID==='VOTRE_ID_FORMSPREE') return; // Pas encore configuré
+  fetch('https://formspree.io/f/'+FORMSPREE_ID,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({
+      prenom:prenom,nom:nom,email:email,
+      synthese:synthType,boussole:resume,
+      date:new Date().toLocaleDateString('fr-FR')
+    })
+  }).then(function(){console.log('Coordonnées envoyées');}).catch(function(){});
+}
+
+function generateBesoinsInline(){
+  var d=state.data;
+  var S=d.S?d.S.main:'?', N=d.N?d.N.main:'?';
+  var Sw=d.S?d.S.words.join(', '):'?', Nw=d.N?d.N.words.join(', '):'?';
+  var prompt='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie.\n'
+    +'Qualités : être "'+S+'" ('+Sw+') et être "'+N+'" ('+Nw+').\n'
+    +'2 phrases très courtes et percutantes :\n'
+    +'1. Être "'+S+'" exprime un besoin réel de [besoin précis en résonance avec '+Sw+'].\n'
+    +'2. Être "'+N+'" révèle un besoin réel de [besoin précis en résonance avec '+Nw+']. Leur alliance nourrit [ce que leur réunion permet].\n'
+    +'Soyez précis, concis, en résonance directe avec les mots cités.';
+  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:200,messages:[{role:'user',content:prompt}]})})
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var text=data.content&&data.content[0]?data.content[0].text:null;
+      document.getElementById('besoin-inline-content').textContent=text||'Non disponible.';
+    }).catch(function(){document.getElementById('besoin-inline-content').textContent='Non disponible.';});
 }
 
 function generateBesoins(){
   var d=state.data;
   var S=d.S?d.S.main:'?', N=d.N?d.N.main:'?';
   var Sw=d.S?d.S.words.join(', '):'?', Nw=d.N?d.N.words.join(', '):'?';
-  var prompt='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie.\n\n'
-    +'Qualités : être "'+S+'" ('+Sw+') et être "'+N+'" ('+Nw+').\n\n'
+  var prompt='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie.\n'
+    +'Qualités : être "'+S+'" ('+Sw+') et être "'+N+'" ('+Nw+').\n'
     +'3 phrases concises :\n'
     +'1. Ces mots révèlent leurs besoins-réels fondamentaux et leur capacité naturelle à les satisfaire.\n'
     +'2. Être "'+S+'" exprime un besoin de [besoin en résonance directe avec '+Sw+'].\n'
-    +'3. Être "'+N+'" révèle un besoin de [besoin en résonance avec '+Nw+']. Leur alliance nourrit [ce que leur réunion permet].\n'
-    +'Soyez précis, chaleureux, en résonance directe avec les mots cités.';
-  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:350,messages:[{role:'user',content:prompt}]})})
+    +'3. Être "'+N+'" révèle un besoin de [besoin en résonance avec '+Nw+']. Leur alliance nourrit [résultat concret].\n'
+    +'Soyez précis, chaleureux.';
+  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:300,messages:[{role:'user',content:prompt}]})})
     .then(function(r){return r.json();})
     .then(function(data){
       var text=data.content&&data.content[0]?data.content[0].text:null;
-      if(text){document.getElementById('besoin-content').innerHTML=text.split(/\n\n+/).map(function(p){return '<p>'+p.trim()+'</p>';}).join('');}
-      else{document.getElementById('besoin-content').textContent='Non disponible.';}
+      if(text){
+        var html=text.split(/\n\n+/).map(function(p){return '<p>'+p.trim()+'</p>';}).join('');
+        document.getElementById('besoin-content').innerHTML=html;
+        state.besoinsHtml=html;
+      } else document.getElementById('besoin-content').textContent='Non disponible.';
     }).catch(function(){document.getElementById('besoin-content').textContent='Non disponible.';});
 }
 
-function generateAI(approfondie){
+function buildPrompt(approfondie){
   var d=state.data;
   var S=d.S?d.S.main:'?', O=d.O?d.O.main:'?', N=d.N?d.N.main:'?', E=d.E?d.E.main:'?';
-  var Sw=d.S?d.S.words.join(', '):'?', Ow=d.O?d.O.words.join(', '):'?';
-  var Nw=d.N?d.N.words.join(', '):'?', Ew=d.E?d.E.words.join(', '):'?';
+  var Sw=d.S?d.S.words.filter(function(w){return w.toLowerCase()!==S.toLowerCase();}).join(', '):'?';
+  var Ow=d.O?d.O.words.filter(function(w){return w.toLowerCase()!==O.toLowerCase();}).join(', '):'?';
+  var Nw=d.N?d.N.words.filter(function(w){return w.toLowerCase()!==N.toLowerCase();}).join(', '):'?';
+  var Ew=d.E?d.E.words.filter(function(w){return w.toLowerCase()!==E.toLowerCase();}).join(', '):'?';
   var intention=document.getElementById('intention-text')?document.getElementById('intention-text').value.trim():'';
   var prenom=document.getElementById('id-prenom').value.trim();
 
-  var baseInstructions='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie. '
-    +'Ne jamais écrire "être être" dans une phrase. '
+  var base='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie. '
+    +'Ne jamais écrire "être être". '
     +'Mentionne "être '+S+'", "être '+O+'", "être '+N+'", "être '+E+'" à chaque mention de ces mots. '
-    +(prenom?'Utilise le prénom "'+prenom+'" au maximum 3 fois dans l\'ensemble de la synthèse.':'')
-    +'\n\nBoussole :\n- Sud qualité à stabiliser : "être '+S+'" ('+Sw+')\n- Ouest piège-refuge : "être '+O+'" ('+Ow+')\n- Nord qualité à s\'autoriser : "être '+N+'" ('+Nw+')\n- Est allergie-dépendance : "être '+E+'" ('+Ew+')\n'
+    +'Ne jamais réécrire le mot retenu à côté de ses mots associés dans les rubriques. '
+    +(prenom?'Utilise le prénom "'+prenom+'" UNE SEULE FOIS au début de la PREMIÈRE rubrique seulement. Ne jamais mettre le prénom en dernier mot d\'une phrase.':'')
+    +'\n\nBoussole :\n- Sud qualité à stabiliser : "être '+S+'" autres mots : '+Sw+'\n- Ouest piège-refuge : "être '+O+'" autres mots : '+Ow+'\n- Nord qualité à s\'autoriser : "être '+N+'" autres mots : '+Nw+'\n- Est allergie-dépendance : "être '+E+'" autres mots : '+Ew+'\n'
     +(intention?'- Intention : "'+intention+'"\n':'')
     +'\nStructure : titres précédés de §, prose, vouvoiement, aucune liste.\n\n';
 
-  var promptEssentiel=baseInstructions
-    +'Chaque rubrique : 2-3 phrases maximum. Concis, percutant, essentiel.\n\n'
-    +'§LE MÉCANISME EN JEU\nLa peur de ne pas être suffisamment "être '+S+'" pousse vers "être '+O+'" — piège se faisant passer pour un refuge. Le cerveau automatise ce passage, confondant la qualité et son excès par réflexe. Ce même mécanisme opère côté Nord : le cerveau confond "être '+N+'" avec "être '+E+'", rendant "être '+N+'" inaccessible.\n\n'
-    +'§LA MISE EN ALLIANCE AU CENTRE\nÊtre "'+S+'" et être "'+N+'" ne s\'opposent pas — ils se potentialisent mutuellement. Leur alliance est une plénitude, et la réponse au manque intérieur qui alimente le stress.\n\n'
-    +'§LES DEUX DÉCONFUSIONS LIBÉRATRICES\nAvant de lire ce qui suit, prenez un moment. Sentez vos deux pieds au sol. Respirez. Portez votre attention sur votre poitrine, votre ventre. Sentez votre colonne vertébrale. Laissez-vous simplement être là, présent·e.\n\nPremière déconfusion : lisez "être '+N+'" — ('+Nw+'). Sentez ce que cela évoque dans le corps. Puis lisez "être '+E+'" — ('+Ew+'). Ce n\'est pas la même sensation, pas la même émotion. Accueillez ce qui se présente — s\'il y a un jugement, constatez-le sans y entrer. Être "'+N+'", ce n\'est pas être "'+E+'". L\'excès est une représentation erronée de la qualité.\n\nDeuxième déconfusion : lisez "être '+S+'" — ('+Sw+'). Sentez ce que cette qualité nourrit en vous. Puis lisez "être '+O+'" — ('+Ow+'). Constatez la différence dans le corps, dans l\'émotion. Être "'+S+'", ce n\'est pas être "'+O+'".\n\nCes distinctions, ressenties et intégrées, permettent de ne plus basculer dans le mécanisme de la confusion, d\'être de moins en moins envahi par la sensation d\'être dans le flou, le brouillard, et de vivre avec de plus en plus de clarté et de lucidité. Il est normal que ces distinctions puissent sembler difficiles à ressentir dans le corps pour certaines personnes — c\'est aussi une information précieuse. Se poser, ce n\'est pas s\'immobiliser. C\'est précisément là que se trouve le passage vers plus de liberté et de souveraineté, plus de libre-arbitre.\n\n'
-    +'§L\'ALLERGIE-DÉPENDANCE\nDans certains contextes, la peur d\'être perçu comme trop "être '+N+'" a conduit à se l\'interdire. "Être '+E+'" peut surgir comme réaction automatique orientant vers "être '+O+'". C\'est à la fois une allergie et une dépendance.\n\n'
-    +'§LA COMPENSATION INCONSCIENTE\nSe couper de "être '+N+'" crée un manque comblé par des besoins-compensatoires — au détriment de soi et des autres. "Être '+S+'" et "être '+N+'" sont des points-ressources ; "être '+O+'" et "être '+E+'" sont des points de vigilance.\n\n'
-    +'§LA DYNAMIQUE RELATIONNELLE\nQuand une relation se tend, c\'est que "être '+O+'" est une allergie-dépendance pour l\'autre. Vice-et-versa, le piège-refuge de l\'autre — à savoir "être '+E+'" — a tendance à mettre en réaction épidermique, en allergie. Ce mécanisme — progressif ou soudain — est présent entre deux personnes comme entre deux collectifs. Observer cette dynamique sans jugement ouvre déjà une première porte vers plus de liberté.\n\n'
-    +'§VOTRE CHEMIN DE LIBERTÉ\n2-3 phrases inspirantes et incarnées. Inviter à quitter l\'autoroute réflexe pour le chemin de conscience. Utiliser les mots : liberté, autorité (être auteur de...), souveraineté. Remplacer "cartographie" par "indications" ou "informations". Donner envie d\'aller plus loin.';
+  var rubriques='§LE MÉCANISME EN JEU\n'
+    +'La peur de ne pas être suffisamment "être '+S+'" pousse, à notre insu, vers "être '+O+'" — piège se faisant passer pour un refuge. Le cerveau automatise ce passage inconsciemment, confondant la qualité et son excès par réflexe de survie. Ce même mécanisme opère côté Nord : le cerveau confond, à notre insu, "être '+N+'" avec "être '+E+'", rendant "être '+N+'" inaccessible.\n\n'
+    +'§LA MISE EN ALLIANCE AU CENTRE\n'
+    +'Être "'+S+'" et être "'+N+'" ne s\'opposent pas — ils se potentialisent. Leur alliance est une plénitude, et la réponse au manque intérieur qui alimente le stress.\n\n'
+    +'§LES DEUX DÉCONFUSIONS LIBÉRATRICES\n'
+    +'Cette étape est essentielle dans le processus de libération de l\'emprise des conditionnements — ceux hérités et ceux engrammés dès l\'enfance, puis confirmés au fil du temps.\n\n'
+    +'Avant d\'aller plus loin, prenez un moment pour vous poser. Sentez vos deux pieds au contact du sol. Respirez doucement, sans rien forcer. Portez votre attention sur votre poitrine — sentez-la se soulever et s\'abaisser. Descendez votre attention vers le ventre — sentez-le, relâchez-le. Prenez conscience de votre colonne vertébrale — de sa base jusqu\'au sommet de votre tête. Laissez-vous simplement être là, présent·e.\n\n'
+    +'Première déconfusion : lisez "être '+N+'" — ('+Nw+'). Sentez ce que cela évoque dans le corps, dans le cœur. Puis lisez "être '+E+'" — ('+Ew+'). Remarquez : ce n\'est pas la même sensation. Accueillez ce qui se présente — s\'il y a un jugement, constatez-le sans y entrer. Être "'+N+'", ce n\'est pas être "'+E+'".\n\n'
+    +'Deuxième déconfusion : lisez "être '+S+'" — ('+Sw+'). Sentez ce que cette qualité nourrit en vous. Puis lisez "être '+O+'" — ('+Ow+'). Constatez la différence dans le corps. Être "'+S+'", ce n\'est pas être "'+O+'".\n\n'
+    +'Ces distinctions, ressenties et intégrées, permettent de ne plus basculer à son insu dans le mécanisme de la confusion, d\'être de moins en moins envahi par la sensation d\'être dans le flou, le brouillard, et de vivre avec de plus en plus de clarté et de lucidité. Il est normal, pour certaines personnes et selon les moments, que ces distinctions puissent sembler difficiles à ressentir dans le corps — c\'est aussi une information précieuse. Se poser, ce n\'est pas s\'immobiliser. Ralentir, ce n\'est pas disparaître. C\'est précisément là que se trouve le passage vers plus de liberté et de souveraineté, plus de libre-arbitre.\n\n'
+    +'§L\'ALLERGIE-DÉPENDANCE\n'
+    +'Dans certains contextes, la peur d\'être perçu comme trop "être '+N+'" a conduit, inconsciemment, à se l\'interdire. Lorsque cette sensation allergique surgit, le cerveau — dont le rôle est de nous faire vivre le plus de bien-être ou le moins de mal-être possible — opère un basculement instantané, en un claquement de doigt, vers "être '+O+'". Entre deux zones d\'inconfort, le cerveau choisit le moindre mal : il fuit la zone insupportable de l\'allergie pour se réfugier dans la zone d\'inconfort supportable du piège. C\'est en cela que le piège est un refuge.\n\n'
+    +'§LA COMPENSATION INCONSCIENTE\n'
+    +'Se couper, à son insu, de "être '+N+'" crée un manque comblé par des besoins-compensatoires — au détriment de soi et des autres. "Être '+S+'" et "être '+N+'" sont des points-ressources ; "être '+O+'" et "être '+E+'" sont des points de vigilance.\n\n'
+    +'§LA DYNAMIQUE RELATIONNELLE\n'
+    +'Concrètement, quand une relation se tend, c\'est souvent parce que "être '+O+'" est précisément ce qui allergise l\'autre. Vice-et-versa, le piège-refuge de l\'autre — à savoir "être '+E+'" — est ce qui a tendance à mettre en réaction épidermique, en allergie. Cet engrenage — progressif ou soudain — est présent entre deux personnes comme entre deux collectifs. Observer cette dynamique sans jugement ouvre déjà une première porte vers plus de liberté.\n\n'
+    +'§VOTRE CHEMIN DE LIBERTÉ\n'
+    +(approfondie
+      ?'3-4 phrases inspirantes et incarnées. Inviter à quitter l\'autoroute réflexe pour le chemin de conscience. Mots : liberté, autorité (être auteur de...), souveraineté, libre-arbitre. Utiliser "indications" ou "informations" jamais "cartographie". Étayer, montrer la transformation possible, donner fortement envie d\'aller plus loin.'
+      :'2-3 phrases inspirantes. Inviter à quitter l\'autoroute réflexe pour le chemin de conscience. Liberté, autorité, souveraineté. Utiliser "indications" ou "informations" jamais "cartographie". Donner envie d\'aller plus loin.');
 
-  var promptApprofondie=baseInstructions
-    +'Chaque rubrique : 4-5 phrases. Approfondi, détaillé, riche en informations pour amorcer un travail de libération.\n\n'
-    +'§LE MÉCANISME EN JEU\nDétailler comment la peur de ne pas être assez "être '+S+'" ('+Sw+') active le passage automatique vers "être '+O+'" ('+Ow+'). Expliquer l\'automatisme cérébral, le réflexe de survie hérité. Détailler le même mécanisme côté Nord entre "être '+N+'" et "être '+E+'". Montrer comment le cerveau confond qualité et excès comme deux facettes qu\'il traite identiquement pour économiser son énergie.\n\n'
-    +'§LA MISE EN ALLIANCE AU CENTRE\nDétailler comment "être '+S+'" et "être '+N+'" se nourrissent et se potentialisent. Expliquer le manque créé par leur séparation. Montrer ce que leur alliance au centre permet concrètement. Évoquer la plénitude possible.\n\n'
-    +'§LES DEUX DÉCONFUSIONS LIBÉRATRICES\nCette étape est essentielle dans le processus de libération de l\'emprise des conditionnements — ceux hérités et ceux engrammés dès l\'enfance, puis confirmés au fil du temps.\n\nAvant d\'aller plus loin, prenez un moment pour vous poser. Sentez vos deux pieds au contact du sol. Respirez doucement, sans rien forcer. Portez votre attention sur votre poitrine — sentez-la se soulever et s\'abaisser. Descendez votre attention vers le ventre — sentez-le, relâchez-le. Prenez conscience de votre colonne vertébrale — de sa base jusqu\'au sommet de votre tête. Laissez-vous simplement être là, assis·e, présent·e.\n\nPremière déconfusion : lisez "être '+N+'" — ('+Nw+'). Connectez-vous à ce que vous ressentez intérieurement. Sentez la qualité de cette présence dans le corps, dans le cœur. Puis lisez "être '+E+'" — ('+Ew+'). Accueillez ce qui se présente — sensations, ressentis émotionnels. S\'il y a un jugement, constatez simplement qu\'il est là, sans y entrer. Remarquez : ce n\'est pas la même sensation, pas la même émotion. Être "'+N+'", ce n\'est pas être "'+E+'". L\'excès est une caricature, une représentation erronée de la qualité — jamais la qualité elle-même. Prenez le temps de laisser cette distinction s\'installer en vous.\n\nDeuxième déconfusion : lisez "être '+S+'" — ('+Sw+'). Sentez ce que cette qualité, dans sa juste expression, nourrit en vous. Puis lisez "être '+O+'" — ('+Ow+'). Là encore, accueillez et constatez la différence — dans les sensations, dans l\'émotion présente. Être "'+S+'", ce n\'est pas être "'+O+'".\n\nCes distinctions, ressenties et intégrées, permettent de ne plus basculer dans le mécanisme de la confusion, d\'être de moins en moins envahi par la sensation d\'être dans le flou, le brouillard, et de vivre avec de plus en plus de clarté et de lucidité. Il est normal, pour certaines personnes et selon les moments, que ces distinctions puissent sembler difficiles à ressentir dans le corps — c\'est aussi une information précieuse. Se poser, ce n\'est pas s\'immobiliser. Ralentir, ce n\'est pas disparaître. C\'est précisément là que se trouve le passage vers plus de liberté et de souveraineté, plus de libre-arbitre.\n\n'
-    +'§L\'ALLERGIE-DÉPENDANCE\nExpliquer en détail comment dans certains contextes la peur d\'être perçu comme trop "être '+N+'" ('+Nw+') a conduit à se l\'interdire. Montrer comment "être '+E+'" ('+Ew+') surgit comme réaction automatique orientant vers "être '+O+'". Détailler l\'aspect allergie ET dépendance. Rester mesuré et bienveillant, ne pas heurter.\n\n'
-    +'§LA COMPENSATION INCONSCIENTE\nExpliquer comment le manque de "être '+N+'" génère des besoins-compensatoires. Détailler comment ces compensations opèrent au détriment de soi et des autres. Clarifier la distinction besoins-réels vs besoins-compensatoires. Montrer "être '+S+'" et "être '+N+'" comme points-ressources, "être '+O+'" et "être '+E+'" comme points de vigilance.\n\n'
-    +'§LA DYNAMIQUE RELATIONNELLE\nQuand une relation se tend, c\'est que "être '+O+'" est une allergie-dépendance pour l\'autre. Vice-et-versa, le piège-refuge de l\'autre — à savoir "être '+E+'" — a tendance à mettre en réaction épidermique, en allergie. Expliquer cet engrenage progressif ou soudain. Montrer que ce mécanisme opère entre deux personnes comme entre deux collectifs. Observer cette dynamique sans jugement ouvre déjà une première porte vers plus de liberté.\n\n'
-    +'§VOTRE CHEMIN DE LIBERTÉ\n3-4 phrases inspirantes et incarnées. Inviter à quitter l\'autoroute réflexe pour le chemin de conscience. Utiliser les mots : liberté, autorité (être auteur de...), souveraineté, libre-arbitre. Remplacer "cartographie" par "indications" ou "informations". Étayer, donner envie d\'aller beaucoup plus loin. Montrer la transformation possible.';
+  var detail=approfondie?' Chaque rubrique : 4-5 phrases. Approfondi, riche.'
+    :' Chaque rubrique : 2-3 phrases maximum. Concis, essentiel.';
 
-  var prompt=approfondie?promptApprofondie:promptEssentiel;
+  return base+detail+'\n\n'+rubriques;
+}
+
+function generateAI(approfondie){
+  var prompt=buildPrompt(approfondie);
   var maxTok=approfondie?2800:2200;
-
+  var d=state.data;
+  var S=d.S?d.S.main:'?', O=d.O?d.O.main:'?', N=d.N?d.N.main:'?', E=d.E?d.E.main:'?';
   fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:maxTok,messages:[{role:'user',content:prompt}]})})
     .then(function(r){return r.json();})
     .then(function(data){
@@ -709,35 +826,88 @@ function generateAI(approfondie){
           return '<p>'+p+'</p>';
         }).join('');
         document.getElementById('ai-text').innerHTML=html;
-        buildPrintArea();
+        state.synthHtml=html;
       } else {
         document.getElementById('ai-text').textContent="La synthèse n'a pas pu être générée.";
       }
     }).catch(function(){document.getElementById('ai-text').textContent="La synthèse n'a pas pu être générée.";});
 }
 
-function buildPrintArea(){
-  var d=state.data;
+function switchToApprofondie(){
+  state.synthType='approfondie';
+  document.getElementById('synth-label').textContent='Synthèse Approfondie';
+  document.getElementById('btn-approfondie').style.display='none';
+  document.getElementById('ai-text').innerHTML='<span class="loading-dots">Génération en cours</span>';
+  generateAI(true);
+}
+
+function downloadPDF(){
   var prenom=document.getElementById('id-prenom').value.trim();
   var nom=document.getElementById('id-nom').value.trim();
   var date=new Date().toLocaleDateString('fr-FR');
-  var synth=document.getElementById('ai-text').innerHTML;
-  var besoins=document.getElementById('besoin-content').innerHTML;
   var type=state.synthType==='approfondie'?'Synthèse Approfondie':'Synthèse Essentielle';
-  document.getElementById('print-area').innerHTML=
-    '<style>body{font-family:sans-serif;color:#1a1a1a;padding:2rem;}h1{font-size:19px;color:#1D9E75;margin-bottom:.2rem;}'
-    +'.meta{font-size:12px;color:#6b7280;margin-bottom:1.5rem;}.ai-titre{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#1D9E75;margin-top:1.25rem;margin-bottom:.35rem;border-top:1px solid #9FE1CB;padding-top:.35rem;}'
-    +'.ai-titre:first-child{border-top:none;margin-top:0;}.ai-mot{font-weight:700;color:#085041;font-style:italic;}p{font-size:13px;line-height:1.8;margin-bottom:.75rem;text-align:justify;}'
-    +'.besoin{background:#E8F8F3;border-radius:6px;padding:.75rem;margin-bottom:1.25rem;font-size:13px;line-height:1.7;}'
-    +'.footer{font-size:11px;color:#6b7280;text-align:center;margin-top:2rem;border-top:1px solid #e5e7eb;padding-top:.75rem;}</style>'
-    +'<h1>Boussole relationnelle'+(prenom?' — '+prenom+' '+nom:'')+'</h1>'
-    +'<div class="meta">'+date+' — '+type+' — Lionel Drouvin, Coach relation &amp; Médiateur — lioneldrouvin.com</div>'
-    +'<div class="besoin"><strong style="font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#085041;">Vos besoins réels</strong><br>'+besoins+'</div>'
-    +synth
-    +'<div class="footer">Cette synthèse découle de l\'outil Boussole relationnelle développé par Lionel Drouvin. Rédigée avec l\'aide de l\'IA. Première lecture, non un diagnostic.<br>lioneldrouvin.com</div>';
-}
+  var d=state.data;
 
-function printPDF(){buildPrintArea();window.print();}
+  // Extraire le texte brut de la synthèse
+  var synthBox=document.getElementById('ai-text');
+  var besoinsBox=document.getElementById('besoin-content');
+
+  try{
+    var jsPDF=window.jspdf.jsPDF;
+    var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    var margin=20;
+    var pageW=210;
+    var contentW=pageW-margin*2;
+    var y=margin;
+    var lineH=6;
+
+    // En-tête
+    doc.setFontSize(16);doc.setTextColor(29,158,117);
+    doc.text('Boussole relationnelle'+(prenom?' — '+prenom+' '+nom:''),margin,y);y+=8;
+    doc.setFontSize(9);doc.setTextColor(107,114,128);
+    doc.text(date+' — '+type+' — Lionel Drouvin, Coach relation & Médiateur',margin,y);y+=4;
+    doc.text('lioneldrouvin.com',margin,y);y+=8;
+
+    // Besoins réels
+    doc.setFillColor(232,248,243);doc.rect(margin,y,contentW,6,'F');
+    doc.setFontSize(8);doc.setTextColor(8,80,65);doc.setFont(undefined,'bold');
+    doc.text('VOS BESOINS RÉELS',margin+2,y+4);y+=8;
+    doc.setFontSize(10);doc.setTextColor(26,26,26);doc.setFont(undefined,'normal');
+    var besoinsText=besoinsBox.innerText||besoinsBox.textContent||'';
+    var besoinsLines=doc.splitTextToSize(besoinsText,contentW);
+    doc.text(besoinsLines,margin,y);y+=besoinsLines.length*lineH+4;
+
+    // Synthèse - extraire paragraphes avec titres
+    var nodes=synthBox.querySelectorAll('.ai-titre, p');
+    nodes.forEach(function(node){
+      if(y>270){doc.addPage();y=margin;}
+      if(node.classList.contains('ai-titre')){
+        doc.setFontSize(8);doc.setTextColor(29,158,117);doc.setFont(undefined,'bold');
+        doc.text(node.textContent.toUpperCase(),margin,y);y+=6;
+        doc.setDrawColor(159,225,203);doc.line(margin,y-2,margin+contentW,y-2);
+      } else {
+        doc.setFontSize(10);doc.setTextColor(26,26,26);doc.setFont(undefined,'normal');
+        var lines=doc.splitTextToSize(node.textContent||'',contentW);
+        lines.forEach(function(line){
+          if(y>270){doc.addPage();y=margin;}
+          doc.text(line,margin,y);y+=lineH;
+        });
+        y+=2;
+      }
+    });
+
+    // Pied de page
+    y+=4;
+    if(y>270){doc.addPage();y=margin;}
+    doc.setFontSize(8);doc.setTextColor(107,114,128);
+    doc.text('Synthèse issue de l\'outil Boussole relationnelle de Lionel Drouvin — Première lecture, non un diagnostic.',margin,y);
+
+    doc.save('boussole-relationnelle'+(prenom?'-'+prenom.toLowerCase():'')+'.pdf');
+  } catch(e){
+    alert('Le téléchargement PDF rencontre un problème. Essayez avec Chrome ou Firefox à jour.');
+    console.error(e);
+  }
+}
 </script>
 </body>
 </html>
