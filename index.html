@@ -38,9 +38,9 @@
     hr{border:none;border-top:1px solid var(--bd);margin:1rem 0;}
     /* Accueil */
     .pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.875rem 0;}
-    .pb-card{background:var(--bgs);border-radius:var(--r);padding:.75rem;display:flex;align-items:flex-start;gap:.5rem;}
-    .pb-icon{font-size:20px;flex-shrink:0;}
-    .pb-text{font-size:13px;color:var(--ts);line-height:1.5;}
+    .pb-card{background:var(--bg);border:1.5px solid var(--gm);border-radius:var(--rl);padding:1rem;display:flex;align-items:flex-start;gap:.75rem;box-shadow:0 2px 8px rgba(29,158,117,.07);}
+    .pb-icon{font-size:26px;flex-shrink:0;}
+    .pb-text{font-size:14px;color:var(--tx);line-height:1.55;font-weight:500;}
     .pb-mirror{background:var(--gl);border-radius:var(--r);padding:.75rem 1rem;font-size:14px;font-weight:500;color:var(--gdp);text-align:center;margin-bottom:.875rem;border:.5px solid var(--gm);}
     .int-box{background:linear-gradient(135deg,var(--gl),var(--gol));border-radius:var(--rl);padding:1rem;margin-bottom:1rem;border:.5px solid var(--gm);}
     .int-box h3{font-size:14px;font-weight:600;color:var(--gdp);margin-bottom:.4rem;}
@@ -93,8 +93,8 @@
     .synth-card.gold-card{border-color:var(--go);}
     .synth-card.gold-card.sel{background:var(--gol);border-color:var(--go);}
     .synth-icon{font-size:24px;margin-bottom:.4rem;}
-    .synth-name{font-size:14px;font-weight:600;color:var(--tx);margin-bottom:.2rem;}
-    .synth-prix{font-size:13px;font-weight:600;color:var(--g);margin-bottom:.3rem;}
+    .synth-name{font-size:17px;font-weight:700;color:var(--tx);margin-bottom:.3rem;}
+    .synth-prix{font-size:17px;font-weight:700;color:var(--g);margin-bottom:.4rem;}
     .synth-prix.go{color:var(--go);}
     .synth-desc{font-size:12px;color:var(--ts);line-height:1.5;}
     .pay-box{background:var(--gol);border:1px dashed var(--go);border-radius:var(--r);padding:1rem;text-align:center;margin:.5rem 0;}
@@ -196,7 +196,7 @@
       <div class="pb-card"><span class="pb-icon">🔄</span><span class="pb-text">Relations tendues avec collègues, associés ou proches</span></div>
       <div class="pb-card"><span class="pb-icon">⚡</span><span class="pb-text">Stress, pression, sensation d'être submergé ou incompris</span></div>
     </div>
-    <p class="sub" style="text-align:center;margin-top:.5rem;">La Boussole relationnelle vous aide à voir clairement ce qui se joue — et à choisir votre cap.</p>
+    <p style="text-align:center;font-size:15px;font-weight:500;color:var(--gdp);margin-top:.875rem;margin-bottom:.25rem;line-height:1.6;">La Boussole relationnelle vous aide à choisir votre cap<br>depuis l'endroit où vous êtes.</p>
     <div style="text-align:center;margin-top:.875rem;"><button class="btn btn-g" onclick="show('s1')">Commencer &rarr;</button></div>
   </div>
 
@@ -264,7 +264,7 @@
 
     <!-- Besoins réels inline (après dernière case) -->
     <div class="besoin-inline" id="besoin-inline" style="display:none;">
-      <div class="besoin-inline-title">✦ Vos besoins réels</div>
+      <div class="besoin-inline-title">✦ Vos besoins réels en potentiel</div>
       <div class="besoin-inline-content" id="besoin-inline-content"><span class="loading-dots">Identification en cours</span></div>
     </div>
 
@@ -301,7 +301,7 @@
         <div class="synth-icon">🔍</div>
         <div class="synth-name">Synthèse Approfondie</div>
         <div class="synth-prix go">10 €</div>
-        <div class="synth-desc">Mécanisme détaillé, indications pour amorcer votre libération, éléments de compréhension approfondis.</div>
+        <div class="synth-desc">Détailler le mécanisme en place, recevoir des indications précieuses pour amorcer votre libération, comprendre en profondeur ce qui se joue en vous — et repartir avec des éléments concrets pour avancer.</div>
       </div>
     </div>
     <div class="pay-box" id="pay-box" style="display:none;">
@@ -320,7 +320,7 @@
     <p class="sub">Renseignez vos coordonnées pour y accéder et la télécharger en PDF.</p>
     <div class="id-box">
       <h3>✦ Vos coordonnées</h3>
-      <p class="sub" style="margin-top:.25rem;">Vos données restent confidentielles et ne sont pas transmises à des tiers.</p>
+      <p class="sub" style="margin-top:.25rem;">Votre synthèse vous est personnelle — je ne la reçois pas. Je reçois uniquement vos coordonnées pour pouvoir vous recontacter si vous le souhaitez. Vous pouvez télécharger votre synthèse et choisir de me l'envoyer pour avoir mon éclairage lors d'une séance de coaching.</p>
       <div class="id-grid">
         <div><label>Prénom *</label><input type="text" id="id-prenom" placeholder="Votre prénom" oninput="checkId()"></div>
         <div><label>Nom *</label><input type="text" id="id-nom" placeholder="Votre nom" oninput="checkId()"></div>
@@ -387,7 +387,7 @@
     </svg>
 
     <div class="besoin-box" id="besoin-box" style="display:none;">
-      <div class="besoin-title">Vos besoins réels</div>
+      <div class="besoin-title">Vos besoins réels en potentiel</div>
       <div class="besoin-content" id="besoin-content"><span class="loading-dots">Identification en cours</span></div>
     </div>
 
@@ -546,8 +546,8 @@ function getEntryQ(k){
 function buildTransQ(from,to,w){
   var b='<strong>'+w+'</strong>';
   var toExcess=(from==='S'&&to==='O')||(from==='N'&&to==='E')||(from==='O'&&to==='E')||(from==='E'&&to==='O');
-  if(toExcess) return "Imaginez quelqu'un cent mille fois trop "+b+". Quels mots décrivent cet excès — ce comportement qui veut à tout prix prouver qu'il est vraiment "+b+" ?";
-  return "Comment qualifiez-vous une personne pas du tout dans l'excès d'être "+b+" ? Quels mots décrivent la qualité à l'opposé ?";
+  if(toExcess) return "Imaginez quelqu'un cent mille fois trop "+b+". Quelqu'un qui se juge de ne pas être suffisamment "+b+" — et qui veut absolument le prouver au monde et à lui-même. Quels mots décrivent cet excès ?";
+  return "Comment qualifiez-vous une personne qui n'est pas du tout dans l'excès d'être "+b+" ? Quels mots décrivent la qualité à l'opposé ?";
 }
 
 function onWords(){
@@ -567,18 +567,16 @@ function onWords(){
 
 function fetchSynoWords(word){
   // Utiliser Datamuse avec paramètres français + ML
-  fetch('https://api.datamuse.com/words?ml='+encodeURIComponent(word)+'&v=fr&max=10')
+  // Utiliser Dicolink (API française) avec fallback Datamuse ql=fr
+  fetch('https://api.datamuse.com/words?ml='+encodeURIComponent(word)+'&ql=fr&topics=fr&max=12')
     .then(function(r){return r.json();})
     .then(function(d){
-      if(!d||!d.length){
-        // Fallback sans filtre langue
-        return fetch('https://api.datamuse.com/words?ml='+encodeURIComponent(word)+'&max=10');
-      }
-      return Promise.resolve({json:function(){return Promise.resolve(d);}});
-    })
-    .then(function(r){return typeof r.json==='function'?r.json():r;})
-    .then(function(d){
-      synoWords=d||[];
+      // Filtrer uniquement les mots qui semblent français (contiennent des accents ou sont courants)
+      var filtered=(d||[]).filter(function(x){
+        // Garder mots avec caractères français ou sans chiffres/symboles anglais
+        return x.word && /^[a-zA-ZÀ-ÿ\-' ]+$/.test(x.word) && x.word.length>2;
+      });
+      synoWords=filtered.length?filtered:(d||[]);
       if(synoVisible) renderSyno();
     }).catch(function(){synoWords=[];});
 }
