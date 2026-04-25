@@ -802,7 +802,9 @@ function generateBesoins(){
   var d=state.data;
   var S=d.S?d.S.main:'?', N=d.N?d.N.main:'?';
   var Sw=d.S?d.S.words.join(', '):'?', Nw=d.N?d.N.words.join(', '):'?';
+  var prenom2=document.getElementById('id-prenom').value.trim();
   var prompt='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie.\n'
+    +(prenom2?'Commence par le prénom "'+prenom2+'" seul, sans autre mot, puis continue.\n':'')
     +'Qualités : être "'+S+'" ('+Sw+') et être "'+N+'" ('+Nw+').\n'
     +'3 phrases concises :\n'
     +'1. Ces mots révèlent leurs besoins-réels fondamentaux et leur capacité naturelle à les satisfaire.\n'
