@@ -192,12 +192,12 @@
     <div class="pb-mirror">Vous reconnaissez-vous dans l'une de ces situations ?</div>
     <div class="pb-grid">
       <div class="pb-card"><span class="pb-icon">😤</span><span class="pb-text">Tensions, conflits ou difficulté à vous affirmer dans vos relations</span></div>
-      <div class="pb-card"><span class="pb-icon">🌫️</span><span class="pb-text">Sentiment de ne pas être à votre place, manque de confiance</span></div>
-      <div class="pb-card"><span class="pb-icon">🔄</span><span class="pb-text">Relations tendues avec collègues, associés ou proches</span></div>
-      <div class="pb-card"><span class="pb-icon">⚡</span><span class="pb-text">Stress, pression, sensation d'être submergé ou incompris</span></div>
+      <div class="pb-card"><span class="pb-icon">🌫️</span><span class="pb-text">Sentiment de ne pas être à votre place, manquer de confiance, d'assurance</span></div>
+      <div class="pb-card"><span class="pb-icon">🔄</span><span class="pb-text">Relations tendues avec collègues, associés, clients, partenaires ou proches</span></div>
+      <div class="pb-card"><span class="pb-icon">⚡</span><span class="pb-text">Stress, pression, sensation d'être submergé, pas respecté, de devoir vous sur-adapter</span></div>
     </div>
-    <p style="text-align:center;font-size:15px;font-weight:500;color:var(--gdp);margin-top:.875rem;margin-bottom:.25rem;line-height:1.6;">La Boussole relationnelle vous aide à choisir votre cap<br>avec plus de lucidité et de clarté, du lieu où vous êtes.</p>
-    <div style="text-align:center;margin-top:.875rem;"><button class="btn btn-g" onclick="show('s1')">Commencer &rarr;</button></div>
+    <p style="text-align:center;font-size:15px;font-weight:500;color:var(--gdp);margin-top:.875rem;margin-bottom:.25rem;line-height:1.6;">La Boussole relationnelle vous aide à choisir votre cap<br>avec plus de lucidité et de clarté, depuis le lieu où vous êtes.</p>
+    <div style="text-align:center;margin-top:.875rem;"><button class="btn btn-g" onclick="show('s1');window.scrollTo({top:0,behavior:'smooth'});">Commencer &rarr;</button></div>
   </div>
 
   <!-- INTENTION -->
@@ -215,27 +215,74 @@
     </div>
   </div>
 
-  <!-- POINT D'ENTRÉE -->
+  <!-- POINT D'ENTRÉE — Boussole SVG cliquable -->
   <div class="step" id="s2">
     <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:28%"></div></div><div class="prog-label">Étape 2 / 7</div></div>
     <h2>Par laquelle de ces 4 entrées voulez-vous commencer ?</h2>
-    <p class="sub">En fonction de ce que vous vivez aujourd'hui — celle qui vous touche le plus.</p>
-    <div class="ec" id="ec-S" onclick="chooseAndStart('S')">
-      <div class="ec-dir">Une qualité que vous vous reconnaissez <span class="ec-badge">qualité à stabiliser</span></div>
-      <div class="ec-sub">Quelle qualité vous reconnaissez-vous — et que vos proches reconnaissent également ?</div>
-    </div>
-    <div class="ec" id="ec-N" onclick="chooseAndStart('N')">
-      <div class="ec-dir">Une qualité que vous admirez chez les autres <span class="ec-badge">qualité à s'autoriser</span></div>
-      <div class="ec-sub">Quelle qualité repérez-vous et admirez-vous chez d'autres — sans toujours vous l'autoriser ?</div>
-    </div>
-    <div class="ec" id="ec-O" onclick="chooseAndStart('O')">
-      <div class="ec-dir">Un défaut que vous reconnaissez ou qu'on vous reproche <span class="ec-badge am">piège-refuge</span></div>
-      <div class="ec-sub">Quel reproche ou défaut entendez-vous parfois — et/ou que vous vous reconnaissez ?</div>
-    </div>
-    <div class="ec" id="ec-E" onclick="chooseAndStart('E')">
-      <div class="ec-dir">Un comportement, un défaut qui vous agace profondément chez les autres <span class="ec-badge am">allergie-dépendance</span></div>
-      <div class="ec-sub">Quel comportement vous met en allergie, en réaction épidermique chez les autres ?</div>
-    </div>
+    <p class="sub" style="text-align:center;">En fonction de ce qui résonne le plus pour vous,<br>cliquez sur la direction choisie.</p>
+
+    <svg viewBox="-160 -160 320 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;display:block;margin:0 auto;cursor:pointer;" font-family="-apple-system,BlinkMacSystemFont,sans-serif">
+      <defs>
+        <style>
+          .qzone{transition:opacity .15s;}
+          .qzone:hover{opacity:.85;}
+        </style>
+      </defs>
+
+      <!-- Cercle extérieur -->
+      <circle cx="0" cy="0" r="148" fill="none" stroke="#9FE1CB" stroke-width="1"/>
+
+      <!-- NORD — qualité que vous aimez chez l'autre -->
+      <path class="qzone" d="M0,0 L-105,-105 A148,148 0 0,1 105,-105 Z" fill="#E8F8F3" stroke="white" stroke-width="2" onclick="chooseAndStart('N')" style="cursor:pointer;"/>
+      <!-- SUD — qualité que vous vous reconnaissez -->
+      <path class="qzone" d="M0,0 L105,105 A148,148 0 0,1 -105,105 Z" fill="#E8F8F3" stroke="white" stroke-width="2" onclick="chooseAndStart('S')" style="cursor:pointer;"/>
+      <!-- EST — défaut chez l'autre qui vous agace -->
+      <path class="qzone" d="M0,0 L105,-105 A148,148 0 0,1 105,105 Z" fill="#FAEEDA" stroke="white" stroke-width="2" onclick="chooseAndStart('E')" style="cursor:pointer;"/>
+      <!-- OUEST — défaut que vous vous reconnaissez -->
+      <path class="qzone" d="M0,0 L-105,105 A148,148 0 0,1 -105,-105 Z" fill="#FAEEDA" stroke="white" stroke-width="2" onclick="chooseAndStart('O')" style="cursor:pointer;"/>
+
+      <!-- Flèches filigrane -->
+      <g opacity="0.08" pointer-events="none">
+        <polygon points="0,-138 -7,-36 0,-36" fill="#1D9E75"/><polygon points="0,-138 0,-36 7,-36" fill="#1D9E75"/>
+        <polygon points="0,138 0,36 -7,36" fill="#1D9E75"/><polygon points="0,138 7,36 0,36" fill="#1D9E75"/>
+        <polygon points="138,0 36,0 36,-7" fill="#1D9E75"/><polygon points="138,0 36,7 36,0" fill="#1D9E75"/>
+        <polygon points="-138,0 -36,-7 -36,0" fill="#1D9E75"/><polygon points="-138,0 -36,0 -36,7" fill="#1D9E75"/>
+      </g>
+
+      <!-- Lettres cardinales -->
+      <text x="0" y="-120" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#085041" pointer-events="none">N</text>
+      <text x="0" y="120" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#085041" pointer-events="none">S</text>
+      <text x="120" y="0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#085041" pointer-events="none">E</text>
+      <text x="-120" y="0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#085041" pointer-events="none">O</text>
+
+      <!-- Textes dans les quartiers — NORD -->
+      <text onclick="chooseAndStart('N')" style="cursor:pointer;" x="0" y="-90" text-anchor="middle" font-size="11" font-weight="600" fill="#085041" pointer-events="all">une qualité que</text>
+      <text onclick="chooseAndStart('N')" style="cursor:pointer;" x="0" y="-75" text-anchor="middle" font-size="11" font-weight="600" fill="#085041" pointer-events="all">vous aimez chez l'autre</text>
+      <text onclick="chooseAndStart('N')" style="cursor:pointer;" x="0" y="-58" text-anchor="middle" font-size="9" fill="#1D9E75" pointer-events="all">qualité à s'autoriser</text>
+
+      <!-- SUD -->
+      <text onclick="chooseAndStart('S')" style="cursor:pointer;" x="0" y="58" text-anchor="middle" font-size="9" fill="#1D9E75" pointer-events="all">qualité à stabiliser</text>
+      <text onclick="chooseAndStart('S')" style="cursor:pointer;" x="0" y="73" text-anchor="middle" font-size="11" font-weight="600" fill="#085041" pointer-events="all">une qualité que vous</text>
+      <text onclick="chooseAndStart('S')" style="cursor:pointer;" x="0" y="88" text-anchor="middle" font-size="11" font-weight="600" fill="#085041" pointer-events="all">vous reconnaissez</text>
+
+      <!-- EST -->
+      <text onclick="chooseAndStart('E')" style="cursor:pointer;" x="96" y="-18" text-anchor="middle" font-size="9.5" font-weight="600" fill="#633806" pointer-events="all">un défaut chez</text>
+      <text onclick="chooseAndStart('E')" style="cursor:pointer;" x="96" y="-5" text-anchor="middle" font-size="9.5" font-weight="600" fill="#633806" pointer-events="all">l'autre qui</text>
+      <text onclick="chooseAndStart('E')" style="cursor:pointer;" x="96" y="9" text-anchor="middle" font-size="9.5" font-weight="600" fill="#633806" pointer-events="all">vous agace</text>
+      <text onclick="chooseAndStart('E')" style="cursor:pointer;" x="96" y="22" text-anchor="middle" font-size="8" fill="#BA7517" pointer-events="all">allergie-dépendance</text>
+
+      <!-- OUEST -->
+      <text onclick="chooseAndStart('O')" style="cursor:pointer;" x="-96" y="-18" text-anchor="middle" font-size="9.5" font-weight="600" fill="#633806" pointer-events="all">un défaut que</text>
+      <text onclick="chooseAndStart('O')" style="cursor:pointer;" x="-96" y="-5" text-anchor="middle" font-size="9.5" font-weight="600" fill="#633806" pointer-events="all">vous vous</text>
+      <text onclick="chooseAndStart('O')" style="cursor:pointer;" x="-96" y="9" text-anchor="middle" font-size="9.5" font-weight="600" fill="#633806" pointer-events="all">reconnaissez</text>
+      <text onclick="chooseAndStart('O')" style="cursor:pointer;" x="-96" y="22" text-anchor="middle" font-size="8" fill="#BA7517" pointer-events="all">piège-refuge</text>
+
+      <!-- Cercle central or -->
+      <circle cx="0" cy="0" r="34" fill="white" stroke="#C9A84C" stroke-width="1.5" pointer-events="none"/>
+      <text x="0" y="8" text-anchor="middle" font-size="22" font-weight="300" fill="#C9A84C" font-family="Georgia,serif" pointer-events="none">&amp;</text>
+    </svg>
+
+    <p style="text-align:center;font-size:12px;color:var(--ts);margin-top:.75rem;">Cliquez sur le quartier qui vous correspond le plus aujourd'hui</p>
     <div class="nav"><button class="btn-back" onclick="show('s1')">← Retour</button></div>
   </div>
 
@@ -304,6 +351,7 @@
         <div class="synth-icon">🔍</div>
         <div class="synth-name">Synthèse Approfondie</div>
         <div class="synth-prix go">10 €</div>
+        <div style="font-size:11px;color:var(--go);margin-bottom:.3rem;">(déduits de votre prochaine séance « Accompagnement Boussole »)</div>
         <div class="synth-desc">Détailler le mécanisme en place, recevoir des indications précieuses pour amorcer votre libération, comprendre en profondeur ce qui se joue en vous — et repartir avec des éléments concrets pour avancer.</div>
       </div>
     </div>
@@ -774,7 +822,7 @@ function buildPrompt(approfondie){
     +'Ne jamais écrire "être être". '
     +'Mentionne "être '+S+'", "être '+O+'", "être '+N+'", "être '+E+'" à chaque mention de ces mots. '
     +'Ne jamais réécrire le mot retenu à côté de ses mots associés dans les rubriques. '
-    +(prenom?'Utilise le prénom "'+prenom+'" UNE SEULE FOIS au début de la PREMIÈRE rubrique seulement. Ne jamais mettre le prénom en dernier mot d\'une phrase.':'')
+    +(prenom?'Commence la synthèse par le prénom "'+prenom+'" seul, sans autre mot avant lui — juste "'+prenom+'" puis une virgule ou un point, puis la première phrase. Réutilise le prénom une deuxième fois uniquement au début du paragraphe §VOTRE CHEMIN DE LIBÉRATION. Nulle part ailleurs dans la synthèse. Ne jamais mettre le prénom en dernier mot d\'une phrase.':'')
     +'\n\nBoussole :\n- Sud qualité à stabiliser : "être '+S+'" autres mots : '+Sw+'\n- Ouest piège-refuge : "être '+O+'" autres mots : '+Ow+'\n- Nord qualité à s\'autoriser : "être '+N+'" autres mots : '+Nw+'\n- Est allergie-dépendance : "être '+E+'" autres mots : '+Ew+'\n'
     +(intention?'- Intention : "'+intention+'"\n':'')
     +'\nStructure : titres précédés de §, prose, vouvoiement, aucune liste.\n\n';
@@ -794,8 +842,8 @@ function buildPrompt(approfondie){
     +'§LA COMPENSATION INCONSCIENTE\n'
     +'Se couper, à son insu, de "être '+N+'" crée un manque comblé par des besoins-compensatoires — au détriment de soi et des autres. "Être '+S+'" et "être '+N+'" sont des points-ressources ; "être '+O+'" et "être '+E+'" sont des points de vigilance.\n\n'
     +'§LA DYNAMIQUE RELATIONNELLE\n'
-    +'Concrètement, quand une relation se tend, c\'est souvent parce que "être '+O+'" est précisément ce qui allergise l\'autre. Vice-et-versa, le piège-refuge de l\'autre — à savoir "être '+E+'" — est ce qui a tendance à mettre en réaction épidermique, en allergie. Cet engrenage — progressif ou soudain — est présent entre deux personnes comme entre deux collectifs. Observer cette dynamique sans jugement ouvre déjà une première porte vers plus de liberté.\n\n'
-    +'§VOTRE CHEMIN DE LIBERTÉ\n'
+    +'Concrètement, quand une relation se tend, c\'est souvent parce que "être '+O+'" est précisément ce qui allergise l\'autre. Vice-et-versa, le piège-refuge de l\'autre — à savoir "être '+E+'" — est ce qui a tendance à mettre en réaction épidermique, en allergie. Cet engrenage — progressif ou soudain — est présent entre deux personnes comme entre deux collectifs.\n\nMais il y a une autre façon de regarder ce qui se joue : plutôt qu\'un adversaire ou un ennemi, l\'autre peut être vu comme un révélateur. Ce qui nous allergise chez lui est le signal d\'une qualité naturelle — "être '+N+'" — dont nous nous sommes privés l\'accès à notre insu. L\'autre, par son comportement, nous indique précisément là où se trouve notre propre liberté. Et vice-et-versa : nous sommes pour l\'autre ce même révélateur. Observer cette dynamique sans jugement ouvre déjà une première porte vers plus de liberté.\n\n'
+    +'§VOTRE CHEMIN DE LIBÉRATION\n'
     +(approfondie
       ?'3-4 phrases inspirantes et incarnées. Inviter à quitter l\'autoroute réflexe pour le chemin de conscience. Mots : liberté, autorité (être auteur de...), souveraineté, libre-arbitre. Utiliser "indications" ou "informations" jamais "cartographie". Étayer, montrer la transformation possible, donner fortement envie d\'aller plus loin.'
       :'2-3 phrases inspirantes. Inviter à quitter l\'autoroute réflexe pour le chemin de conscience. Liberté, autorité, souveraineté. Utiliser "indications" ou "informations" jamais "cartographie". Donner envie d\'aller plus loin.');
