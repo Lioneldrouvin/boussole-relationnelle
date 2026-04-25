@@ -241,27 +241,36 @@
       <!-- OUEST — défaut que vous vous reconnaissez -->
       <path class="qzone" d="M0,0 L-105,105 A148,148 0 0,1 -105,-105 Z" fill="#FAEEDA" stroke="white" stroke-width="2" onclick="chooseAndStart('O')" style="cursor:pointer;"/>
 
-      <!-- Grandes flèches cardinales bicolores qui dépassent légèrement du cercle -->
-      <g pointer-events="none">
-        <!-- Nord — dépasse à 160, base à 36 -->
-        <polygon points="0,-160 -8,-36 0,-36" fill="#888780" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
-        <polygon points="0,-160 0,-36 8,-36" fill="white" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
+      <!-- Rose des vents en filigrane -->
+      <g opacity="0.10" pointer-events="none">
+        <!-- Nord -->
+        <polygon points="0,-160 -8,-36 0,-36" fill="#1D9E75"/>
+        <polygon points="0,-160 0,-36 8,-36" fill="#1D9E75"/>
         <!-- Sud -->
-        <polygon points="0,160 0,36 -8,36" fill="#888780" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
-        <polygon points="0,160 8,36 0,36" fill="white" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
+        <polygon points="0,160 0,36 -8,36" fill="#1D9E75"/>
+        <polygon points="0,160 8,36 0,36" fill="#1D9E75"/>
         <!-- Est -->
-        <polygon points="160,0 36,0 36,-8" fill="#888780" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
-        <polygon points="160,0 36,8 36,0" fill="white" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
+        <polygon points="160,0 36,0 36,-8" fill="#1D9E75"/>
+        <polygon points="160,0 36,8 36,0" fill="#1D9E75"/>
         <!-- Ouest -->
-        <polygon points="-160,0 -36,-8 -36,0" fill="#888780" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
-        <polygon points="-160,0 -36,0 -36,8" fill="white" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
+        <polygon points="-160,0 -36,-8 -36,0" fill="#1D9E75"/>
+        <polygon points="-160,0 -36,0 -36,8" fill="#1D9E75"/>
+        <!-- Petites branches diagonales -->
+        <polygon points="80,-80 56,-56 36,-44" fill="#1D9E75"/>
+        <polygon points="80,-80 44,-36 56,-56" fill="#1D9E75"/>
+        <polygon points="-80,-80 -44,-36 -56,-56" fill="#1D9E75"/>
+        <polygon points="-80,-80 -56,-56 -36,-44" fill="#1D9E75"/>
+        <polygon points="80,80 44,36 56,56" fill="#1D9E75"/>
+        <polygon points="80,80 56,56 36,44" fill="#1D9E75"/>
+        <polygon points="-80,80 -56,56 -44,36" fill="#1D9E75"/>
+        <polygon points="-80,80 -36,44 -56,56" fill="#1D9E75"/>
       </g>
 
-      <!-- Lettres cardinales à l'extrémité des flèches -->
-      <text x="0" y="-152" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#085041" pointer-events="none">N</text>
-      <text x="0" y="152" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#085041" pointer-events="none">S</text>
-      <text x="152" y="0" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#085041" pointer-events="none">E</text>
-      <text x="-152" y="0" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#085041" pointer-events="none">O</text>
+      <!-- Lettres cardinales à la pointe des flèches -->
+      <text x="0" y="-163" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#085041" pointer-events="none">N</text>
+      <text x="0" y="163" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#085041" pointer-events="none">S</text>
+      <text x="163" y="0" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#085041" pointer-events="none">E</text>
+      <text x="-163" y="0" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#085041" pointer-events="none">O</text>
 
       <!-- Textes dans les quartiers — NORD -->
       <text onclick="chooseAndStart('N')" style="cursor:pointer;" x="0" y="-90" text-anchor="middle" font-size="11" font-weight="600" fill="#085041" pointer-events="all">une qualité que</text>
