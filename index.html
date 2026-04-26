@@ -211,7 +211,7 @@
     </div>
     <div class="nav">
       <button class="btn-back" onclick="show('s0')">← Retour</button>
-      <button class="btn btn-g" onclick="show('s2')">Continuer &rarr;</button>
+      <button class="btn btn-g" onclick="show('s2');window.scrollTo({top:0,behavior:'smooth'});">Continuer &rarr;</button>
     </div>
   </div>
 
@@ -630,19 +630,20 @@ function onWords(){
 }
 
 function fetchSynoWords(word){
-  // Utiliser Datamuse avec paramètres français + ML
-  // Utiliser Dicolink (API française) avec fallback Datamuse ql=fr
-  fetch('https://api.datamuse.com/words?ml='+encodeURIComponent(word)+'&ql=fr&topics=fr&max=12')
-    .then(function(r){return r.json();})
-    .then(function(d){
-      // Filtrer uniquement les mots qui semblent français (contiennent des accents ou sont courants)
-      var filtered=(d||[]).filter(function(x){
-        // Garder mots avec caractères français ou sans chiffres/symboles anglais
-        return x.word && /^[a-zA-ZÀ-ÿ\-' ]+$/.test(x.word) && x.word.length>2;
-      });
-      synoWords=filtered.length?filtered:(d||[]);
-      if(synoVisible) renderSyno();
-    }).catch(function(){synoWords=[];});
+  var isExcesCtx=META[state.order[state.step]].color==='OE';
+  var contexte=isExcesCtx?'excès, défaut, comportement excessif':'qualité, vertu, attitude positive';
+  var synoPrompt='Donne-moi 8 synonymes ou mots proches du mot "'+word+'" en français, dans le contexte de : '+contexte+'. Réponds UNIQUEMENT avec les 8 mots séparés par des virgules, sans explication, sans numérotation, sans ponctuation finale.';
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:80,messages:[{role:'user',content:synoPrompt}]})
+  }).then(function(r){return r.json();})
+  .then(function(d){
+    var text=d.content&&d.content[0]?d.content[0].text:'';
+    var mots=text.split(',').map(function(w){return {word:w.trim()};}).filter(function(x){return x.word.length>1;});
+    synoWords=mots;
+    if(synoVisible) renderSyno();
+  }).catch(function(){synoWords=[];});
 }
 
 function toggleSyno(){
@@ -843,7 +844,7 @@ function buildPrompt(approfondie){
     +'\nStructure : titres précédés de §, prose, vouvoiement, aucune liste.\n\n';
 
   var rubriques='§LE MÉCANISME EN JEU\n'
-    +'La peur de ne pas être suffisamment "être '+S+'" pousse, à notre insu, vers "être '+O+'" — piège se faisant passer pour un refuge. Le cerveau automatise ce passage inconsciemment, confondant la qualité et son excès par réflexe de survie. Ce même mécanisme opère côté Nord : le cerveau confond, à notre insu, "être '+N+'" avec "être '+E+'", rendant "être '+N+'" inaccessible.\n\n'
+    +'La peur de ne pas suffisamment être "être '+S+'" pousse, à notre insu, vers "être '+O+'" — piège se faisant passer pour un refuge. Le cerveau automatise ce passage inconsciemment, confondant la qualité et son excès par réflexe de survie. Ce même mécanisme opère côté Nord : le cerveau confond, à notre insu, "être '+N+'" avec "être '+E+'", rendant "être '+N+'" inaccessible.\n\n'
     +'§LA MISE EN ALLIANCE AU CENTRE\n'
     +'Être "'+S+'" et être "'+N+'" ne s\'opposent pas — ils se potentialisent. Leur alliance est une plénitude, et la réponse au manque intérieur qui alimente le stress.\n\n'
     +'§LES DEUX DÉCONFUSIONS LIBÉRATRICES\n'
@@ -851,7 +852,7 @@ function buildPrompt(approfondie){
     +'Avant d\'aller plus loin, prenez un moment pour vous poser. Sentez vos deux pieds au contact du sol. Respirez doucement, sans rien forcer. Portez votre attention sur votre poitrine — sentez-la se soulever et s\'abaisser. Descendez votre attention vers le ventre — sentez-le, relâchez-le. Prenez conscience de votre colonne vertébrale — de sa base jusqu\'au sommet de votre tête. Laissez-vous simplement être là, présent·e.\n\n'
     +'Première déconfusion : lisez "être '+N+'" — ('+Nw+'). Sentez ce que cela évoque dans le corps, dans le cœur. Puis lisez "être '+E+'" — ('+Ew+'). Remarquez : ce n\'est pas la même sensation. Accueillez ce qui se présente — s\'il y a un jugement, constatez-le sans y entrer. Être "'+N+'", ce n\'est pas être "'+E+'".\n\n'
     +'Deuxième déconfusion : lisez "être '+S+'" — ('+Sw+'). Sentez ce que cette qualité nourrit en vous. Puis lisez "être '+O+'" — ('+Ow+'). Constatez la différence dans le corps. Être "'+S+'", ce n\'est pas être "'+O+'".\n\n'
-    +'Ces distinctions, ressenties et intégrées, permettent de ne plus basculer à son insu dans le mécanisme de la confusion, d\'être de moins en moins envahi par la sensation d\'être dans le flou, le brouillard, et de vivre avec de plus en plus de clarté et de lucidité. Il est normal, pour certaines personnes et selon les moments, que ces distinctions puissent sembler difficiles à ressentir dans le corps — c\'est aussi une information précieuse. Se poser, ce n\'est pas s\'immobiliser. Ralentir, ce n\'est pas disparaître. C\'est précisément là que se trouve le passage vers plus de liberté et de souveraineté, plus de libre-arbitre.\n\n'
+    +'S'informer — ré-informer son cerveau que la qualité et son excès ne sont pas la même chose — est un acte de souveraineté. C'est une décision consciente de reprendre autorité sur un mécanisme automatique : être auteur de soi-même là où le cerveau fonctionnait seul, à notre insu. Ces distinctions, ressenties et intégrées, permettent de ne plus basculer à son insu dans le mécanisme de la confusion, d\'être de moins en moins envahi par la sensation d\'être dans le flou, le brouillard, et de vivre avec de plus en plus de clarté et de lucidité. Il est normal, pour certaines personnes et selon les moments, que ces distinctions puissent sembler difficiles à ressentir dans le corps — c\'est aussi une information précieuse. Se poser, ce n\'est pas s\'immobiliser. Ralentir, ce n\'est pas disparaître. C\'est précisément là que se trouve le passage vers plus de liberté et de souveraineté, plus de libre-arbitre.\n\n'
     +'§L\'ALLERGIE-DÉPENDANCE\n'
     +'Dans certains contextes, la peur d\'être perçu comme trop "être '+N+'" a conduit, inconsciemment, à se l\'interdire. Lorsque cette sensation allergique surgit, le cerveau — dont le rôle est de nous faire vivre le plus de bien-être ou le moins de mal-être possible — opère un basculement instantané, en un claquement de doigt, vers "être '+O+'". Entre deux zones d\'inconfort, le cerveau choisit le moindre mal : il fuit la zone insupportable de l\'allergie pour se réfugier dans la zone d\'inconfort supportable du piège. C\'est en cela que le piège est un refuge.\n\n'
     +'§LA COMPENSATION INCONSCIENTE\n'
