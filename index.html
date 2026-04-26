@@ -115,6 +115,9 @@
     .ai-titre:first-child{margin-top:0;border-top:none;padding-top:0;}
     .ai-mot{font-weight:700;color:var(--gdp);font-style:italic;}
     .ai-note{font-size:11px;color:var(--ts);font-style:italic;line-height:1.5;margin-bottom:.75rem;}
+    .approfondie-invite{background:linear-gradient(135deg,var(--gol),#fff8e6);border:1.5px solid var(--go);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-top:1.25rem;text-align:center;}
+    .approfondie-invite-title{font-size:14px;font-weight:700;color:var(--go);margin-bottom:.4rem;}
+    .approfondie-invite-text{font-size:13px;color:var(--ts);line-height:1.65;margin-bottom:.875rem;}
     /* Besoins dans résultat */
     .besoin-box{background:linear-gradient(135deg,var(--gl),var(--gp));border-radius:var(--r);padding:.875rem;margin:.875rem 0;border:.5px solid var(--gm);}
     .besoin-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gdp);margin-bottom:.4rem;}
@@ -124,8 +127,8 @@
     .action-btns{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem;align-items:center;}
     .pdf-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--g);background:none;border:1px solid var(--gm);border-radius:var(--r);padding:6px 14px;cursor:pointer;}
     .pdf-btn:hover{background:var(--gl);}
-    .approfondie-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--go);background:none;border:1px solid var(--go);border-radius:var(--r);padding:6px 14px;cursor:pointer;}
-    .approfondie-btn:hover{background:var(--gol);}
+    .approfondie-btn{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:600;color:var(--go);background:var(--gol);border:2px solid var(--go);border-radius:var(--r);padding:10px 22px;cursor:pointer;box-shadow:0 2px 8px rgba(201,168,76,.2);}
+    .approfondie-btn:hover{background:#fff3cc;box-shadow:0 4px 12px rgba(201,168,76,.3);}
     .site-back-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--ts);background:none;border:1px solid var(--bd);border-radius:var(--r);padding:6px 14px;cursor:pointer;}
     .site-back-btn:hover{border-color:var(--g);color:var(--g);}
     /* CTA finaux */
@@ -466,6 +469,12 @@
       <button class="approfondie-btn" id="btn-approfondie" onclick="switchToApprofondie()" style="display:none;">🔍 Synthèse Approfondie — 10€</button>
       <button class="site-back-btn" onclick="window.open('https://www.lioneldrouvin.com/coaching-relationnel/boussole-relationnelle-et-qualites-naturelles','_blank')">← Retour au site</button>
     </div>
+    <div class="approfondie-invite no-print" id="approfondie-invite" style="display:none;">
+      <div class="approfondie-invite-title">🔍 Envie d'aller plus loin ?</div>
+      <div class="approfondie-invite-text">Votre Synthèse Essentielle vous donne les grandes lignes de ce qui se joue. La <strong>Synthèse Approfondie</strong> entre dans le détail du mécanisme, vous apporte des indications précieuses pour amorcer votre libération, et vous offre des éléments de compréhension pour avancer encore plus concrètement.</div>
+      <button class="approfondie-btn" onclick="switchToApprofondie()" style="display:inline-flex;">🔍 Accéder à la Synthèse Approfondie — 10€</button>
+      <div style="font-size:11px;color:var(--go);margin-top:.5rem;">(déduits de votre prochaine séance « Accompagnement Boussole »)</div>
+    </div>
 
     <hr>
     <div class="cta-wrap">
@@ -755,6 +764,8 @@ function buildResult(){
   var isApprofondie=state.synthType==='approfondie';
   document.getElementById('synth-label').textContent=isApprofondie?'Synthèse Approfondie':'Synthèse Essentielle';
   document.getElementById('btn-approfondie').style.display=isApprofondie?'none':'inline-flex';
+  var inv=document.getElementById('approfondie-invite');
+  if(inv) inv.style.display=isApprofondie?'none':'block';
   document.getElementById('besoin-box').style.display='block';
   show('s-result');
   submitFormspree();
@@ -865,7 +876,7 @@ function buildPrompt(approfondie){
       :'2-3 phrases inspirantes. Inviter à quitter l\'autoroute réflexe pour le chemin de conscience. Liberté, autorité, souveraineté. Utiliser "indications" ou "informations" jamais "cartographie". Donner envie d\'aller plus loin.');
 
   var detail=approfondie?' Chaque rubrique : 4-5 phrases. Approfondi, riche.'
-    :' Chaque rubrique : 2-3 phrases maximum. Concis, essentiel.';
+    :' Chaque rubrique : 2 phrases maximum. Langage simple, direct, accessible à tous. Évitez le jargon. Donnez une image concrète ou une métaphore simple quand c\'est utile. Vouvoiement. Commencez toujours par une phrase courte et percutante qui nomme clairement la réalité. Terminez chaque rubrique par une phrase qui ouvre, qui invite à se questionner — sans expliquer davantage. Pour la rubrique VOTRE CHEMIN DE LIBÉRATION, terminez par une phrase qui donne très envie d\'aller plus loin dans la Synthèse Approfondie, sans la nommer explicitement.';
 
   return base+detail+'\n\n'+rubriques;
 }
@@ -902,6 +913,8 @@ function switchToApprofondie(){
   state.synthType='approfondie';
   document.getElementById('synth-label').textContent='Synthèse Approfondie';
   document.getElementById('btn-approfondie').style.display='none';
+  var inv2=document.getElementById('approfondie-invite');
+  if(inv2) inv2.style.display='none';
   document.getElementById('ai-text').innerHTML='<span class="loading-dots">Génération en cours</span>';
   generateAI(true);
 }
