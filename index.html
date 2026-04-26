@@ -464,25 +464,23 @@
     <div class="ai-box" id="ai-text"><span class="loading-dots">Analyse en cours</span></div>
 
     <!-- Boutons action sous synthèse -->
+    <div class="reflexion-wrap" style="background:var(--gl);border-radius:var(--rl);padding:1rem;margin:.875rem 0;border:.5px solid var(--gm);">
+      <div style="font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.5rem;">Quelle difficulté ou quel point de progression avez-vous mis en lumière grâce à votre Boussole ?</div>
+      <textarea class="cta-reflexion" id="reflexion" placeholder="Quelques mots librement... (facultatif)"></textarea>
+    </div>
     <div class="action-btns">
       <button class="pdf-btn" onclick="downloadPDF()">⬇ Télécharger en PDF</button>
-      <button class="approfondie-btn" id="btn-approfondie" onclick="switchToApprofondie()" style="display:none;">🔍 Synthèse Approfondie — 10€</button>
+      <div id="approfondie-wrap" style="display:none;text-align:center;">
+        <button class="approfondie-btn" id="btn-approfondie" onclick="switchToApprofondie()">🔍 Accéder à la Synthèse Approfondie — 10€</button>
+        <div style="font-size:11px;color:var(--go);margin-top:.4rem;">(déduits de votre prochaine séance « Accompagnement Boussole »)</div>
+      </div>
       <button class="site-back-btn" onclick="window.open('https://www.lioneldrouvin.com/coaching-relationnel/boussole-relationnelle-et-qualites-naturelles','_blank')">← Retour au site</button>
     </div>
-    <div class="approfondie-invite no-print" id="approfondie-invite" style="display:none;">
-      <div class="approfondie-invite-title">🔍 Envie d'aller plus loin ?</div>
-      <div class="approfondie-invite-text">Votre Synthèse Essentielle vous donne les grandes lignes de ce qui se joue. La <strong>Synthèse Approfondie</strong> entre dans le détail du mécanisme, vous apporte des indications précieuses pour amorcer votre libération, et vous offre des éléments de compréhension pour avancer encore plus concrètement.</div>
-      <button class="approfondie-btn" onclick="switchToApprofondie()" style="display:inline-flex;">🔍 Accéder à la Synthèse Approfondie — 10€</button>
-      <div style="font-size:11px;color:var(--go);margin-top:.5rem;">(déduits de votre prochaine séance « Accompagnement Boussole »)</div>
-    </div>
+
 
     <hr>
     <div class="cta-wrap">
-      <div class="cta-q">
-        Quelle difficulté ou quel point de progression avez-vous mis en lumière grâce à votre Boussole ?
-        <textarea class="cta-reflexion" id="reflexion" placeholder="Quelques mots librement... (facultatif)"></textarea>
-      </div>
-      <p class="sub" style="text-align:center;margin-bottom:.875rem;">Et là, maintenant — qu'avez-vous envie de faire de ce que vous venez de voir ?</p>
+<p class="sub" style="text-align:center;margin-bottom:.875rem;">Et là, maintenant — qu'avez-vous envie de faire de ce que vous venez de voir ?</p>
 
       <div class="cta-opt">
         <div class="cta-tag">⚡ Pour aller plus loin dès maintenant</div>
@@ -619,7 +617,7 @@ function getEntryQ(k){
 function buildTransQ(from,to,w){
   var b='<strong>'+w+'</strong>';
   var toExcess=(from==='S'&&to==='O')||(from==='N'&&to==='E')||(from==='O'&&to==='E')||(from==='E'&&to==='O');
-  if(toExcess) return "Imaginez quelqu'un cent mille fois trop "+b+". Quelqu'un qui se juge de ne pas être suffisamment "+b+" — et qui veut absolument le prouver au monde et à lui-même. Quels mots décrivent cet excès ?";
+  if(toExcess) return "Visualisez quelqu'un qui se juge de ne pas être suffisamment "+b+" — et qui se sent donc obligé de prouver à lui-même et au monde qu'il a cette qualité. Il va alors avoir tendance à être cent mille fois trop "+b+". Quels mots décrivent cet excès ?";
   return "Comment qualifiez-vous une personne qui n'est pas du tout dans l'excès d'être "+b+" ? Quels mots décrivent la qualité à l'opposé ?";
 }
 
@@ -763,9 +761,8 @@ function buildResult(){
   if(prenom) document.getElementById('result-title').textContent='Boussole de '+prenom;
   var isApprofondie=state.synthType==='approfondie';
   document.getElementById('synth-label').textContent=isApprofondie?'Synthèse Approfondie':'Synthèse Essentielle';
-  document.getElementById('btn-approfondie').style.display=isApprofondie?'none':'inline-flex';
-  var inv=document.getElementById('approfondie-invite');
-  if(inv) inv.style.display=isApprofondie?'none':'block';
+  var aw=document.getElementById('approfondie-wrap'); if(aw) aw.style.display=isApprofondie?'none':'block';
+  
   document.getElementById('besoin-box').style.display='block';
   show('s-result');
   submitFormspree();
@@ -863,13 +860,13 @@ function buildPrompt(approfondie){
     +'Avant d\'aller plus loin, prenez un moment pour vous poser. Sentez vos deux pieds au contact du sol. Respirez doucement, sans rien forcer. Portez votre attention sur votre poitrine — sentez-la se soulever et s\'abaisser. Descendez votre attention vers le ventre — sentez-le, relâchez-le. Prenez conscience de votre colonne vertébrale — de sa base jusqu\'au sommet de votre tête. Laissez-vous simplement être là, présent·e.\n\n'
     +'Première déconfusion : lisez "être '+N+'" — ('+Nw+'). Sentez ce que cela évoque dans le corps, dans le cœur. Puis lisez "être '+E+'" — ('+Ew+'). Remarquez : ce n\'est pas la même sensation. Accueillez ce qui se présente — s\'il y a un jugement, constatez-le sans y entrer. Être "'+N+'", ce n\'est pas être "'+E+'".\n\n'
     +'Deuxième déconfusion : lisez "être '+S+'" — ('+Sw+'). Sentez ce que cette qualité nourrit en vous. Puis lisez "être '+O+'" — ('+Ow+'). Constatez la différence dans le corps. Être "'+S+'", ce n\'est pas être "'+O+'".\n\n'
-    +'S\'informer — ré-informer son cerveau que la qualité et son excès ne sont pas la même chose — est un acte de souveraineté. C\'est une décision consciente de reprendre autorité sur un mécanisme automatique : être auteur de soi-même là où le cerveau fonctionnait seul, à notre insu. Ces distinctions, ressenties et intégrées, permettent de ne plus basculer à son insu dans le mécanisme de la confusion, d\'être de moins en moins envahi par la sensation d\'être dans le flou, le brouillard, et de vivre avec de plus en plus de clarté et de lucidité. Il est normal, pour certaines personnes et selon les moments, que ces distinctions puissent sembler difficiles à ressentir dans le corps — c\'est aussi une information précieuse. Se poser, ce n\'est pas s\'immobiliser. Ralentir, ce n\'est pas disparaître. C\'est précisément là que se trouve le passage vers plus de liberté et de souveraineté, plus de libre-arbitre.\n\n'
+    +'S\'informer — ré-informer son cerveau que la qualité et son excès ne sont pas la même chose — est un acte de souveraineté. C\'est une décision consciente de reprendre autorité sur un mécanisme automatique : être auteur de soi-même là où le cerveau fonctionnait seul, à votre insu. Ces distinctions, ressenties et intégrées, permettent de ne plus basculer à son insu dans le mécanisme de la confusion, d\'être de moins en moins envahi par la sensation d\'être dans le flou, le brouillard, et de vivre avec de plus en plus de clarté et de lucidité. Il est normal, pour certaines personnes et selon les moments, que ces distinctions puissent sembler difficiles à ressentir dans le corps — c\'est aussi une information précieuse. Se poser, ce n\'est pas s\'immobiliser. Ralentir, ce n\'est pas disparaître. C\'est précisément là que se trouve le passage vers plus de liberté et de souveraineté, plus de libre-arbitre.\n\n'
     +'§L\'ALLERGIE-DÉPENDANCE\n'
     +'Dans certains contextes, la peur d\'être perçu comme trop "être '+N+'" a conduit, inconsciemment, à se l\'interdire. Lorsque cette sensation allergique surgit, le cerveau — dont le rôle est de nous faire vivre le plus de bien-être ou le moins de mal-être possible — opère un basculement instantané, en un claquement de doigt, vers "être '+O+'". Entre deux zones d\'inconfort, le cerveau choisit le moindre mal : il fuit la zone insupportable de l\'allergie pour se réfugier dans la zone d\'inconfort supportable du piège. C\'est en cela que le piège est un refuge.\n\n'
     +'§LA COMPENSATION INCONSCIENTE\n'
     +'Se couper, à son insu, de "être '+N+'" crée un manque comblé par des besoins-compensatoires — au détriment de soi et des autres. "Être '+S+'" et "être '+N+'" sont des points-ressources ; "être '+O+'" et "être '+E+'" sont des points de vigilance.\n\n'
     +'§LA DYNAMIQUE RELATIONNELLE\n'
-    +'Concrètement, quand une relation se tend, c\'est souvent parce que "être '+O+'" est précisément ce qui allergise l\'autre. Vice-et-versa, le piège-refuge de l\'autre — à savoir "être '+E+'" — est ce qui a tendance à mettre en réaction épidermique, en allergie. Cet engrenage — progressif ou soudain — est présent entre deux personnes comme entre deux collectifs.\n\nMais il y a une autre façon de regarder ce qui se joue : plutôt qu\'un adversaire ou un ennemi, l\'autre peut être vu comme un révélateur. Ce qui nous allergise chez lui est le signal d\'une qualité naturelle — "être '+N+'" — dont nous nous sommes privés l\'accès à notre insu. L\'autre, par son comportement, nous indique précisément là où se trouve notre propre liberté. Et vice-et-versa : nous sommes pour l\'autre ce même révélateur. Observer cette dynamique sans jugement ouvre déjà une première porte vers plus de liberté.\n\n'
+    +'Concrètement, quand une relation se tend pour vous, c\'est peut-être parce que vous détectez chez l\'autre un comportement qui vous met en alerte, en allergie — comme être "'+E+'" ('+Ew+'). Votre tendance alors est de vous réfugier dans votre piège : être "'+O+'" ('+Ow+'). C\'est justement ce piège qui met en allergie l\'autre dans la relation. Ainsi mis en réaction épidermique, l\'autre va avoir tendance à se réfugier dans son propre piège. Au plus l\'un se réfugie dans le sien, au plus l\'autre est allergisé et plonge dans le sien. C\'est une spirale qui amène de plus en plus de tension.\n\nMais il y a une autre façon de regarder ce qui se joue : plutôt qu\'un adversaire ou un ennemi, l\'autre peut être vu comme un révélateur. Ce qui vous allergise chez lui est le signal d\'une qualité naturelle — "être '+N+'" — dont vous vous êtes privé l\'accès à votre insu. L\'autre, par son comportement, vous indique précisément là où se trouve votre propre liberté. Et vice-et-versa : vous êtes pour l\'autre ce même révélateur. Observer cette dynamique sans jugement ouvre déjà une première porte vers plus de liberté.\n\n'
     +'§VOTRE CHEMIN DE LIBÉRATION\n'
     +(approfondie
       ?'3-4 phrases inspirantes et incarnées. Inviter à quitter l\'autoroute réflexe pour le chemin de conscience. Mots : liberté, autorité (être auteur de...), souveraineté, libre-arbitre. Utiliser "indications" ou "informations" jamais "cartographie". Étayer, montrer la transformation possible, donner fortement envie d\'aller plus loin.'
@@ -912,9 +909,7 @@ function generateAI(approfondie){
 function switchToApprofondie(){
   state.synthType='approfondie';
   document.getElementById('synth-label').textContent='Synthèse Approfondie';
-  document.getElementById('btn-approfondie').style.display='none';
-  var inv2=document.getElementById('approfondie-invite');
-  if(inv2) inv2.style.display='none';
+  var aw2=document.getElementById('approfondie-wrap'); if(aw2) aw2.style.display='none';
   document.getElementById('ai-text').innerHTML='<span class="loading-dots">Génération en cours</span>';
   generateAI(true);
 }
@@ -974,6 +969,20 @@ function downloadPDF(){
       }
     });
 
+    // Réflexion de la personne
+    var reflexionEl2=document.getElementById('reflexion');
+    var reflexionVal2=reflexionEl2&&reflexionEl2.value.trim()?reflexionEl2.value.trim():'';
+    if(reflexionVal2){
+      y+=4;
+      if(y>270){doc.addPage();y=margin;}
+      doc.setFillColor(232,248,243);doc.rect(margin,y,contentW,6,'F');
+      doc.setFontSize(8);doc.setTextColor(8,80,65);doc.setFont(undefined,'bold');
+      doc.text('CE QUE CETTE BOUSSOLE A MIS EN LUMIÈRE',margin+2,y+4);y+=8;
+      doc.setFontSize(10);doc.setTextColor(26,26,26);doc.setFont(undefined,'normal');
+      var refLines=doc.splitTextToSize(reflexionVal2,contentW);
+      refLines.forEach(function(rl){if(y>270){doc.addPage();y=margin;}doc.text(rl,margin,y);y+=lineH;});
+      y+=4;
+    }
     // Pied de page
     y+=4;
     if(y>270){doc.addPage();y=margin;}
