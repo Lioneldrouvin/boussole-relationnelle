@@ -580,7 +580,7 @@ function showCase(){
   var isExcess=(key==='O'||key==='E');
   document.getElementById('words-lbl').textContent=isExcess
     ?'Notez 3 à 5 mots qualificatifs — depuis ce que vous ressentez (séparés par des virgules)'
-    :'Notez 3 à 5 qualificatifs — adjectifs, participes passés ou présents — qui donnent du corps à cette qualité (séparés par des virgules)';
+    :'Quels mots traduisent cette qualité ? Notez 3 à 5 qualificatifs — adjectifs, participes passés ou présents (séparés par des virgules)';
   // Restaurer données existantes
   var existing=state.data[key];
   if(existing){
@@ -839,43 +839,50 @@ function buildPrompt(approfondie){
   var Ow=d.O?d.O.words.filter(function(w){return w.toLowerCase()!==O.toLowerCase();}).join(', '):'?';
   var Nw=d.N?d.N.words.filter(function(w){return w.toLowerCase()!==N.toLowerCase();}).join(', '):'?';
   var Ew=d.E?d.E.words.filter(function(w){return w.toLowerCase()!==E.toLowerCase();}).join(', '):'?';
-  var intention=document.getElementById('intention-text')?document.getElementById('intention-text').value.trim():'';
+  var intentionEl=document.getElementById('intention-text');
+  var intention=intentionEl?intentionEl.value.trim():'';
   var prenom=document.getElementById('id-prenom').value.trim();
 
-  var base='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie. '
-    +'Ne jamais écrire "être être". '
-    +'Mentionne "être '+S+'", "être '+O+'", "être '+N+'", "être '+E+'" à chaque mention de ces mots. '
-    +'Ne jamais réécrire le mot retenu à côté de ses mots associés dans les rubriques. '
-    +(prenom?'Commence la synthèse par le prénom "'+prenom+'" seul, sans autre mot avant lui — juste "'+prenom+'" puis une virgule ou un point, puis la première phrase. Réutilise le prénom une deuxième fois uniquement au début du paragraphe §VOTRE CHEMIN DE LIBÉRATION. Nulle part ailleurs dans la synthèse. Ne jamais mettre le prénom en dernier mot d\'une phrase.':'')
-    +'\n\nBoussole :\n- Sud qualité à stabiliser : "être '+S+'" autres mots : '+Sw+'\n- Ouest piège-refuge : "être '+O+'" autres mots : '+Ow+'\n- Nord qualité à s\'autoriser : "être '+N+'" autres mots : '+Nw+'\n- Est allergie-dépendance : "être '+E+'" autres mots : '+Ew+'\n'
-    +(intention?'- Intention : "'+intention+'"\n':'')
-    +'\nStructure : titres précédés de §, prose, vouvoiement, aucune liste.\n\n';
+  var niveauDetail=approfondie
+    ?'Chaque rubrique : 4 à 5 phrases. Langage précis et riche. Donnez des exemples concrets. Vouvoiement.'
+    :'Chaque rubrique : 2 phrases maximum. Langage simple, direct, accessible à tous, sans jargon. Commencez par une phrase courte et percutante. Terminez par une phrase qui invite à se questionner. Vouvoiement.';
 
-  var rubriques='§LE MÉCANISME EN JEU\n'
-    +'La peur de ne pas suffisamment "être '+S+'" pousse, à notre insu, vers "être '+O+'" — piège se faisant passer pour un refuge. Le cerveau automatise ce passage inconsciemment, confondant la qualité et son excès par réflexe de survie. Ce même mécanisme opère côté Nord : le cerveau confond, à notre insu, "être '+N+'" avec "être '+E+'", rendant "être '+N+'" inaccessible.\n\n'
+  var prompt='Tu es un accompagnateur bienveillant en coaching relationnel.\n'
+    +niveauDetail+'\n'
+    +'Ne jamais écrire deux fois le mot être à la suite dans une phrase.\n'
+    +'Mentionner "être '+S+'", "être '+O+'", "être '+N+'", "être '+E+'" à chaque mention de ces mots.\n'
+    +'Ne pas réécrire le mot retenu à côté de ses mots associés.\n'
+    +(prenom?'Commence par le prénom "'+prenom+'" seul en premier mot. Utilise-le une deuxième fois uniquement au début de §VOTRE CHEMIN DE LIBÉRATION. Jamais en dernier mot d\'une phrase.\n':'')
+    +'\nBoussole :\n'
+    +'- Qualité à stabiliser (Sud) : être "'+S+'" — mots : '+Sw+'\n'
+    +'- Piège-refuge (Ouest) : être "'+O+'" — mots : '+Ow+'\n'
+    +'- Qualité à s\'autoriser (Nord) : être "'+N+'" — mots : '+Nw+'\n'
+    +'- Allergie-dépendance (Est) : être "'+E+'" — mots : '+Ew+'\n'
+    +(intention?'- Intention posée : "'+intention+'"\n':'')
+    +'\nRédige une synthèse structurée en prose justifiée, avec ces 7 titres précédés de §, dans cet ordre. Aucune liste ni tiret.\n\n'
+    +'§LE MÉCANISME EN JEU\n'
+    +'Expliquer : la peur de ne pas suffisamment être "'+S+'" pousse, à votre insu, vers être "'+O+'". Le cerveau automatise ce passage inconsciemment. Ce même mécanisme opère côté Nord entre être "'+N+'" et être "'+E+'".\n\n'
     +'§LA MISE EN ALLIANCE AU CENTRE\n'
-    +'Être "'+S+'" et être "'+N+'" ne s\'opposent pas — ils se potentialisent. Leur alliance est une plénitude, et la réponse au manque intérieur qui alimente le stress.\n\n'
+    +'Expliquer que être "'+S+'" et être "'+N+'" ne s\'opposent pas — ils se potentialisent. Leur alliance est une plénitude et la réponse au manque intérieur.\n\n'
     +'§LES DEUX DÉCONFUSIONS LIBÉRATRICES\n'
-    +'Cette étape est essentielle dans le processus de libération de l\'emprise des conditionnements — ceux hérités et ceux engrammés dès l\'enfance, puis confirmés au fil du temps.\n\n'
-    +'Avant d\'aller plus loin, prenez un moment pour vous poser. Sentez vos deux pieds au contact du sol. Respirez doucement, sans rien forcer. Portez votre attention sur votre poitrine — sentez-la se soulever et s\'abaisser. Descendez votre attention vers le ventre — sentez-le, relâchez-le. Prenez conscience de votre colonne vertébrale — de sa base jusqu\'au sommet de votre tête. Laissez-vous simplement être là, présent·e.\n\n'
-    +'Première déconfusion : lisez "être '+N+'" — ('+Nw+'). Sentez ce que cela évoque dans le corps, dans le cœur. Puis lisez "être '+E+'" — ('+Ew+'). Remarquez : ce n\'est pas la même sensation. Accueillez ce qui se présente — s\'il y a un jugement, constatez-le sans y entrer. Être "'+N+'", ce n\'est pas être "'+E+'".\n\n'
-    +'Deuxième déconfusion : lisez "être '+S+'" — ('+Sw+'). Sentez ce que cette qualité nourrit en vous. Puis lisez "être '+O+'" — ('+Ow+'). Constatez la différence dans le corps. Être "'+S+'", ce n\'est pas être "'+O+'".\n\n'
-    +'S\'informer — ré-informer son cerveau que la qualité et son excès ne sont pas la même chose — est un acte de souveraineté. C\'est une décision consciente de reprendre autorité sur un mécanisme automatique : être auteur de soi-même là où le cerveau fonctionnait seul, à votre insu. Ces distinctions, ressenties et intégrées, permettent de ne plus basculer à son insu dans le mécanisme de la confusion, d\'être de moins en moins envahi par la sensation d\'être dans le flou, le brouillard, et de vivre avec de plus en plus de clarté et de lucidité. Il est normal, pour certaines personnes et selon les moments, que ces distinctions puissent sembler difficiles à ressentir dans le corps — c\'est aussi une information précieuse. Se poser, ce n\'est pas s\'immobiliser. Ralentir, ce n\'est pas disparaître. C\'est précisément là que se trouve le passage vers plus de liberté et de souveraineté, plus de libre-arbitre.\n\n'
+    +'Commencer par : Cette étape est essentielle dans le processus de libération de l\'emprise des conditionnements hérités dès l\'enfance.\n'
+    +'Inclure l\'invitation corporelle : pieds au sol, respiration, poitrine, ventre, colonne.\n'
+    +'Première déconfusion entre être "'+N+'" ('+Nw+') et être "'+E+'" ('+Ew+').\n'
+    +'Deuxième déconfusion entre être "'+S+'" ('+Sw+') et être "'+O+'" ('+Ow+').\n'
+    +'Conclure par : S\'informer — ré-informer son cerveau — est un acte de souveraineté. Mention de ne plus être dans le flou, clarté, libre-arbitre.\n\n'
     +'§L\'ALLERGIE-DÉPENDANCE\n'
-    +'Dans certains contextes, la peur d\'être perçu comme trop "être '+N+'" a conduit, inconsciemment, à se l\'interdire. Lorsque cette sensation allergique surgit, le cerveau — dont le rôle est de nous faire vivre le plus de bien-être ou le moins de mal-être possible — opère un basculement instantané, en un claquement de doigt, vers "être '+O+'". Entre deux zones d\'inconfort, le cerveau choisit le moindre mal : il fuit la zone insupportable de l\'allergie pour se réfugier dans la zone d\'inconfort supportable du piège. C\'est en cela que le piège est un refuge.\n\n'
+    +'Expliquer : dans certains contextes, la peur d\'être perçu comme trop être "'+N+'" conduit à se l\'interdire. Le cerveau bascule instantanément vers être "'+O+'" — moindre mal entre deux inconforts. Ton mesuré, bienveillant.\n\n'
     +'§LA COMPENSATION INCONSCIENTE\n'
-    +'Se couper, à son insu, de "être '+N+'" crée un manque comblé par des besoins-compensatoires — au détriment de soi et des autres. "Être '+S+'" et "être '+N+'" sont des points-ressources ; "être '+O+'" et "être '+E+'" sont des points de vigilance.\n\n'
+    +'Expliquer : se couper de être "'+N+'" crée un manque comblé par des besoins-compensatoires au détriment de soi et des autres. Être "'+S+'" et être "'+N+'" sont des points-ressources ; être "'+O+'" et être "'+E+'" sont des points de vigilance.\n\n'
     +'§LA DYNAMIQUE RELATIONNELLE\n'
-    +'Concrètement, quand une relation se tend pour vous, c\'est peut-être parce que vous détectez chez l\'autre un comportement qui vous met en alerte, en allergie — comme être "'+E+'" ('+Ew+'). Votre tendance alors est de vous réfugier dans votre piège : être "'+O+'" ('+Ow+'). C\'est justement ce piège qui met en allergie l\'autre dans la relation. Ainsi mis en réaction épidermique, l\'autre va avoir tendance à se réfugier dans son propre piège. Au plus l\'un se réfugie dans son piège, au plus l\'autre est allergisé et se réfugie dans le sien. C\'est une spirale qui amène de plus en plus de tension.\n\nVoyez aussi le cadeau qui se révèle dans la relation : plutôt qu\'un adversaire ou un ennemi, l\'autre peut être vu comme un révélateur. Ce qui vous allergise chez lui est le signal d\'une qualité naturelle — "être '+N+'" — dont vous vous êtes privé l\'accès à votre insu. L\'autre, par son comportement, vous indique précisément là où se trouve votre propre liberté. Et vice-et-versa : vous êtes pour l\'autre ce même révélateur. Observer cette dynamique sans jugement ouvre déjà une première porte vers plus de liberté.\n\n'
+    +'Commencer par : Concrètement, quand une relation se tend pour vous, c\'est peut-être parce que vous détectez chez l\'autre un comportement qui vous allergise — comme être "'+E+'" ('+Ew+'). Votre tendance est de vous réfugier dans être "'+O+'" ('+Ow+'). Ce piège met en allergie l\'autre. Au plus l\'un se réfugie dans son piège, au plus l\'autre se réfugie dans le sien. Spirale de tension.\n'
+    +'Terminer par : Voyez aussi le cadeau qui se révèle dans la relation : l\'autre est un révélateur de être "'+N+'" dont vous vous êtes privé à votre insu. Et vice-et-versa. Observer sans jugement ouvre une première porte.\n\n'
     +'§VOTRE CHEMIN DE LIBÉRATION\n'
     +(approfondie
-      ?'3-4 phrases inspirantes et incarnées. Inviter à quitter l\'autoroute réflexe pour le chemin de conscience. Mots : liberté, autorité (être auteur de...), souveraineté, libre-arbitre. Utiliser "indications" ou "informations" jamais "cartographie". Étayer, montrer la transformation possible, donner fortement envie d\'aller plus loin.'
-      :'2-3 phrases inspirantes. Inviter à quitter l\'autoroute réflexe pour le chemin de conscience. Liberté, autorité, souveraineté. Utiliser "indications" ou "informations" jamais "cartographie". Donner envie d\'aller plus loin.');
+      ?'3-4 phrases inspirantes. Parler de se libérer du mécanisme, d\'être auteur de sa vie, d\'être souverain, de libre-arbitre. Utiliser "indications" ou "informations" jamais "cartographie". Étayer, montrer la transformation possible, donner fortement envie d\'aller plus loin.'
+      :'2-3 phrases inspirantes. Parler de se libérer du mécanisme, d\'être auteur de sa vie, d\'être souverain. Utiliser "indications" ou "informations" jamais "cartographie". Donner envie d\'aller plus loin.');
 
-  var detail=approfondie?' Chaque rubrique : 4-5 phrases. Approfondi, riche.'
-    :' Chaque rubrique : 2 phrases maximum. Langage simple, direct, accessible à tous. Évitez le jargon. Donnez une image concrète ou une métaphore simple quand c\'est utile. Vouvoiement. Commencez toujours par une phrase courte et percutante qui nomme clairement la réalité. Terminez chaque rubrique par une phrase qui ouvre, qui invite à se questionner — sans expliquer davantage. Pour la rubrique VOTRE CHEMIN DE LIBÉRATION, terminez par une phrase qui donne très envie d\'aller plus loin dans la Synthèse Approfondie, sans la nommer explicitement.';
-
-  return base+detail+'\n\n'+rubriques;
+  return prompt;
 }
 
 function generateAI(approfondie){
