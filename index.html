@@ -133,6 +133,8 @@
     .site-back-btn:hover{border-color:var(--g);color:var(--g);}
     /* CTA finaux */
     .cta-wrap{background:var(--bgs);border-radius:var(--rl);padding:1rem;}
+    .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+    @media(max-width:480px){.cta-grid{grid-template-columns:1fr;}}
     .cta-q{font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.6rem;padding:.75rem;background:var(--gl);border-radius:var(--r);border:.5px solid var(--gm);line-height:1.6;}
     .cta-reflexion{width:100%;font-size:13px;padding:8px 12px;border:1px solid var(--bd);border-radius:var(--r);background:var(--bg);color:var(--tx);margin-top:.4rem;margin-bottom:.875rem;min-height:52px;resize:vertical;line-height:1.6;}
     .cta-reflexion:focus{outline:none;border-color:var(--g);}
@@ -151,6 +153,15 @@
     .br-footer a{color:var(--g);text-decoration:none;}
     .loading-dots::after{content:'...';animation:dots 1.2s steps(4,end) infinite;}
     @keyframes dots{0%,100%{content:'.'}33%{content:'..'}66%{content:'...'}}
+    .compass-loading{display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:1.5rem 1rem;}
+    .compass-needle{transform-origin:50% 50%;animation:needle-spin 1.8s ease-in-out infinite;}
+    @keyframes needle-spin{0%{transform:rotate(0deg)}30%{transform:rotate(185deg)}50%{transform:rotate(175deg)}80%{transform:rotate(355deg)}100%{transform:rotate(360deg)}}
+    .compass-loading-text{font-size:13px;color:var(--ts);font-style:italic;text-align:center;line-height:1.6;}
+    .compass-loading{display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:1.5rem;}
+    .compass-loading svg{animation:compass-spin 0s linear infinite;}
+    .compass-needle{transform-origin:50% 50%;animation:needle-spin 1.8s ease-in-out infinite;}
+    @keyframes needle-spin{0%{transform:rotate(0deg)}25%{transform:rotate(180deg)}50%{transform:rotate(160deg)}75%{transform:rotate(340deg)}100%{transform:rotate(360deg)}};
+    .compass-loading-text{font-size:13px;color:var(--ts);font-style:italic;text-align:center;line-height:1.6;}
     @media(max-width:480px){body{padding:0;}.app{border-radius:0;box-shadow:none;}.id-grid{grid-template-columns:1fr;}.pb-grid{grid-template-columns:1fr;}.synth-choice{grid-template-columns:1fr;}.cta-btns{flex-direction:column;}.action-btns{flex-direction:column;}}
   </style>
 </head>
@@ -366,14 +377,14 @@
       <div class="synth-card gold-card" id="choice-approfondie" onclick="selectSynth('approfondie')">
         <div class="synth-icon">🔍</div>
         <div class="synth-name">Synthèse Approfondie</div>
-        <div class="synth-prix go">10 €</div>
+        <div class="synth-prix go">11 €</div>
         <div style="font-size:11px;color:var(--go);margin-bottom:.3rem;">(déduits de votre prochaine séance « Accompagnement Boussole »)</div>
         <div class="synth-desc">Détailler le mécanisme en place, recevoir des indications précieuses pour amorcer votre libération, comprendre en profondeur ce qui se joue en vous — et repartir avec des éléments concrets pour avancer.</div>
       </div>
     </div>
     <div class="pay-box" id="pay-box" style="display:none;">
-      <p>Paiement sécurisé — 10 € pour accéder à votre Synthèse Approfondie</p>
-      <button class="btn btn-go btn-sm" onclick="alert('Solution de paiement à configurer — PayPal ou Stripe')">Payer 10 € &rarr;</button>
+      <p>Paiement sécurisé — 11 € pour accéder à votre Synthèse Approfondie</p>
+      <button class="btn btn-go btn-sm" onclick="alert('Solution de paiement à configurer — PayPal ou Stripe')">Payer 11 € &rarr;</button>
     </div>
     <div class="nav">
       <button class="btn-back" onclick="goBackToLastCase()">← Retour</button>
@@ -461,7 +472,26 @@
     <hr>
     <div style="font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;" id="synth-label">Synthèse</div>
     <p class="ai-note">Cette synthèse découle de l'outil développé par Lionel Drouvin et de sa vision de ce qui se joue dans la relation à soi et avec les autres. Elle est personnalisée selon vos mots, rédigée avec l'aide de l'IA. Première lecture, non un diagnostic.</p>
-    <div class="ai-box" id="ai-text"><span class="loading-dots">Analyse en cours</span></div>
+    <div class="ai-box" id="ai-text">
+      <div class="compass-loading" id="compass-loading">
+        <svg width="80" height="80" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="0" cy="0" r="46" fill="#E8F8F3" stroke="#9FE1CB" stroke-width="1.5"/>
+          <path d="M0,0 L-33,-33 A46,46 0 0,1 33,-33 Z" fill="#E8F8F3" stroke="white" stroke-width="1"/>
+          <path d="M0,0 L33,-33 A46,46 0 0,1 33,33 Z" fill="#F0FAF6" stroke="white" stroke-width="1"/>
+          <path d="M0,0 L33,33 A46,46 0 0,1 -33,33 Z" fill="#E8F8F3" stroke="white" stroke-width="1"/>
+          <path d="M0,0 L-33,33 A46,46 0 0,1 -33,-33 Z" fill="#F0FAF6" stroke="white" stroke-width="1"/>
+          <g class="compass-needle">
+            <polygon points="0,-38 -4,-6 0,-6" fill="#1D9E75"/>
+            <polygon points="0,-38 0,-6 4,-6" fill="#0F6E56"/>
+            <polygon points="0,38 0,6 -4,6" fill="#888780"/>
+            <polygon points="0,38 4,6 0,6" fill="#aaa"/>
+          </g>
+          <circle cx="0" cy="0" r="10" fill="white" stroke="#C9A84C" stroke-width="1.5"/>
+          <text x="0" y="4" text-anchor="middle" font-size="9" fill="#C9A84C" font-family="Georgia,serif">&amp;</text>
+        </svg>
+        <div class="compass-loading-text">Votre Boussole est en cours de génération...<br><span style="font-size:11px;">Cela peut prendre quelques secondes</span></div>
+      </div>
+    </div>
 
     <!-- Boutons action sous synthèse -->
     <div class="reflexion-wrap" style="background:var(--gl);border-radius:var(--rl);padding:1rem;margin:.875rem 0;border:.5px solid var(--gm);">
@@ -471,7 +501,7 @@
     <div class="action-btns">
       <button class="pdf-btn" onclick="downloadPDF()">⬇ Télécharger en PDF</button>
       <div id="approfondie-wrap" style="display:none;text-align:center;">
-        <button class="approfondie-btn" id="btn-approfondie" onclick="switchToApprofondie()">🔍 Accéder à la Synthèse Approfondie — 10€</button>
+        <button class="approfondie-btn" id="btn-approfondie" onclick="switchToApprofondie()">🔍 Accéder à la Synthèse Approfondie — 11€</button>
         <div style="font-size:11px;color:var(--go);margin-top:.4rem;">(déduits de votre prochaine séance « Accompagnement Boussole »)</div>
       </div>
       <button class="site-back-btn" onclick="window.open('https://www.lioneldrouvin.com/coaching-relationnel/boussole-relationnelle-et-qualites-naturelles','_blank')">← Retour au site</button>
@@ -480,51 +510,53 @@
 
     <hr>
     <div class="cta-wrap">
-<p class="sub" style="text-align:center;margin-bottom:.875rem;">Et là, maintenant — qu'avez-vous envie de faire de ce que vous venez de voir ?</p>
+      <p class="sub" style="text-align:center;margin-bottom:.875rem;">Et là, maintenant — qu'avez-vous envie de faire de ce que vous venez de voir ?</p>
+      <div class="cta-grid">
 
-      <div class="cta-opt">
-        <div class="cta-tag">⚡ Pour aller plus loin dès maintenant</div>
-        <div class="cta-title">Séance Speed-coaching — 1h en visio</div>
-        <div class="cta-prix">80 € — Google Meet</div>
-        <div class="cta-desc">Une heure ensemble pour explorer votre synthèse en profondeur, nommer les confusions, poser les premières alliances. Vous repartez avec des repères clairs et incarnés.</div>
-        <div class="cta-btns">
-          <div class="cta-btns-left">
-            <button class="btn btn-g btn-sm" onclick="window.open('https://calendly.com/contact-8hjw/speed-coaching-60mn','_blank')">Prendre rendez-vous &rarr;</button>
+        <div class="cta-opt">
+          <div class="cta-tag">⚡ Aller plus loin maintenant</div>
+          <div class="cta-title">Speed-coaching — 1h visio</div>
+          <div class="cta-prix">80 € — Google Meet</div>
+          <div class="cta-desc">Une heure pour explorer votre synthèse, nommer les confusions, poser les premières alliances.</div>
+          <div class="cta-btns" style="flex-direction:column;gap:.4rem;">
+            <button class="btn btn-g btn-sm" style="width:100%;" onclick="window.open('https://calendly.com/contact-8hjw/speed-coaching-60mn','_blank')">Prendre rendez-vous &rarr;</button>
+            <button class="btn-out btn-sm" style="width:100%;text-align:center;" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter</button>
           </div>
-          <button class="btn-out btn-sm" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter</button>
         </div>
-      </div>
 
-      <div class="cta-opt">
-        <div class="cta-tag">🧭 Pour ancrer durablement</div>
-        <div class="cta-title">Accompagnement Boussole — 3 séances en visio</div>
-        <div class="cta-prix">330 € — Google Meet</div>
-        <div class="cta-desc">Trois séances pour vivre et intégrer ce que votre Boussole a mis en lumière — mentalement, émotionnellement, corporellement. Vous repartez avec l'outil maîtrisé et une nouvelle dynamique relationnelle.</div>
-        <div class="cta-btns">
-          <div class="cta-btns-left">
-            <button class="btn btn-g btn-sm" onclick="window.open('https://calendly.com/contact-8hjw/accompagnement-3-seances','_blank')">Prendre rendez-vous &rarr;</button>
+        <div class="cta-opt">
+          <div class="cta-tag">🧭 Ancrer durablement</div>
+          <div class="cta-title">Accompagnement — 3 séances visio</div>
+          <div class="cta-prix">330 € — Google Meet</div>
+          <div class="cta-desc">Vivre et intégrer ce que votre Boussole a mis en lumière — mentalement, émotionnellement, corporellement.</div>
+          <div class="cta-btns" style="flex-direction:column;gap:.4rem;">
+            <button class="btn btn-g btn-sm" style="width:100%;" onclick="window.open('https://calendly.com/contact-8hjw/accompagnement-3-seances','_blank')">Prendre rendez-vous &rarr;</button>
+            <button class="btn-out btn-sm" style="width:100%;text-align:center;" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter</button>
           </div>
-          <button class="btn-out btn-sm" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter</button>
         </div>
-      </div>
 
-      <div class="cta-opt gold">
-        <div class="cta-tag go">✦ Pour dirigeants, entrepreneurs &amp; responsables de collectifs</div>
-        <div class="cta-title">Architecte relationnel — Parcours signature 6 mois</div>
-        <div class="cta-prix" style="color:var(--go);">Sur devis — Premier échange de 30 min offert</div>
-        <div class="cta-desc">Co-construire une nouvelle dynamique relationnelle sur 6 mois : explorer, déconfusionner, incarner. Pour transformer durablement votre rapport aux relations — individuelles et collectives.</div>
-        <div class="cta-btns">
-          <button class="btn btn-go btn-sm" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter &rarr;</button>
+        <div class="cta-opt gold">
+          <div class="cta-tag go">✦ Parcours signature</div>
+          <div class="cta-title">Architecte relationnel — 6 mois</div>
+          <div class="cta-prix" style="color:var(--go);">Sur devis · 30 min offert</div>
+          <div class="cta-desc">Co-construire une nouvelle dynamique relationnelle sur 6 mois. Pour dirigeants, entrepreneurs &amp; responsables de collectifs.</div>
+          <div class="cta-btns" style="flex-direction:column;">
+            <button class="btn btn-go btn-sm" style="width:100%;" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter &rarr;</button>
+          </div>
         </div>
+
+        <div class="cta-opt" style="border-color:var(--gm);background:var(--gl);">
+          <div class="cta-tag" style="color:var(--gdp);">🎯 Pour les collectifs</div>
+          <div class="cta-title" style="color:var(--gdp);">Organiser un atelier Boussole dans ma structure</div>
+          <div class="cta-prix" style="color:var(--g);">Sur mesure · Sur devis</div>
+          <div class="cta-desc">Entreprise, association, équipe — un atelier personnalisé pour vivre la Boussole ensemble et transformer la dynamique relationnelle du groupe.</div>
+          <div class="cta-btns" style="flex-direction:column;">
+            <button class="btn btn-g btn-sm" style="width:100%;" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter &rarr;</button>
+          </div>
+        </div>
+
       </div>
     </div>
-
-    <!-- Retour au site tout en bas -->
-    <div class="footer-site-back">
-      <button class="site-back-btn" onclick="window.open('https://www.lioneldrouvin.com/coaching-relationnel/boussole-relationnelle-et-qualites-naturelles','_blank')">← Retour à la page Boussole relationnelle</button>
-    </div>
-    <div class="br-footer">
-      Lionel Drouvin — Coach relation &amp; Médiateur<br>
       <a href="https://www.lioneldrouvin.com">www.lioneldrouvin.com</a>
     </div>
   </div>
@@ -774,7 +806,7 @@ function submitFormspree(){
   var prenom=document.getElementById('id-prenom').value.trim();
   var nom=document.getElementById('id-nom').value.trim();
   var email=document.getElementById('id-email').value.trim();
-  var synthType=state.synthType==='approfondie'?'Synthèse Approfondie (10€)':'Synthèse Essentielle (offerte)';
+  var synthType=state.synthType==='approfondie'?'Synthèse Approfondie (11€)':'Synthèse Essentielle (offerte)';
   var d=state.data;
   var resume='S:'+( d.S?d.S.main:'?')+' O:'+(d.O?d.O.main:'?')+' N:'+(d.N?d.N.main:'?')+' E:'+(d.E?d.E.main:'?');
   if(FORMSPREE_ID==='VOTRE_ID_FORMSPREE') return; // Pas encore configuré
@@ -865,7 +897,7 @@ function buildPrompt(approfondie){
     +'§LA MISE EN ALLIANCE AU CENTRE\n'
     +'Expliquer que être "'+S+'" et être "'+N+'" ne s\'opposent pas — ils se potentialisent. Leur alliance est une plénitude et la réponse au manque intérieur.\n\n'
     +'§LES DEUX DÉCONFUSIONS LIBÉRATRICES\n'
-    +'Commencer par : Cette étape est essentielle dans le processus de libération de l\'emprise des conditionnements hérités dès l\'enfance.\n'
+    +'Commencer par : Cette étape est un temps de ré-information et de cohérence. Elle nécessite de se poser en présence à soi, en conscience. C\'est une étape essentielle dans le processus de libération de l\'emprise des conditionnements hérités dès l\'enfance.\n'
     +'Inclure l\'invitation corporelle : pieds au sol, respiration, poitrine, ventre, colonne.\n'
     +'Première déconfusion entre être "'+N+'" ('+Nw+') et être "'+E+'" ('+Ew+').\n'
     +'Deuxième déconfusion entre être "'+S+'" ('+Sw+') et être "'+O+'" ('+Ow+').\n'
@@ -905,6 +937,7 @@ function generateAI(approfondie){
           });
           return '<p>'+p+'</p>';
         }).join('');
+        document.getElementById('compass-loading').style.display='none';
         document.getElementById('ai-text').innerHTML=html;
         state.synthHtml=html;
       } else {
@@ -917,7 +950,8 @@ function switchToApprofondie(){
   state.synthType='approfondie';
   document.getElementById('synth-label').textContent='Synthèse Approfondie';
   var aw2=document.getElementById('approfondie-wrap'); if(aw2) aw2.style.display='none';
-  document.getElementById('ai-text').innerHTML='<span class="loading-dots">Génération en cours</span>';
+  document.getElementById('ai-text').innerHTML='';
+  var cl=document.getElementById('compass-loading'); if(cl) cl.style.display='flex';
   generateAI(true);
 }
 
