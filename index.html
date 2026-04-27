@@ -924,8 +924,8 @@ function buildPrompt(approfondie){
     +'§LES DEUX DÉCONFUSIONS LIBÉRATRICES\n'
     +'Commencer par : Cette étape est un temps de ré-information et de cohérence. Elle nécessite de se poser en présence à soi, en conscience. C\'est une étape essentielle dans le processus de libération de l\'emprise des conditionnements hérités dès l\'enfance.\n'
     +'Inclure l\'invitation corporelle : pieds au sol, respiration, poitrine, ventre, colonne.\n'
-    +'🔵 Première déconfusion — entre être "'+N+'" ('+Nw+') et être "'+E+'" ('+Ew+'). Inviter à ressentir la différence dans le corps entre ces deux réalités. Laisser du temps. Conclure ce paragraphe avant de passer à la deuxième.\n\n'
-    +'🟢 Deuxième déconfusion — entre être "'+S+'" ('+Sw+') et être "'+O+'" ('+Ow+'). Même protocole : ressentir la différence dans le corps. Laisser du temps. Conclure ce paragraphe.\n\n'
+    +'1re Première déconfusion — entre être "'+N+'" ('+Nw+') et être "'+E+'" ('+Ew+'). Inviter à ressentir la différence dans le corps entre ces deux réalités. Laisser du temps. Conclure ce paragraphe avant de passer à la deuxième.\n\n'
+    +'2e Deuxième déconfusion — entre être "'+S+'" ('+Sw+') et être "'+O+'" ('+Ow+'). Même protocole : ressentir la différence dans le corps. Laisser du temps. Conclure ce paragraphe.\n\n'
     +'Conclure par : S\'informer — ré-informer son cerveau — est un acte de souveraineté. Mention de ne plus être dans le flou, clarté, libre-arbitre.\n\n'
     +'§L\'ALLERGIE-DÉPENDANCE\n'
     +'Expliquer : dans certains contextes, la peur d\'être perçu comme trop être "'+N+'" conduit à se l\'interdire. Le cerveau bascule instantanément vers être "'+O+'" — moindre mal entre deux inconforts. Ton mesuré, bienveillant.\n\n'
@@ -958,12 +958,28 @@ function generateAI(approfondie){
       var mots=[S,N,O,E];
       var html=raw.split(/\n\n+/).map(function(p){
         p=p.trim();
-        if(p.charAt(0)==='§') return '<div class="ai-titre">'+p.slice(1).trim()+'</div>';
+        if(p.charAt(0)==='§'){
+          var titre=p.slice(1).trim();
+          var icone='';
+          if(titre.indexOf('MÉCANISME')>-1) icone='⚙️ ';
+          else if(titre.indexOf('ALLIANCE')>-1) icone='✦ ';
+          else if(titre.indexOf('DÉCONFUSION')>-1) icone='🔓 ';
+          else if(titre.indexOf('ALLERGIE')>-1) icone='⚡ ';
+          else if(titre.indexOf('COMPENSATION')>-1) icone='🔄 ';
+          else if(titre.indexOf('DYNAMIQUE')>-1) icone='🤝 ';
+          else if(titre.indexOf('CHEMIN')>-1) icone='🧭 ';
+          return '<div class="ai-titre">'+icone+titre+'</div>';
+        }
         mots.forEach(function(mot){
           var esc=mot.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
           p=p.replace(new RegExp('(être\\s+)('+esc+')','gi'),'être <span class="ai-mot">$2</span>');
         });
-        return '<p>'+p+'</p>';
+        var pout='<p>'+p+'</p>';
+          if(p.indexOf('1re Première déconfusion')>-1||p.indexOf('Première déconfusion')>-1)
+            pout='<p style="margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--gm);">🔵 '+p.replace('1re Première','Première')+'</p>';
+          else if(p.indexOf('2e Deuxième déconfusion')>-1||p.indexOf('Deuxième déconfusion')>-1)
+            pout='<p style="margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--gm);">🟢 '+p.replace('2e Deuxième','Deuxième')+'</p>';
+          return pout;
       }).join('');
       var cl=document.getElementById('compass-loading');
       if(cl) cl.style.display='none';
