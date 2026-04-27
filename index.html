@@ -474,20 +474,45 @@
     <p class="ai-note">Cette synthèse découle de l'outil développé par Lionel Drouvin et de sa vision de ce qui se joue dans la relation à soi et avec les autres. Elle est personnalisée selon vos mots, rédigée avec l'aide de l'IA. Première lecture, non un diagnostic.</p>
     <div class="ai-box" id="ai-text">
       <div class="compass-loading" id="compass-loading">
-        <svg width="80" height="80" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
+        <svg width="90" height="90" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <style>
+              .needle-anim {
+                transform-origin: 0px 0px;
+                animation: needle-wobble 2.4s ease-in-out infinite;
+              }
+              @keyframes needle-wobble {
+                0%   { transform: rotate(-30deg); }
+                15%  { transform: rotate(40deg); }
+                30%  { transform: rotate(-20deg); }
+                45%  { transform: rotate(30deg); }
+                60%  { transform: rotate(-10deg); }
+                75%  { transform: rotate(15deg); }
+                88%  { transform: rotate(-5deg); }
+                100% { transform: rotate(0deg); }
+              }
+            </style>
+          </defs>
+          <!-- Fond boussole -->
           <circle cx="0" cy="0" r="46" fill="#E8F8F3" stroke="#9FE1CB" stroke-width="1.5"/>
           <path d="M0,0 L-33,-33 A46,46 0 0,1 33,-33 Z" fill="#E8F8F3" stroke="white" stroke-width="1"/>
           <path d="M0,0 L33,-33 A46,46 0 0,1 33,33 Z" fill="#F0FAF6" stroke="white" stroke-width="1"/>
           <path d="M0,0 L33,33 A46,46 0 0,1 -33,33 Z" fill="#E8F8F3" stroke="white" stroke-width="1"/>
           <path d="M0,0 L-33,33 A46,46 0 0,1 -33,-33 Z" fill="#F0FAF6" stroke="white" stroke-width="1"/>
-          <g class="compass-needle">
-            <polygon points="0,-38 -4,-6 0,-6" fill="#1D9E75"/>
-            <polygon points="0,-38 0,-6 4,-6" fill="#0F6E56"/>
-            <polygon points="0,38 0,6 -4,6" fill="#888780"/>
-            <polygon points="0,38 4,6 0,6" fill="#aaa"/>
+          <!-- Lettres cardinales fixes -->
+          <text x="0" y="-39" text-anchor="middle" font-size="7" font-weight="700" fill="#085041">N</text>
+          <text x="0" y="44" text-anchor="middle" font-size="7" font-weight="700" fill="#085041">S</text>
+          <text x="40" y="3" text-anchor="middle" font-size="7" font-weight="700" fill="#085041">E</text>
+          <text x="-40" y="3" text-anchor="middle" font-size="7" font-weight="700" fill="#085041">O</text>
+          <!-- Aiguille animée qui pivote sur son axe central -->
+          <g class="needle-anim">
+            <!-- Moitié Nord — verte -->
+            <polygon points="0,-35 -4,0 4,0" fill="#1D9E75"/>
+            <!-- Moitié Sud — grise -->
+            <polygon points="0,35 -4,0 4,0" fill="#888780"/>
           </g>
-          <circle cx="0" cy="0" r="10" fill="white" stroke="#C9A84C" stroke-width="1.5"/>
-          <text x="0" y="4" text-anchor="middle" font-size="9" fill="#C9A84C" font-family="Georgia,serif">&amp;</text>
+          <!-- Pivot central -->
+          <circle cx="0" cy="0" r="5" fill="white" stroke="#C9A84C" stroke-width="1.5"/>
         </svg>
         <div class="compass-loading-text">Votre Boussole est en cours de génération...<br><span style="font-size:11px;">Cela peut prendre quelques secondes</span></div>
       </div>
@@ -899,8 +924,8 @@ function buildPrompt(approfondie){
     +'§LES DEUX DÉCONFUSIONS LIBÉRATRICES\n'
     +'Commencer par : Cette étape est un temps de ré-information et de cohérence. Elle nécessite de se poser en présence à soi, en conscience. C\'est une étape essentielle dans le processus de libération de l\'emprise des conditionnements hérités dès l\'enfance.\n'
     +'Inclure l\'invitation corporelle : pieds au sol, respiration, poitrine, ventre, colonne.\n'
-    +'Première déconfusion entre être "'+N+'" ('+Nw+') et être "'+E+'" ('+Ew+').\n'
-    +'Deuxième déconfusion entre être "'+S+'" ('+Sw+') et être "'+O+'" ('+Ow+').\n'
+    +'🔵 Première déconfusion — entre être "'+N+'" ('+Nw+') et être "'+E+'" ('+Ew+'). Inviter à ressentir la différence dans le corps entre ces deux réalités. Laisser du temps. Conclure ce paragraphe avant de passer à la deuxième.\n\n'
+    +'🟢 Deuxième déconfusion — entre être "'+S+'" ('+Sw+') et être "'+O+'" ('+Ow+'). Même protocole : ressentir la différence dans le corps. Laisser du temps. Conclure ce paragraphe.\n\n'
     +'Conclure par : S\'informer — ré-informer son cerveau — est un acte de souveraineté. Mention de ne plus être dans le flou, clarté, libre-arbitre.\n\n'
     +'§L\'ALLERGIE-DÉPENDANCE\n'
     +'Expliquer : dans certains contextes, la peur d\'être perçu comme trop être "'+N+'" conduit à se l\'interdire. Le cerveau bascule instantanément vers être "'+O+'" — moindre mal entre deux inconforts. Ton mesuré, bienveillant.\n\n'
@@ -922,28 +947,34 @@ function generateAI(approfondie){
   var maxTok=approfondie?4000:2500;
   var d=state.data;
   var S=d.S?d.S.main:'?', O=d.O?d.O.main:'?', N=d.N?d.N.main:'?', E=d.E?d.E.main:'?';
-  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:maxTok,messages:[{role:'user',content:prompt}]})})
-    .then(function(r){return r.json();})
-    .then(function(data){
-      var raw=data.content&&data.content[0]?data.content[0].text:null;
-      if(raw){
-        var mots=[S,N,O,E];
-        var html=raw.split(/\n\n+/).map(function(p){
-          p=p.trim();
-          if(p.charAt(0)==='§') return '<div class="ai-titre">'+p.slice(1).trim()+'</div>';
-          mots.forEach(function(mot){
-            var esc=mot.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-            p=p.replace(new RegExp('(être\\s+)('+esc+')','gi'),'être <span class="ai-mot">$2</span>');
-          });
-          return '<p>'+p+'</p>';
-        }).join('');
-        document.getElementById('compass-loading').style.display='none';
-        document.getElementById('ai-text').innerHTML=html;
-        state.synthHtml=html;
-      } else {
-        document.getElementById('ai-text').textContent="La synthèse n'a pas pu être générée.";
-      }
-    }).catch(function(){document.getElementById('ai-text').textContent="La synthèse n'a pas pu être générée.";});
+  fetch(API_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:maxTok,messages:[{role:'user',content:prompt}]})
+  }).then(function(r){return r.json();})
+  .then(function(data){
+    var raw=data.content&&data.content[0]?data.content[0].text:null;
+    if(raw){
+      var mots=[S,N,O,E];
+      var html=raw.split(/\n\n+/).map(function(p){
+        p=p.trim();
+        if(p.charAt(0)==='§') return '<div class="ai-titre">'+p.slice(1).trim()+'</div>';
+        mots.forEach(function(mot){
+          var esc=mot.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+          p=p.replace(new RegExp('(être\\s+)('+esc+')','gi'),'être <span class="ai-mot">$2</span>');
+        });
+        return '<p>'+p+'</p>';
+      }).join('');
+      var cl=document.getElementById('compass-loading');
+      if(cl) cl.style.display='none';
+      document.getElementById('ai-text').innerHTML=html;
+      state.synthHtml=html;
+    } else {
+      document.getElementById('ai-text').textContent="La synthèse n\'a pas pu être générée.";
+    }
+  }).catch(function(){
+    document.getElementById('ai-text').textContent="La synthèse n\'a pas pu être générée.";
+  });
 }
 
 function switchToApprofondie(){
