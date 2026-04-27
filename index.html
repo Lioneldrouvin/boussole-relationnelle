@@ -150,6 +150,28 @@
     /* Retour site tout en bas */
     .footer-site-back{text-align:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--bd);}
     .br-footer{text-align:center;margin-top:.5rem;font-size:12px;color:var(--ts);}
+    .codes-box{background:var(--gol);border:1.5px solid var(--go);border-radius:var(--rl);padding:1.1rem 1.25rem;margin:.875rem 0;display:none;}
+    .codes-box-title{font-size:13px;font-weight:700;color:var(--go);margin-bottom:.75rem;text-align:center;}
+    .codes-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+    .code-item{background:white;border-radius:var(--r);padding:.75rem;text-align:center;border:1px solid var(--go);}
+    .code-item-label{font-size:11px;color:var(--ts);margin-bottom:.3rem;line-height:1.4;}
+    .code-item-value{font-size:20px;font-weight:800;color:var(--go);letter-spacing:.1em;font-family:monospace;margin-bottom:.4rem;}
+    .code-copy{font-size:11px;color:var(--go);background:none;border:1px solid var(--go);border-radius:6px;padding:3px 10px;cursor:pointer;}
+    .code-copy:hover{background:var(--gol);}
+    .code-copied{font-size:11px;color:var(--g);display:none;margin-top:.3rem;}
+    .codes-note{font-size:12px;color:var(--ts);text-align:center;margin-top:.75rem;line-height:1.5;}
+    @media(max-width:480px){.codes-grid{grid-template-columns:1fr;}}
+    .codes-box{background:var(--gol);border:1.5px solid var(--go);border-radius:var(--rl);padding:1.1rem 1.25rem;margin:.875rem 0;display:none;}
+    .codes-box-title{font-size:13px;font-weight:700;color:var(--go);margin-bottom:.75rem;text-align:center;}
+    .codes-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+    .code-item{background:white;border-radius:var(--r);padding:.75rem;text-align:center;border:1px solid var(--go);}
+    .code-item-label{font-size:11px;color:var(--ts);margin-bottom:.3rem;line-height:1.4;}
+    .code-item-value{font-size:20px;font-weight:800;color:var(--go);letter-spacing:.1em;font-family:monospace;margin-bottom:.4rem;}
+    .code-copy{font-size:11px;color:var(--go);background:none;border:1px solid var(--go);border-radius:6px;padding:3px 10px;cursor:pointer;}
+    .code-copy:hover{background:var(--gol);}
+    .code-copied{font-size:11px;color:var(--g);display:none;margin-top:.3rem;}
+    .codes-note{font-size:12px;color:var(--ts);text-align:center;margin-top:.75rem;line-height:1.5;}
+    @media(max-width:480px){.codes-grid{grid-template-columns:1fr;}}
     .br-footer a{color:var(--g);text-decoration:none;}
     .loading-dots::after{content:'...';animation:dots 1.2s steps(4,end) infinite;}
     @keyframes dots{0%,100%{content:'.'}33%{content:'..'}66%{content:'...'}}
@@ -522,6 +544,25 @@
       <div style="font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.5rem;">Quelle difficulté ou quel point de progression avez-vous mis en lumière grâce à votre Boussole ?</div>
       <textarea class="cta-reflexion" id="reflexion" placeholder="Quelques mots librement... (facultatif)"></textarea>
     </div>
+    <!-- Encadré codes de réduction — visible uniquement après synthèse approfondie -->
+    <div class="codes-box no-print" id="codes-box">
+      <div class="codes-box-title">✦ Vos codes de réduction — à utiliser lors de votre réservation</div>
+      <div class="codes-grid">
+        <div class="code-item">
+          <div class="code-item-label">⚡ Speed-coaching<br>1h — 80€ <strong style="color:var(--go);">→ 69€</strong></div>
+          <div class="code-item-value" id="code1">BOUSSOLE11</div>
+          <button class="code-copy" onclick="copyCode('code1','copied1')">📋 Copier</button>
+          <div class="code-copied" id="copied1">✓ Copié !</div>
+        </div>
+        <div class="code-item">
+          <div class="code-item-label">🧭 Accompagnement Boussole<br>3 séances — 330€ <strong style="color:var(--go);">→ 319€</strong></div>
+          <div class="code-item-value" id="code2">BOUSSOLE-11</div>
+          <button class="code-copy" onclick="copyCode('code2','copied2')">📋 Copier</button>
+          <div class="code-copied" id="copied2">✓ Copié !</div>
+        </div>
+      </div>
+      <div class="codes-note">Ces codes déduisent les 11€ de votre Synthèse Approfondie de votre prochaine séance.<br>Saisissez-le lors de votre réservation sur Calendly.</div>
+    </div>
     <div class="action-btns">
       <button class="pdf-btn" onclick="downloadPDF()">⬇ Télécharger en PDF</button>
       <div id="approfondie-wrap" style="display:none;text-align:center;">
@@ -536,6 +577,25 @@
     <div class="cta-wrap">
       <p class="sub" style="text-align:center;margin-bottom:.875rem;">Et là, maintenant — qu'avez-vous envie de faire de ce que vous venez de voir ?</p>
       <div class="cta-grid">
+    <!-- Codes de réduction — visible uniquement après synthèse approfondie -->
+    <div class="codes-box no-print" id="codes-box">
+      <div class="codes-box-title">✦ Vos codes de réduction — à utiliser lors de votre réservation</div>
+      <div class="codes-grid">
+        <div class="code-item">
+          <div class="code-item-label">⚡ Speed-coaching<br>1h — 80€ <strong style="color:var(--go);">→ 69€</strong></div>
+          <div class="code-item-value" id="code1">BOUSSOLE11</div>
+          <button class="code-copy" onclick="copyCode('code1','copied1')">📋 Copier</button>
+          <div class="code-copied" id="copied1">✓ Copié !</div>
+        </div>
+        <div class="code-item">
+          <div class="code-item-label">🧭 Accompagnement Boussole<br>3 séances — 330€ <strong style="color:var(--go);">→ 319€</strong></div>
+          <div class="code-item-value" id="code2">BOUSSOLE-11</div>
+          <button class="code-copy" onclick="copyCode('code2','copied2')">📋 Copier</button>
+          <div class="code-copied" id="copied2">✓ Copié !</div>
+        </div>
+      </div>
+      <div class="codes-note">Ces codes déduisent les 11€ de votre Synthèse Approfondie de votre prochaine séance.<br>Saisissez-le lors de votre réservation sur Calendly.</div>
+    </div>
 
         <div class="cta-opt">
           <div class="cta-tag">⚡ Aller plus loin maintenant</div>
@@ -693,6 +753,7 @@ function checkStripeReturn(){
     if(saved.email){var ie=document.getElementById('id-email');if(ie)ie.value=saved.email;}
     try{localStorage.removeItem('boussole_pending');}catch(e){}
     show('s-id');
+    var cb2=document.getElementById('codes-box'); if(cb2) cb2.style.display='block';
     var btnId=document.getElementById('btn-id');
     if(btnId){btnId.style.opacity='1';btnId.style.pointerEvents='auto';}
     if(saved.prenom&&saved.email){setTimeout(function(){buildResult();},400);}
@@ -941,6 +1002,9 @@ function buildResult(){
   document.getElementById('besoin-box').style.display='block';
   var cl0=document.getElementById('compass-loading');
   if(cl0) cl0.style.display='flex';
+  // Afficher les codes de réduction uniquement pour la synthèse approfondie
+  var cb=document.getElementById('codes-box');
+  if(cb) cb.style.display=isApprofondie?'block':'none';
   show('s-result');
   submitFormspree();
   generateBesoins();
@@ -1127,6 +1191,39 @@ function switchToApprofondie(){
   };
   try{localStorage.setItem('boussole_pending',JSON.stringify(saveData));}catch(e){}
   window.location.href='https://buy.stripe.com/14AeVcbwo11n17w7iQeQM00';
+}
+
+function copyCode(codeId, confirmedId){
+  var code=document.getElementById(codeId).textContent;
+  var confirm=document.getElementById(confirmedId);
+  navigator.clipboard.writeText(code).then(function(){
+    confirm.style.display='block';
+    setTimeout(function(){confirm.style.display='none';},2500);
+  }).catch(function(){
+    var el=document.createElement('textarea');
+    el.value=code;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    confirm.style.display='block';
+    setTimeout(function(){confirm.style.display='none';},2500);
+  });
+}
+
+function copyCode(codeId, confirmedId){
+  var code=document.getElementById(codeId).textContent;
+  var conf=document.getElementById(confirmedId);
+  navigator.clipboard.writeText(code).then(function(){
+    conf.style.display='block';
+    setTimeout(function(){conf.style.display='none';},2500);
+  }).catch(function(){
+    var el=document.createElement('textarea');
+    el.value=code; document.body.appendChild(el); el.select();
+    document.execCommand('copy'); document.body.removeChild(el);
+    conf.style.display='block';
+    setTimeout(function(){conf.style.display='none';},2500);
+  });
 }
 
 function downloadPDF(){
