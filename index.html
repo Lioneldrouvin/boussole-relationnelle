@@ -472,8 +472,7 @@
     <hr>
     <div style="font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;" id="synth-label">Synthèse</div>
     <p class="ai-note">Cette synthèse découle de l'outil développé par Lionel Drouvin et de sa vision de ce qui se joue dans la relation à soi et avec les autres. Elle est personnalisée selon vos mots, rédigée avec l'aide de l'IA. Première lecture, non un diagnostic.</p>
-    <div class="ai-box" id="ai-text">
-      <div class="compass-loading" id="compass-loading">
+    <div class="compass-loading" id="compass-loading">
         <svg width="90" height="90" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <style>
@@ -516,7 +515,7 @@
         </svg>
         <div class="compass-loading-text">Votre Boussole est en cours de génération...<br><span style="font-size:11px;">Cela peut prendre quelques secondes</span></div>
       </div>
-    </div>
+    <div class="ai-box" id="ai-text"></div>
 
     <!-- Boutons action sous synthèse -->
     <div class="reflexion-wrap" style="background:var(--gl);border-radius:var(--rl);padding:1rem;margin:.875rem 0;border:.5px solid var(--gm);">
@@ -821,6 +820,8 @@ function buildResult(){
   var aw=document.getElementById('approfondie-wrap'); if(aw) aw.style.display=isApprofondie?'none':'block';
   
   document.getElementById('besoin-box').style.display='block';
+  var cl0=document.getElementById('compass-loading');
+  if(cl0) cl0.style.display='flex';
   show('s-result');
   submitFormspree();
   generateBesoins();
@@ -998,7 +999,8 @@ function switchToApprofondie(){
   document.getElementById('synth-label').textContent='Synthèse Approfondie';
   var aw2=document.getElementById('approfondie-wrap'); if(aw2) aw2.style.display='none';
   document.getElementById('ai-text').innerHTML='';
-  var cl=document.getElementById('compass-loading'); if(cl) cl.style.display='flex';
+  var cl=document.getElementById('compass-loading');
+  if(cl){cl.style.display='flex';}
   generateAI(true);
 }
 
