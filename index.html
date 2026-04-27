@@ -1114,13 +1114,19 @@ function generateAI(approfondie){
 }
 
 function switchToApprofondie(){
-  state.synthType='approfondie';
-  document.getElementById('synth-label').textContent='Synthèse Approfondie';
-  var aw2=document.getElementById('approfondie-wrap'); if(aw2) aw2.style.display='none';
-  document.getElementById('ai-text').innerHTML='';
-  var cl=document.getElementById('compass-loading');
-  if(cl){cl.style.display='flex';}
-  generateAI(true);
+  // Sauvegarder les données avant redirection Stripe
+  var saveData={
+    data:state.data,
+    order:state.order,
+    entry:state.entry,
+    synthType:'approfondie',
+    intention:document.getElementById('intention-text')?document.getElementById('intention-text').value:'',
+    prenom:document.getElementById('id-prenom')?document.getElementById('id-prenom').value:'',
+    nom:document.getElementById('id-nom')?document.getElementById('id-nom').value:'',
+    email:document.getElementById('id-email')?document.getElementById('id-email').value:''
+  };
+  try{localStorage.setItem('boussole_pending',JSON.stringify(saveData));}catch(e){}
+  window.location.href='https://buy.stripe.com/14AeVcbwo11n17w7iQeQM00';
 }
 
 function downloadPDF(){
