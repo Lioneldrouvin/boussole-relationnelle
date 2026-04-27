@@ -1082,22 +1082,17 @@ function downloadPDF(){
     +'<div class="footer">Synthèse issue de l\'outil Boussole relationnelle de Lionel Drouvin · Rédigée avec l\'aide de l\'IA · Première lecture, non un diagnostic</div>'
     +'</body></html>';
 
-  try{
-    var jsPDF=window.jspdf.jsPDF;
-    var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-    doc.html(html,{
-      callback:function(doc){
-        doc.save('boussole-relationnelle'+(prenom?'-'+prenom.toLowerCase():'')+'.pdf');
-      },
-      x:8, y:8,
-      width:194,
-      windowWidth:720,
-      autoPaging:'text'
-    });
-  } catch(e){
-    var win=window.open('','_blank');
-    if(win){win.document.write(html);win.document.close();win.print();}
-    else{alert('Veuillez autoriser les popups pour télécharger le PDF.');}
+  // Ouvrir dans une nouvelle fenêtre et déclencher l'impression/sauvegarde PDF
+  var win=window.open('','_blank');
+  if(win){
+    win.document.write(html);
+    win.document.close();
+    // Attendre le rendu complet avant d'imprimer
+    win.onload=function(){win.print();};
+    // Fallback si onload ne se déclenche pas
+    setTimeout(function(){try{win.print();}catch(e){}},800);
+  } else {
+    alert('Veuillez autoriser les popups de ce site pour télécharger le PDF.');
   }
 }
 
