@@ -1010,81 +1010,97 @@ function downloadPDF(){
   var date=new Date().toLocaleDateString('fr-FR');
   var type=state.synthType==='approfondie'?'Synthèse Approfondie':'Synthèse Essentielle';
   var d=state.data;
+  var SN=d.S?d.S.main:'—', ON=d.O?d.O.main:'—', NN=d.N?d.N.main:'—', EN=d.E?d.E.main:'—';
 
-  // Extraire le texte brut de la synthèse
   var synthBox=document.getElementById('ai-text');
   var besoinsBox=document.getElementById('besoin-content');
+  var reflexionEl2=document.getElementById('reflexion');
+  var reflexionVal2=reflexionEl2&&reflexionEl2.value.trim()?reflexionEl2.value.trim():'';
+
+  // SVG boussole avec les 4 mots
+  var svgBoussole='<svg width="220" height="220" viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">'
+    +'<circle cx="0" cy="0" r="140" fill="none" stroke="#9FE1CB" stroke-width="1"/>'
+    +'<path d="M0,0 L-99,-99 A140,140 0 0,1 99,-99 Z" fill="#E8F8F3" stroke="white" stroke-width="2"/>'
+    +'<path d="M0,0 L99,-99 A140,140 0 0,1 99,99 Z" fill="#F0FAF6" stroke="white" stroke-width="2"/>'
+    +'<path d="M0,0 L99,99 A140,140 0 0,1 -99,99 Z" fill="#E8F8F3" stroke="white" stroke-width="2"/>'
+    +'<path d="M0,0 L-99,99 A140,140 0 0,1 -99,-99 Z" fill="#F0FAF6" stroke="white" stroke-width="2"/>'
+    +'<text x="0" y="-130" text-anchor="middle" font-size="10" font-weight="700" fill="#085041">N</text>'
+    +'<text x="0" y="130" text-anchor="middle" font-size="10" font-weight="700" fill="#085041">S</text>'
+    +'<text x="130" y="0" text-anchor="middle" font-size="10" font-weight="700" fill="#085041">E</text>'
+    +'<text x="-130" y="0" text-anchor="middle" font-size="10" font-weight="700" fill="#085041">O</text>'
+    +'<text x="0" y="-88" text-anchor="middle" font-size="8" fill="#0F6E56" font-style="italic">Être</text>'
+    +'<text x="0" y="-74" text-anchor="middle" font-size="13" font-weight="600" fill="#085041">'+NN+'</text>'
+    +'<text x="0" y="-59" text-anchor="middle" font-size="7" fill="#0F6E56">qualité à s\'autoriser</text>'
+    +'<text x="0" y="57" text-anchor="middle" font-size="7" fill="#0F6E56">qualité à stabiliser</text>'
+    +'<text x="0" y="70" text-anchor="middle" font-size="8" fill="#0F6E56" font-style="italic">Être</text>'
+    +'<text x="0" y="84" text-anchor="middle" font-size="13" font-weight="600" fill="#085041">'+SN+'</text>'
+    +'<text x="84" y="-14" text-anchor="middle" font-size="7" fill="#854F0B" font-style="italic">Être</text>'
+    +'<text x="84" y="-2" text-anchor="middle" font-size="12" font-weight="600" fill="#633806">'+EN+'</text>'
+    +'<text x="84" y="12" text-anchor="middle" font-size="7" fill="#854F0B">allergie-dépendance</text>'
+    +'<text x="-84" y="-14" text-anchor="middle" font-size="7" fill="#854F0B" font-style="italic">Être</text>'
+    +'<text x="-84" y="-2" text-anchor="middle" font-size="12" font-weight="600" fill="#633806">'+ON+'</text>'
+    +'<text x="-84" y="12" text-anchor="middle" font-size="7" fill="#854F0B">piège-refuge</text>'
+    +'<circle cx="0" cy="0" r="34" fill="white" stroke="#C9A84C" stroke-width="1.5"/>'
+    +'<text x="0" y="-12" text-anchor="middle" font-size="8" font-weight="600" fill="#C9A84C">'+SN+'</text>'
+    +'<text x="0" y="2" text-anchor="middle" font-size="16" font-weight="300" fill="#C9A84C" font-family="Georgia,serif">&amp;</text>'
+    +'<text x="0" y="16" text-anchor="middle" font-size="8" font-weight="600" fill="#C9A84C">'+NN+'</text>'
+    +'</svg>';
+
+  // Construire le HTML complet pour jsPDF
+  var besoinsHtml=besoinsBox.innerHTML||'';
+  var synthHtml=synthBox.innerHTML||'';
+
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8">'
+    +'<style>'
+    +'body{font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;padding:20px;max-width:680px;margin:0 auto;font-size:12px;}'
+    +'.header{display:flex;align-items:flex-start;justify-content:space-between;border-bottom:2px solid #9FE1CB;padding-bottom:12px;margin-bottom:16px;}'
+    +'.header-left h1{font-size:16px;color:#1D9E75;margin:0 0 3px;}'
+    +'.header-left .meta{font-size:10px;color:#6b7280;}'
+    +'.header-right{font-size:10px;color:#6b7280;text-align:right;line-height:1.7;}'
+    +'.boussole-wrap{text-align:center;margin:12px 0 16px;}'
+    +'.besoin{background:#E8F8F3;border-radius:6px;padding:10px 12px;margin-bottom:14px;text-align:justify;line-height:1.7;}'
+    +'.besoin-title{font-size:9px;font-weight:bold;text-transform:uppercase;letter-spacing:.06em;color:#085041;margin-bottom:5px;}'
+    +'.ai-titre{font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:.07em;color:#1D9E75;margin-top:14px;margin-bottom:4px;border-top:1px solid #9FE1CB;padding-top:4px;}'
+    +'.ai-titre:first-child{border-top:none;margin-top:0;}'
+    +'.ai-mot{font-weight:bold;color:#085041;font-style:italic;}'
+    +'p{font-size:11px;line-height:1.85;margin-bottom:8px;text-align:justify;}'
+    +'.reflexion{background:#E8F8F3;border-radius:6px;padding:10px 12px;margin-top:14px;text-align:justify;line-height:1.7;}'
+    +'.reflexion-title{font-size:9px;font-weight:bold;text-transform:uppercase;color:#085041;margin-bottom:5px;}'
+    +'.footer{font-size:9px;color:#6b7280;text-align:center;margin-top:16px;border-top:1px solid #e5e7eb;padding-top:8px;}'
+    +'</style></head><body>'
+    +'<div class="header">'
+    +'<div class="header-left">'
+    +'<h1>Boussole relationnelle'+(prenom?' — '+prenom+' '+nom:'')+'</h1>'
+    +'<div class="meta">'+date+' · '+type+'</div>'
+    +'</div>'
+    +'<div class="header-right">Lionel Drouvin<br>Coach relation & Médiateur<br>06 14 67 80 98<br>contact@lioneldrouvin.com<br>lioneldrouvin.com<br><em>Retrouver l\'accès à nos Qualités naturelles<br>et vivre libre et ensemble en relation</em></div>'
+    +'</div>'
+    +'<div class="boussole-wrap">'+svgBoussole+'</div>'
+    +'<div class="besoin"><div class="besoin-title">Vos besoins réels en potentiel</div>'+besoinsHtml+'</div>'
+    +synthHtml
+    +(reflexionVal2?'<div class="reflexion"><div class="reflexion-title">Ce que cette Boussole a mis en lumière</div>'+reflexionVal2+'</div>':'')
+    +'<div class="footer">Synthèse issue de l\'outil Boussole relationnelle de Lionel Drouvin · Rédigée avec l\'aide de l\'IA · Première lecture, non un diagnostic</div>'
+    +'</body></html>';
 
   try{
     var jsPDF=window.jspdf.jsPDF;
     var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-    var margin=20;
-    var pageW=210;
-    var contentW=pageW-margin*2;
-    var y=margin;
-    var lineH=6;
-
-    // En-tête
-    doc.setFontSize(16);doc.setTextColor(29,158,117);
-    doc.text('Boussole relationnelle'+(prenom?' — '+prenom+' '+nom:''),margin,y);y+=8;
-    doc.setFontSize(9);doc.setTextColor(107,114,128);
-    doc.text(date+' — '+type+' — Lionel Drouvin, Coach relation & Médiateur',margin,y);y+=4;
-    doc.text('lioneldrouvin.com',margin,y);y+=8;
-
-    // Besoins réels
-    doc.setFillColor(232,248,243);doc.rect(margin,y,contentW,6,'F');
-    doc.setFontSize(8);doc.setTextColor(8,80,65);doc.setFont(undefined,'bold');
-    doc.text('VOS BESOINS RÉELS',margin+2,y+4);y+=8;
-    doc.setFontSize(10);doc.setTextColor(26,26,26);doc.setFont(undefined,'normal');
-    var besoinsText=besoinsBox.innerText||besoinsBox.textContent||'';
-    var besoinsLines=doc.splitTextToSize(besoinsText,contentW);
-    doc.text(besoinsLines,margin,y);y+=besoinsLines.length*lineH+4;
-
-    // Synthèse - extraire paragraphes avec titres
-    var nodes=synthBox.querySelectorAll('.ai-titre, p');
-    nodes.forEach(function(node){
-      if(y>270){doc.addPage();y=margin;}
-      if(node.classList.contains('ai-titre')){
-        doc.setFontSize(8);doc.setTextColor(29,158,117);doc.setFont(undefined,'bold');
-        doc.text(node.textContent.toUpperCase(),margin,y);y+=6;
-        doc.setDrawColor(159,225,203);doc.line(margin,y-2,margin+contentW,y-2);
-      } else {
-        doc.setFontSize(10);doc.setTextColor(26,26,26);doc.setFont(undefined,'normal');
-        var lines=doc.splitTextToSize(node.textContent||'',contentW);
-        lines.forEach(function(line){
-          if(y>270){doc.addPage();y=margin;}
-          doc.text(line,margin,y);y+=lineH;
-        });
-        y+=2;
-      }
+    doc.html(html,{
+      callback:function(doc){
+        doc.save('boussole-relationnelle'+(prenom?'-'+prenom.toLowerCase():'')+'.pdf');
+      },
+      x:8, y:8,
+      width:194,
+      windowWidth:720,
+      autoPaging:'text'
     });
-
-    // Réflexion de la personne
-    var reflexionEl2=document.getElementById('reflexion');
-    var reflexionVal2=reflexionEl2&&reflexionEl2.value.trim()?reflexionEl2.value.trim():'';
-    if(reflexionVal2){
-      y+=4;
-      if(y>270){doc.addPage();y=margin;}
-      doc.setFillColor(232,248,243);doc.rect(margin,y,contentW,6,'F');
-      doc.setFontSize(8);doc.setTextColor(8,80,65);doc.setFont(undefined,'bold');
-      doc.text('CE QUE CETTE BOUSSOLE A MIS EN LUMIÈRE',margin+2,y+4);y+=8;
-      doc.setFontSize(10);doc.setTextColor(26,26,26);doc.setFont(undefined,'normal');
-      var refLines=doc.splitTextToSize(reflexionVal2,contentW);
-      refLines.forEach(function(rl){if(y>270){doc.addPage();y=margin;}doc.text(rl,margin,y);y+=lineH;});
-      y+=4;
-    }
-    // Pied de page
-    y+=4;
-    if(y>270){doc.addPage();y=margin;}
-    doc.setFontSize(8);doc.setTextColor(107,114,128);
-    doc.text('Synthèse issue de l\'outil Boussole relationnelle de Lionel Drouvin — Première lecture, non un diagnostic.',margin,y);
-
-    doc.save('boussole-relationnelle'+(prenom?'-'+prenom.toLowerCase():'')+'.pdf');
   } catch(e){
-    alert('Le téléchargement PDF rencontre un problème. Essayez avec Chrome ou Firefox à jour.');
-    console.error(e);
+    var win=window.open('','_blank');
+    if(win){win.document.write(html);win.document.close();win.print();}
+    else{alert('Veuillez autoriser les popups pour télécharger le PDF.');}
   }
 }
+
 </script>
 </body>
 </html>
