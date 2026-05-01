@@ -14,7 +14,9 @@
       --r:10px;--rl:14px;
     }
     *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f4f6f8;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:1.5rem 1rem;}
+    html,body{overflow:hidden;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f4f6f8;padding:1.5rem 1rem;}
+    .app{width:100%;max-width:620px;margin:0 auto;}
     .app{background:var(--bg);border-radius:var(--rl);box-shadow:0 4px 24px rgba(0,0,0,.08);width:100%;max-width:620px;padding:1.5rem;}
     .step{display:none;}.step.active{display:block;}
     h2{font-size:18px;font-weight:600;color:var(--tx);margin-bottom:.4rem;}
@@ -134,7 +136,7 @@
     /* CTA finaux */
     .cta-wrap{background:var(--bgs);border-radius:var(--rl);padding:1rem;}
     .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
-    @media(max-width:480px){.cta-grid{grid-template-columns:1fr;}}
+    @media(max-width:480px){body{overflow:hidden;}.app{border-radius:0;box-shadow:none;padding:1rem .75rem;}.id-grid{grid-template-columns:1fr;}.pb-grid{grid-template-columns:1fr;}.synth-choice{grid-template-columns:1fr;}.cta-grid{grid-template-columns:1fr;}.pdf-btn{font-size:16px;padding:10px 20px;}.action-btns{flex-direction:column;gap:.5rem;}}
     .cta-q{font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.6rem;padding:.75rem;background:var(--gl);border-radius:var(--r);border:.5px solid var(--gm);line-height:1.6;}
     .cta-reflexion{width:100%;font-size:13px;padding:8px 12px;border:1px solid var(--bd);border-radius:var(--r);background:var(--bg);color:var(--tx);margin-top:.4rem;margin-bottom:.875rem;min-height:52px;resize:vertical;line-height:1.6;}
     .cta-reflexion:focus{outline:none;border-color:var(--g);}
@@ -1113,7 +1115,7 @@ function buildPrompt(approfondie){
     +(intention?'- Intention posée : "'+intention+'"\n':'')
     +'\nRédige une synthèse structurée en prose justifiée, avec ces 7 titres précédés de §, dans cet ordre. Aucune liste ni tiret.\n\n'
     +'§LE MÉCANISME EN JEU\n'
-    +'Expliquer : la peur de ne pas suffisamment être "'+S+'" pousse, à votre insu, vers être "'+O+'". Le cerveau automatise ce passage inconsciemment. Ce même mécanisme opère côté Nord entre être "'+N+'" et être "'+E+'".\n\n'
+    +'Expliquer : la peur de ne pas suffisamment être "'+S+'" pousse, à votre insu, vers être "'+O+'". Cette peur est souvent liée à un besoin profond de ne pas être rejeté par sa tribu — famille, groupe professionnel ou social — ce qui amène à se sur-adapter au détriment de soi-même. Le cerveau automatise ce passage via des biais heuristiques — ces raccourcis mentaux rapides et automatiques (heuristiques) qui, dans certains contextes, s\'avèrent erronés et nous font basculer dans l\'excès sans que nous en ayons conscience. Ce même mécanisme opère côté Nord entre être "'+N+'" et être "'+E+'".\n\n'
     +'§LA MISE EN ALLIANCE AU CENTRE\n'
     +'Expliquer que être "'+S+'" et être "'+N+'" ne s\'opposent pas — ils se potentialisent. Leur alliance est une plénitude et la réponse au manque intérieur.\n\n'
     +'§LES DEUX DÉCONFUSIONS LIBÉRATRICES\n'
@@ -1123,9 +1125,9 @@ function buildPrompt(approfondie){
     +'2e Deuxième déconfusion — entre être "'+S+'" ('+Sw+') et être "'+O+'" ('+Ow+'). Même protocole : ressentir la différence dans le corps. Laisser du temps. Conclure ce paragraphe.\n\n'
     +'Conclure par : S\'informer — ré-informer son cerveau — est un acte de souveraineté. Mention de ne plus être dans le flou, clarté, libre-arbitre.\n\n'
     +'§L\'ALLERGIE-DÉPENDANCE\n'
-    +'Expliquer : dans certains contextes, la peur d\'être perçu comme trop être "'+N+'" conduit à se l\'interdire. Le cerveau bascule instantanément vers être "'+O+'" — moindre mal entre deux inconforts. Ton mesuré, bienveillant.\n\n'
+    +'Expliquer : dans certains contextes, la peur d\'être perçu comme trop être "'+N+'" — et d\'être ainsi rejeté par son groupe — conduit, par sur-adaptation, à se l\'interdire. Le cerveau bascule instantanément vers être "'+O+'" — moindre mal entre deux inconforts. Ton mesuré, bienveillant.\n\n'
     +'§LA COMPENSATION INCONSCIENTE\n'
-    +'Expliquer : se couper de être "'+N+'" crée un manque comblé par des besoins-compensatoires au détriment de soi et des autres. Être "'+S+'" et être "'+N+'" sont des points-ressources ; être "'+O+'" et être "'+E+'" sont des points de vigilance.\n\n'
+    +'Expliquer : se couper de être "'+N+'" crée un manque comblé par des besoins-compensatoires au détriment de soi et des autres. Ces mécanismes compensatoires sont eux aussi pilotés par des biais heuristiques — des raccourcis automatiques du cerveau qui cherchent à éviter l\'inconfort le plus vite possible, sans évaluer si la stratégie est vraiment adaptée au contexte présent. Être "'+S+'" et être "'+N+'" sont des points-ressources ; être "'+O+'" et être "'+E+'" sont des points de vigilance.\n\n'
     +'§LA DYNAMIQUE RELATIONNELLE\n'
     +'Commencer par : Concrètement, quand une relation se tend pour vous, c\'est peut-être parce que vous détectez chez l\'autre un comportement qui vous allergise — comme être "'+E+'" ('+Ew+'). Votre tendance est de vous réfugier dans être "'+O+'" ('+Ow+'). Ce piège met en allergie l\'autre. Au plus l\'un se réfugie dans son piège, au plus l\'autre se réfugie dans le sien. Spirale de tension.\n'
     +'Terminer par : Voyez aussi le cadeau qui se révèle dans la relation : l\'autre est un révélateur de être "'+N+'" dont vous vous êtes privé à votre insu. Et vice-et-versa. Observer sans jugement ouvre une première porte.\n\n'
@@ -1341,6 +1343,21 @@ function downloadPDF(){
 // Vérifier retour Stripe au chargement
 if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",checkStripeReturn);}else{checkStripeReturn();}
 document.addEventListener("DOMContentLoaded",checkStripeReturn);
+
+// Communiquer la hauteur réelle à Wix pour ajuster l'iFrame automatiquement
+function sendHeight(){
+  var h=document.body.scrollHeight||document.documentElement.scrollHeight;
+  window.parent.postMessage({type:"wix-height",height:h+40},"*");
+}
+// Envoyer la hauteur au chargement et à chaque changement
+document.addEventListener("DOMContentLoaded",function(){
+  sendHeight();
+  // Observer les changements de contenu
+  var obs=new MutationObserver(function(){setTimeout(sendHeight,300);});
+  obs.observe(document.body,{childList:true,subtree:true,attributes:true});
+  // Aussi envoyer à intervalles réguliers pendant la génération
+  setInterval(sendHeight,1000);
+});
 
 // Animation séquentielle des quartiers de la boussole étape 2
 (function(){
