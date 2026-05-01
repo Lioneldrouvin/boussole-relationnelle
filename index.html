@@ -982,7 +982,13 @@ function selectSynth(type){
       email:document.getElementById('id-email')?document.getElementById('id-email').value:''
     };
     try{localStorage.setItem('boussole_pending',JSON.stringify(saveData));}catch(e){}
-    window.location.href='https://buy.stripe.com/14AeVcbwo11n17w7iQeQM00';
+    // Ouvrir Stripe dans nouvel onglet pour compatibilité iFrame mobile
+    var stripeUrl='https://buy.stripe.com/14AeVcbwo11n17w7iQeQM00';
+    var win=window.open(stripeUrl,'_blank');
+    if(!win||win.closed||typeof win.closed=='undefined'){
+      // Fallback si popup bloquée
+      window.location.href=stripeUrl;
+    }
   } else {
     show('s-id');
   }
@@ -1200,7 +1206,11 @@ function switchToApprofondie(){
     email:document.getElementById('id-email')?document.getElementById('id-email').value:''
   };
   try{localStorage.setItem('boussole_pending',JSON.stringify(saveData));}catch(e){}
-  window.location.href='https://buy.stripe.com/14AeVcbwo11n17w7iQeQM00';
+  var stripeUrl2='https://buy.stripe.com/14AeVcbwo11n17w7iQeQM00';
+  var win2=window.open(stripeUrl2,'_blank');
+  if(!win2||win2.closed||typeof win2.closed=='undefined'){
+    window.location.href=stripeUrl2;
+  }
 }
 
 function copyCode(codeId, confirmedId){
