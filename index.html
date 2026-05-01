@@ -257,7 +257,7 @@
     <h2>Par laquelle de ces 4 entrées voulez-vous commencer ?</h2>
     <p class="sub" style="text-align:center;">En fonction de ce qui résonne le plus pour vous,<br>cliquez sur la direction choisie.</p>
 
-    <svg viewBox="-175 -175 350 350" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;display:block;margin:0 auto;cursor:pointer;" font-family="-apple-system,BlinkMacSystemFont,sans-serif">
+    <svg id="boussole-step2" viewBox="-175 -175 350 350" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;display:block;margin:0 auto;cursor:pointer;" font-family="-apple-system,BlinkMacSystemFont,sans-serif">
       <defs>
         <style>
           .qzone{transition:fill .4s ease, transform .4s ease;}
@@ -1334,7 +1334,7 @@ document.addEventListener("DOMContentLoaded",checkStripeReturn);
 
 // Animation séquentielle des quartiers de la boussole étape 2
 (function(){
-  var sequence=['N','S','E','O'];
+  var sequence=['S','O','N','E'];
   var colors={N:'#C8EFE4',S:'#C8EFE4',E:'#F5DFB8',O:'#F5DFB8'};
   var baseColors={N:'#E8F8F3',S:'#E8F8F3',E:'#FAEEDA',O:'#FAEEDA'};
   var current=0;
@@ -1363,7 +1363,7 @@ document.addEventListener("DOMContentLoaded",checkStripeReturn);
   function startCompassAnim(){
     if(animInterval) return;
     animateQuartier();
-    animInterval=setInterval(animateQuartier,900);
+    animInterval=setInterval(animateQuartier,1400);
   }
 
   function stopCompassAnim(){
@@ -1389,6 +1389,21 @@ document.addEventListener("DOMContentLoaded",checkStripeReturn);
   document.addEventListener('DOMContentLoaded',function(){
     var s2=document.getElementById('s2');
     if(s2) observer.observe(s2,{attributes:true,attributeFilter:['class']});
+
+    // Pause au survol de la boussole, reprise à la sortie
+    var svgBoussole=document.getElementById('boussole-step2');
+    if(svgBoussole){
+      svgBoussole.addEventListener('mouseenter',function(){
+        if(animInterval){clearInterval(animInterval);animInterval=null;}
+        stopCompassAnim();
+      });
+      svgBoussole.addEventListener('mouseleave',function(){
+        var s2active=document.getElementById('s2');
+        if(s2active&&s2active.classList.contains('active')){
+          startCompassAnim();
+        }
+      });
+    }
   });
 })();
 </script>
