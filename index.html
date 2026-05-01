@@ -260,8 +260,12 @@
     <svg viewBox="-175 -175 350 350" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;display:block;margin:0 auto;cursor:pointer;" font-family="-apple-system,BlinkMacSystemFont,sans-serif">
       <defs>
         <style>
-          .qzone{transition:opacity .15s;}
-          .qzone:hover{opacity:.85;}
+          .qzone{transition:fill .4s ease, transform .4s ease;}
+          .qzone:hover{filter:brightness(0.92);}
+          .qzone-N.qactive{fill:#C8EFE4;transform:scale(1.04);}
+          .qzone-S.qactive{fill:#C8EFE4;transform:scale(1.04);}
+          .qzone-E.qactive{fill:#F5DFB8;transform:scale(1.04);}
+          .qzone-O.qactive{fill:#F5DFB8;transform:scale(1.04);}
         </style>
       </defs>
 
@@ -269,13 +273,13 @@
       <circle cx="0" cy="0" r="148" fill="none" stroke="#9FE1CB" stroke-width="1"/>
 
       <!-- NORD — qualité que vous aimez chez l'autre -->
-      <path class="qzone" d="M0,0 L-105,-105 A148,148 0 0,1 105,-105 Z" fill="#E8F8F3" stroke="white" stroke-width="2" onclick="chooseAndStart('N')" style="cursor:pointer;"/>
+      <path class="qzone qzone-N" id="qz-N" d="M0,0 L-105,-105 A148,148 0 0,1 105,-105 Z" fill="#E8F8F3" stroke="white" stroke-width="2" onclick="chooseAndStart('N')" style="cursor:pointer;transform-origin:0px 0px;"/>
       <!-- SUD — qualité que vous vous reconnaissez -->
-      <path class="qzone" d="M0,0 L105,105 A148,148 0 0,1 -105,105 Z" fill="#E8F8F3" stroke="white" stroke-width="2" onclick="chooseAndStart('S')" style="cursor:pointer;"/>
+      <path class="qzone qzone-S" id="qz-S" d="M0,0 L105,105 A148,148 0 0,1 -105,105 Z" fill="#E8F8F3" stroke="white" stroke-width="2" onclick="chooseAndStart('S')" style="cursor:pointer;transform-origin:0px 0px;"/>
       <!-- EST — défaut chez l'autre qui vous agace -->
-      <path class="qzone" d="M0,0 L105,-105 A148,148 0 0,1 105,105 Z" fill="#FAEEDA" stroke="white" stroke-width="2" onclick="chooseAndStart('E')" style="cursor:pointer;"/>
+      <path class="qzone qzone-E" id="qz-E" d="M0,0 L105,-105 A148,148 0 0,1 105,105 Z" fill="#FAEEDA" stroke="white" stroke-width="2" onclick="chooseAndStart('E')" style="cursor:pointer;transform-origin:0px 0px;"/>
       <!-- OUEST — défaut que vous vous reconnaissez -->
-      <path class="qzone" d="M0,0 L-105,105 A148,148 0 0,1 -105,-105 Z" fill="#FAEEDA" stroke="white" stroke-width="2" onclick="chooseAndStart('O')" style="cursor:pointer;"/>
+      <path class="qzone qzone-O" id="qz-O" d="M0,0 L-105,105 A148,148 0 0,1 -105,-105 Z" fill="#FAEEDA" stroke="white" stroke-width="2" onclick="chooseAndStart('O')" style="cursor:pointer;transform-origin:0px 0px;"/>
 
       <!-- Rose des vents en filigrane -->
       <g opacity="0.10" pointer-events="none">
@@ -939,6 +943,7 @@ function saveAndNext(){
   saveCurrent();
   state.step++;
   showCase();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function goBackCase(){
@@ -1133,7 +1138,12 @@ function generateAI(approfondie){
   var S=d.S?d.S.main:'?', O=d.O?d.O.main:'?', N=d.N?d.N.main:'?', E=d.E?d.E.main:'?';
   fetch(API_URL,{
     method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':API_KEY,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
     body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:maxTok,messages:[{role:'user',content:prompt}]})
   }).then(function(r){return r.json();})
   .then(function(data){
@@ -1159,11 +1169,11 @@ function generateAI(approfondie){
           p=p.replace(new RegExp('(être\\s+)('+esc+')','gi'),'être <span class="ai-mot">$2</span>');
         });
         var pout='<p>'+p+'</p>';
-          if(p.indexOf('1re Première déconfusion')>-1||p.indexOf('Première déconfusion')>-1)
-            pout='<p style="margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--gm);">🔵 '+p.replace('1re Première','Première')+'</p>';
-          else if(p.indexOf('2e Deuxième déconfusion')>-1||p.indexOf('Deuxième déconfusion')>-1)
-            pout='<p style="margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--gm);">🟢 '+p.replace('2e Deuxième','Deuxième')+'</p>';
-          return pout;
+        if(p.indexOf('1re Première déconfusion')>-1||p.indexOf('Première déconfusion')>-1)
+          pout='<p style="margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--gm);">🔵 '+p.replace('1re Première','Première')+'</p>';
+        else if(p.indexOf('2e Deuxième déconfusion')>-1||p.indexOf('Deuxième déconfusion')>-1)
+          pout='<p style="margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--gm);">🟢 '+p.replace('2e Deuxième','Deuxième')+'</p>';
+        return pout;
       }).join('');
       var cl=document.getElementById('compass-loading');
       if(cl) cl.style.display='none';
@@ -1321,6 +1331,66 @@ function downloadPDF(){
 // Vérifier retour Stripe au chargement
 if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",checkStripeReturn);}else{checkStripeReturn();}
 document.addEventListener("DOMContentLoaded",checkStripeReturn);
+
+// Animation séquentielle des quartiers de la boussole étape 2
+(function(){
+  var sequence=['N','S','E','O'];
+  var colors={N:'#C8EFE4',S:'#C8EFE4',E:'#F5DFB8',O:'#F5DFB8'};
+  var baseColors={N:'#E8F8F3',S:'#E8F8F3',E:'#FAEEDA',O:'#FAEEDA'};
+  var current=0;
+  var animInterval=null;
+
+  function animateQuartier(){
+    // Désactiver le précédent
+    var prev=sequence[(current-1+4)%4];
+    var elPrev=document.getElementById('qz-'+prev);
+    if(elPrev){
+      elPrev.classList.remove('qactive');
+      elPrev.style.fill=baseColors[prev];
+      elPrev.style.transform='scale(1)';
+    }
+    // Activer le courant
+    var cur=sequence[current];
+    var elCur=document.getElementById('qz-'+cur);
+    if(elCur){
+      elCur.style.fill=colors[cur];
+      elCur.style.transform='scale(1.04)';
+      elCur.classList.add('qactive');
+    }
+    current=(current+1)%4;
+  }
+
+  function startCompassAnim(){
+    if(animInterval) return;
+    animateQuartier();
+    animInterval=setInterval(animateQuartier,900);
+  }
+
+  function stopCompassAnim(){
+    if(animInterval){clearInterval(animInterval);animInterval=null;}
+    // Remettre tous les quartiers à leur état de base
+    sequence.forEach(function(k){
+      var el=document.getElementById('qz-'+k);
+      if(el){el.classList.remove('qactive');el.style.fill=baseColors[k];el.style.transform='scale(1)';}
+    });
+    current=0;
+  }
+
+  // Observer quand l'étape 2 devient active
+  var observer=new MutationObserver(function(){
+    var s2=document.getElementById('s2');
+    if(s2&&s2.classList.contains('active')){
+      startCompassAnim();
+    } else {
+      stopCompassAnim();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded',function(){
+    var s2=document.getElementById('s2');
+    if(s2) observer.observe(s2,{attributes:true,attributeFilter:['class']});
+  });
+})();
 </script>
 </body>
 </html>
