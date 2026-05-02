@@ -499,7 +499,7 @@
 
     <hr>
     <div style="font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;" id="synth-label">Synthèse</div>
-    <p class="ai-note">Cette synthèse découle de l'outil développé par Lionel Drouvin et de sa vision de ce qui se joue dans la relation à soi et avec les autres. Elle est personnalisée selon vos mots, rédigée avec l'aide de l'IA. Première lecture, non un diagnostic.</p>
+    <p class="ai-note">Cette synthèse découle de l'outil développé par Lionel Drouvin et de sa vision de ce qui se joue dans la relation à soi et avec les autres. Elle est personnalisée selon vos mots, rédigée avec l'aide de l'IA. Ce n'est pas un plat servi tout fait — c'est une invitation à regarder, sentir et explorer à votre propre rythme. Première lecture, non un diagnostic.</p>
     <div class="compass-loading" id="compass-loading">
         <svg width="90" height="90" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -1127,14 +1127,14 @@ function buildPrompt(approfondie){
     +'§L\'ALLERGIE-DÉPENDANCE\n'
     +'Expliquer : dans certains contextes, la peur d\'être perçu comme trop être "'+N+'" — et d\'être ainsi rejeté par son groupe — conduit, par sur-adaptation, à se l\'interdire. Le cerveau bascule instantanément vers être "'+O+'" — moindre mal entre deux inconforts. Ton mesuré, bienveillant.\n\n'
     +'§LA COMPENSATION INCONSCIENTE\n'
-    +'Expliquer : se couper de être "'+N+'" crée un manque comblé par des besoins-compensatoires au détriment de soi et des autres. Ces mécanismes compensatoires sont eux aussi pilotés par des biais heuristiques — des raccourcis automatiques du cerveau qui cherchent à éviter l\'inconfort le plus vite possible, sans évaluer si la stratégie est vraiment adaptée au contexte présent. Être "'+S+'" et être "'+N+'" sont des points-ressources ; être "'+O+'" et être "'+E+'" sont des points de vigilance.\n\n'
+    +'Expliquer : se couper de être "'+N+'" crée un manque comblé par des besoins-compensatoires au détriment de soi et des autres. Ces mécanismes compensatoires sont eux aussi pilotés par des biais heuristiques — des raccourcis automatiques du cerveau qui cherchent à éviter l\'inconfort le plus vite possible, sans évaluer si la stratégie est vraiment adaptée au contexte présent. Être "'+S+'" et être "'+N+'" peuvent être vus comme des points-ressources naturels ; être "'+O+'" et être "'+E+'" comme des zones d\'observation bienveillante.\n\n'
     +'§LA DYNAMIQUE RELATIONNELLE\n'
     +'Commencer par : Concrètement, quand une relation se tend pour vous, c\'est peut-être parce que vous détectez chez l\'autre un comportement qui vous allergise — comme être "'+E+'" ('+Ew+'). Votre tendance est de vous réfugier dans être "'+O+'" ('+Ow+'). Ce piège met en allergie l\'autre. Au plus l\'un se réfugie dans son piège, au plus l\'autre se réfugie dans le sien. Spirale de tension.\n'
     +'Terminer par : Voyez aussi le cadeau qui se révèle dans la relation : l\'autre est un révélateur de être "'+N+'" dont vous vous êtes privé à votre insu. Et vice-et-versa. Observer sans jugement ouvre une première porte.\n\n'
     +'§VOTRE CHEMIN DE LIBÉRATION\n'
     +(approfondie
-      ?'3-4 phrases inspirantes. Parler de se libérer du mécanisme, d\'être auteur de sa vie, d\'être souverain, de libre-arbitre. Utiliser "indications" ou "informations" jamais "cartographie". Étayer, montrer la transformation possible, donner fortement envie d\'aller plus loin.'
-      :'2-3 phrases inspirantes. Parler de se libérer du mécanisme, d\'être auteur de sa vie, d\'être souverain. Utiliser "indications" ou "informations" jamais "cartographie". Donner envie d\'aller plus loin.');
+      ?'3-4 phrases en forme d\'invitation, jamais d\'injonction. Utiliser des formulations comme "il se peut que...", "vous pourrez peut-être observer...", "une tendance à...". Évoquer la possibilité de se libérer du mécanisme, d\'être auteur de sa vie, d\'être souverain, de libre-arbitre. Utiliser "indications" ou "informations" jamais "cartographie". Terminer par cette phrase exacte, mot pour mot : "Ce n\'est pas un plat préparé et servi tout fait. Il s\'agit de cuisiner avec tous les ingrédients qui sont là, puis de goûter, d\'ajuster et de déguster en présence à soi."'
+      :'2-3 phrases en forme d\'invitation, jamais d\'injonction. Utiliser des formulations comme "il se peut que...", "vous pourrez peut-être observer...". Évoquer la possibilité de se libérer du mécanisme, d\'être auteur de sa vie, d\'être souverain. Utiliser "indications" ou "informations" jamais "cartographie". Terminer par cette phrase exacte, mot pour mot : "Ce n\'est pas un plat préparé et servi tout fait. Il s\'agit de cuisiner avec tous les ingrédients qui sont là, puis de goûter, d\'ajuster et de déguster en présence à soi."');
 
   return prompt;
 }
@@ -1296,21 +1296,21 @@ function downloadPDF(){
 
   var html='<!DOCTYPE html><html><head><meta charset="UTF-8">'
     +'<style>'
-    +'body{font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;padding:20px;max-width:680px;margin:0 auto;font-size:12px;}'
-    +'.header{display:flex;align-items:flex-start;justify-content:space-between;border-bottom:2px solid #9FE1CB;padding-bottom:12px;margin-bottom:16px;}'
-    +'.header-left h1{font-size:16px;color:#1D9E75;margin:0 0 3px;}'
-    +'.header-left .meta{font-size:10px;color:#6b7280;}'
-    +'.header-right{font-size:10px;color:#6b7280;text-align:right;line-height:1.7;}'
-    +'.boussole-wrap{text-align:center;margin:12px 0 16px;}'
-    +'.besoin{background:#E8F8F3;border-radius:6px;padding:10px 12px;margin-bottom:14px;text-align:justify;line-height:1.7;}'
-    +'.besoin-title{font-size:9px;font-weight:bold;text-transform:uppercase;letter-spacing:.06em;color:#085041;margin-bottom:5px;}'
-    +'.ai-titre{font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:.07em;color:#1D9E75;margin-top:14px;margin-bottom:4px;border-top:1px solid #9FE1CB;padding-top:4px;}'
+    +'body{font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;padding:24px;max-width:700px;margin:0 auto;font-size:14px;}'
+    +'.header{display:flex;align-items:flex-start;justify-content:space-between;border-bottom:2px solid #9FE1CB;padding-bottom:16px;margin-bottom:20px;}'
+    +'.header-left h1{font-size:20px;color:#1D9E75;margin:0 0 5px;}'
+    +'.header-left .meta{font-size:13px;color:#6b7280;}'
+    +'.header-right{font-size:13px;color:#6b7280;text-align:right;line-height:1.8;}'
+    +'.boussole-wrap{text-align:center;margin:16px 0 20px;}'
+    +'.besoin{background:#E8F8F3;border-radius:6px;padding:14px 16px;margin-bottom:18px;text-align:justify;line-height:1.8;}'
+    +'.besoin-title{font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:.06em;color:#085041;margin-bottom:7px;}'
+    +'.ai-titre{font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:.07em;color:#1D9E75;margin-top:18px;margin-bottom:6px;border-top:1px solid #9FE1CB;padding-top:6px;}'
     +'.ai-titre:first-child{border-top:none;margin-top:0;}'
     +'.ai-mot{font-weight:bold;color:#085041;font-style:italic;}'
-    +'p{font-size:11px;line-height:1.85;margin-bottom:8px;text-align:justify;}'
-    +'.reflexion{background:#E8F8F3;border-radius:6px;padding:10px 12px;margin-top:14px;text-align:justify;line-height:1.7;}'
-    +'.reflexion-title{font-size:9px;font-weight:bold;text-transform:uppercase;color:#085041;margin-bottom:5px;}'
-    +'.footer{font-size:9px;color:#6b7280;text-align:center;margin-top:16px;border-top:1px solid #e5e7eb;padding-top:8px;}'
+    +'p{font-size:13px;line-height:1.9;margin-bottom:10px;text-align:justify;}'
+    +'.reflexion{background:#E8F8F3;border-radius:6px;padding:14px 16px;margin-top:18px;text-align:justify;line-height:1.8;}'
+    +'.reflexion-title{font-size:11px;font-weight:bold;text-transform:uppercase;color:#085041;margin-bottom:7px;}'
+    +'.footer{font-size:12px;color:#6b7280;text-align:center;margin-top:20px;border-top:1px solid #e5e7eb;padding-top:12px;line-height:1.8;}'
     +'</style></head><body>'
     +'<div class="header">'
     +'<div class="header-left">'
