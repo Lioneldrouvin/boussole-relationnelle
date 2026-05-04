@@ -499,6 +499,7 @@
 
     <hr>
     <div style="font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;" id="synth-label">Synthèse</div>
+    <p class="ai-note" style="border-left:3px solid var(--go);background:var(--gol);padding:.875rem 1rem;font-size:13px;font-style:normal;color:var(--gdp);margin-bottom:.75rem;">✦ Votre valeur ne dépend de qui ni de quoi que ce soit. Elle est. Simplement.</p>
     <p class="ai-note">Cette synthèse découle de l'outil développé par Lionel Drouvin et de sa vision de ce qui se joue dans la relation à soi et avec les autres. Elle est personnalisée selon vos mots, rédigée avec l'aide de l'IA. Ce n'est pas un plat servi tout fait — c'est une invitation à regarder, sentir et explorer à votre propre rythme. Première lecture, non un diagnostic.</p>
     <div class="compass-loading" id="compass-loading">
         <svg width="90" height="90" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -636,12 +637,12 @@
         </div>
 
         <div class="cta-opt" style="border-color:var(--gm);background:var(--gl);">
-          <div class="cta-tag" style="color:var(--gdp);">🎯 Pour les collectifs</div>
-          <div class="cta-title" style="color:var(--gdp);">Organiser un atelier Boussole dans ma structure</div>
+          <div class="cta-tag" style="color:var(--gdp);">🎯 Atelier pour les collectifs</div>
+          <div class="cta-title" style="color:var(--gdp);">Organiser un atelier Boussole dans votre structure</div>
           <div class="cta-prix" style="color:var(--g);">Sur mesure · Sur devis</div>
           <div class="cta-desc">Entreprise, association, équipe — un atelier personnalisé pour vivre la Boussole ensemble et transformer la dynamique relationnelle du groupe.</div>
           <div class="cta-btns">
-            <button class="btn btn-g btn-sm" style="width:100%;justify-content:center;" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter &rarr;</button>
+            <button class="btn btn-g btn-sm" style="width:100%;justify-content:center;" onclick="window.open('https://www.lioneldrouvin.com/atelier-boussole-relationnelle','_blank')">Découvrir l’atelier Boussole &rarr;</button>
           </div>
         </div>
 
@@ -845,7 +846,7 @@ function getEntryQ(k){
 function buildTransQ(from,to,w){
   var b='<strong>'+w+'</strong>';
   var toExcess=(from==='S'&&to==='O')||(from==='N'&&to==='E')||(from==='O'&&to==='E')||(from==='E'&&to==='O');
-  if(toExcess) return "Visualisez quelqu'un qui se juge de ne pas être suffisamment "+b+" — et qui se sent donc obligé de prouver à lui-même et au monde qu'il a cette qualité. Il va alors avoir tendance à être cent mille fois trop "+b+". Quels mots décrivent cet excès ?";
+  if(toExcess) return "Visualisez quelqu'un qui se juge et se sent coupable de ne pas être suffisamment "+b+" — quelqu'un qui est même persuadé que sa valeur en dépend — et qui se sent donc obligé de prouver à lui-même et au monde qu'il a cette qualité. Il va alors avoir tendance à être cent mille fois trop "+b+". Selon vous, quels mots décrivent cet excès ?";
   return "Comment qualifiez-vous une personne qui n'est pas du tout dans l'excès d'être "+b+" ? Quels mots décrivent la qualité à l'opposé ?";
 }
 
