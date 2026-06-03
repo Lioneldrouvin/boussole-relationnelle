@@ -657,8 +657,7 @@
 </div>
 
 <script>
-var API_KEY=atob('c2stYW50LWFwaTAzLUZiT0hPWDN1MUJYamRYcUR1NGNqSGYxWkI1S0NsQTY4Z1ZlTE9KMVZETC00Sm01dFVDeVItSUptNTVRb2xuZ0Z6ejg0MkxGbERvNmYzTXFabVluSnlRLUtFa1JSZ0FB');
-var API_URL='https://api.anthropic.com/v1/messages';
+var API_URL='https://boussole-proxy.small-credit-84c1.workers.dev';
 var FORMSPREE_ID='xjgjpbyw'; // Remplacer par votre ID Formspree ex: xpwzvkgr
 var CIRCUIT=['S','O','N','E'];
 
@@ -871,9 +870,9 @@ function fetchSynoWords(word){
   var isExcesCtx=META[state.order[state.step]].color==='OE';
   var contexte=isExcesCtx?'excès, défaut, comportement excessif':'qualité, vertu, attitude positive';
   var synoPrompt='Donne-moi 8 synonymes ou mots proches du mot "'+word+'" en français, dans le contexte de : '+contexte+'. Réponds UNIQUEMENT avec les 8 mots séparés par des virgules, sans explication, sans numérotation, sans ponctuation finale.';
-  fetch('https://api.anthropic.com/v1/messages',{
+  fetch(API_URL,{
     method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    headers:{'Content-Type':'application/json'},
     body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:80,messages:[{role:'user',content:synoPrompt}]})
   }).then(function(r){return r.json();})
   .then(function(d){
@@ -1056,7 +1055,7 @@ function generateBesoinsInline(){
     +'1. Être "'+S+'" exprime un besoin réel de [besoin précis en résonance avec '+Sw+'].\n'
     +'2. Être "'+N+'" révèle un besoin réel de [besoin précis en résonance avec '+Nw+']. Leur alliance nourrit [ce que leur réunion permet].\n'
     +'Soyez précis, concis, en résonance directe avec les mots cités.';
-  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:200,messages:[{role:'user',content:prompt}]})})
+  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:200,messages:[{role:'user',content:prompt}]})})
     .then(function(r){return r.json();})
     .then(function(data){
       var text=data.content&&data.content[0]?data.content[0].text:null;
@@ -1077,7 +1076,7 @@ function generateBesoins(){
     +'2. Être "'+S+'" exprime un besoin de [besoin en résonance directe avec '+Sw+'].\n'
     +'3. Être "'+N+'" révèle un besoin de [besoin en résonance avec '+Nw+']. Leur alliance nourrit [résultat concret].\n'
     +'Soyez précis, chaleureux.';
-  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:300,messages:[{role:'user',content:prompt}]})})
+  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:300,messages:[{role:'user',content:prompt}]})})
     .then(function(r){return r.json();})
     .then(function(data){
       var text=data.content&&data.content[0]?data.content[0].text:null;
@@ -1150,11 +1149,7 @@ function generateAI(approfondie){
   fetch(API_URL,{
     method:'POST',
     headers:{
-      'Content-Type':'application/json',
-      'x-api-key':API_KEY,
-      'anthropic-version':'2023-06-01',
-      'anthropic-dangerous-direct-browser-access':'true'
-    },
+      'Content-Type':'application/json'},
     body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:maxTok,messages:[{role:'user',content:prompt}]})
   }).then(function(r){return r.json();})
   .then(function(data){
