@@ -359,7 +359,7 @@
       <div class="tags" id="syno-tags"></div>
     </div>
     <hr>
-    <label>Le mot qui résonne le plus — dans le corps autant que dans la tête</label>
+    <label>Parmi ces mots, inscrivez celui qui résonne le plus pour vous — dans le corps autant que dans la tête</label>
     <input type="text" id="case-main" placeholder="Mot principal..." oninput="checkCase()">
     <div class="mot-retenu-wrap" id="mot-retenu-wrap" style="display:none;">
       <span class="mot-retenu-principal" id="mot-retenu-principal"></span>
@@ -810,8 +810,8 @@ function showCase(){
   posture.style.display='none';
   var isExcess=(key==='O'||key==='E');
   document.getElementById('words-lbl').textContent=isExcess
-    ?'Notez 2 ou 3 mots — depuis ce que vous ressentez (séparés par des virgules)'
-    :'Notez 2 ou 3 mots qui traduisent cette qualité (séparés par des virgules)';
+    ?'Notez 2 ou 3 mots qualificatifs (adjectifs ou participes présents ou participes passés) qui traduisent cet excès — séparés par des virgules'
+    :'Notez 2 ou 3 mots qualificatifs (adjectifs ou participes présents ou participes passés) qui traduisent cette qualité — séparés par des virgules';
   // Restaurer données existantes
   var existing=state.data[key];
   if(existing){
