@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Boussole relationnelle — Lionel Drouvin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root{
@@ -15,23 +18,23 @@
     }
     *{box-sizing:border-box;margin:0;padding:0;}
     html,body{margin:0;padding:0;}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f4f6f8;padding:1.5rem 1rem;}
-    .app{width:100%;max-width:620px;margin:0 auto;}
-    .app{background:var(--bg);border-radius:var(--rl);box-shadow:0 4px 24px rgba(0,0,0,.08);width:100%;max-width:620px;padding:1.5rem;}
+    body{font-family:'Open Sans',sans-serif;background:#f0f4f3;padding:1.5rem 1rem;}
+    .app{width:100%;max-width:640px;margin:0 auto;}
+    .app{background:var(--bg);border-radius:16px;box-shadow:0 8px 40px rgba(8,80,65,.13);width:100%;max-width:640px;padding:2rem;}
     .step{display:none;}.step.active{display:block;}
-    h2{font-size:18px;font-weight:600;color:var(--tx);margin-bottom:.4rem;}
+    h2{font-family:"Montserrat",sans-serif;font-size:20px;font-weight:700;color:var(--gdp);margin-bottom:.5rem;letter-spacing:-.01em;}
     .sub{font-size:14px;color:var(--ts);line-height:1.7;margin-bottom:.875rem;}
     .prog-wrap{margin-bottom:1.25rem;}
-    .prog-bar{height:4px;background:var(--bd);border-radius:2px;overflow:hidden;}
-    .prog-fill{height:100%;background:var(--g);border-radius:2px;transition:width .3s;}
+    .prog-bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;}
+    .prog-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--gd));border-radius:3px;transition:width .4s ease;}
     .prog-label{font-size:11px;color:var(--ts);text-align:right;margin-top:4px;}
     .nav{display:flex;gap:.5rem;margin-top:1rem;align-items:center;flex-wrap:wrap;}
     .btn-back{font-size:13px;color:var(--ts);background:none;border:none;cursor:pointer;padding:6px 0;}
     .btn-back:hover{color:var(--tx);}
-    .btn{display:inline-block;padding:9px 20px;font-size:14px;font-weight:500;border:1px solid var(--bd);border-radius:var(--r);background:transparent;color:var(--tx);cursor:pointer;transition:background .15s;}
+    .btn{display:inline-block;padding:10px 22px;font-family:"Montserrat",sans-serif;font-size:14px;font-weight:600;border:2px solid var(--bd);border-radius:12px;background:transparent;color:var(--tx);cursor:pointer;transition:all .2s;}
     .btn:hover{background:var(--bgs);}
-    .btn-g{background:var(--g);color:#fff;border-color:var(--g);}
-    .btn-g:hover{background:var(--gd);}
+    .btn-g{background:var(--g);color:#fff;border-color:var(--g);box-shadow:0 3px 12px rgba(29,158,117,.3);}
+    .btn-g:hover{background:var(--gd);box-shadow:0 5px 16px rgba(29,158,117,.4);transform:translateY(-1px);}
     .btn-go{background:var(--go);color:#fff;border-color:var(--go);}
     .btn-go:hover{background:#a8883a;}
     .btn-sm{padding:7px 14px;font-size:13px;}
@@ -55,21 +58,21 @@
     .ec-badge.am{color:var(--am);background:var(--aml);}
     .ec-sub{font-size:12px;color:var(--ts);margin-top:2px;line-height:1.5;}
     /* Case */
-    .dir-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 10px;border-radius:999px;margin-bottom:.75rem;}
+    .dir-badge{display:inline-block;font-family:"Montserrat",sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 14px;border-radius:999px;margin-bottom:.875rem;border:1.5px solid currentColor;}
     .badge-SN{background:var(--gl);color:var(--gdp);}
     .badge-OE{background:var(--aml);color:var(--amd);}
-    .qbox{background:var(--bgs);border-left:3px solid var(--g);border-radius:0 var(--r) var(--r) 0;padding:.875rem 1rem;margin-bottom:1rem;font-size:15px;color:var(--tx);line-height:1.75;}
-    .qbox.am{border-left-color:var(--am);}
+    .qbox{background:var(--gl);border-left:4px solid var(--g);border-radius:0 12px 12px 0;padding:1.1rem 1.25rem;margin-bottom:1.25rem;font-family:"Open Sans",sans-serif;font-size:16px;font-weight:500;color:var(--gdp);line-height:1.8;box-shadow:0 2px 8px rgba(29,158,117,.08);}
+    .qbox.am{border-left-color:var(--am);background:var(--aml);}
     .posture{font-size:12px;color:var(--ts);background:var(--bgs);border-left:3px solid var(--am);border-radius:0 var(--r) var(--r) 0;padding:.6rem .875rem;margin-bottom:.875rem;line-height:1.6;}
-    label{font-size:13px;color:var(--ts);display:block;margin-bottom:5px;margin-top:.875rem;}
-    textarea,input[type=text],input[type=email]{width:100%;font-size:14px;padding:8px 12px;border:1px solid var(--bd);border-radius:var(--r);background:var(--bg);color:var(--tx);transition:border-color .15s;}
-    textarea:focus,input:focus{outline:none;border-color:var(--g);}
-    textarea{resize:vertical;min-height:68px;line-height:1.6;}
+    label{font-family:"Open Sans",sans-serif;font-size:13px;font-weight:600;color:var(--gdp);display:block;margin-bottom:6px;margin-top:1rem;}
+    textarea,input[type=text],input[type=email]{width:100%;font-family:"Open Sans",sans-serif;font-size:14px;padding:10px 14px;border:2px solid var(--gm);border-radius:12px;background:var(--bg);color:var(--tx);transition:border-color .2s,box-shadow .2s;}
+    textarea:focus,input:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.15);}
+    textarea{resize:vertical;min-height:80px;line-height:1.7;font-size:15px;}
     .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
     .tag{display:inline-block;background:var(--gl);color:var(--gdp);border-radius:6px;padding:2px 9px;font-size:12px;font-weight:500;}
     .tag.am{background:var(--aml);color:var(--amd);}
     .mot-retenu-wrap{margin-top:.6rem;}
-    .mot-retenu-principal{font-size:15px;font-weight:700;color:var(--gdp);}
+    .mot-retenu-principal{font-family:"Montserrat",sans-serif;font-size:17px;font-weight:800;color:var(--gdp);}
     .mot-retenu-autres{font-size:13px;color:var(--ts);margin-left:6px;}
     .mot-note{font-size:12px;color:var(--ts);background:var(--bgs);border-radius:8px;padding:.6rem .875rem;margin-top:.5rem;line-height:1.5;border-left:3px solid var(--g);font-style:italic;}
     /* Bouton synonymes */
@@ -102,7 +105,7 @@
     .pay-box{background:var(--gol);border:1px dashed var(--go);border-radius:var(--r);padding:1rem;text-align:center;margin:.5rem 0;}
     .pay-box p{font-size:13px;color:var(--ts);margin-bottom:.5rem;}
     /* Identité */
-    .id-box{background:var(--gl);border-radius:var(--rl);padding:1rem;margin-bottom:1rem;border:.5px solid var(--gm);}
+    .id-box{background:var(--gl);border-radius:16px;padding:1.25rem;margin-bottom:1rem;border:2px solid var(--gm);box-shadow:0 2px 12px rgba(29,158,117,.08);}
     .id-box h3{font-size:14px;font-weight:600;color:var(--gdp);margin-bottom:.25rem;}
     .id-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
     .rgpd{font-size:11px;color:var(--ts);display:flex;gap:.5rem;align-items:flex-start;margin-top:.75rem;line-height:1.5;}
@@ -110,10 +113,10 @@
     /* Schéma */
     .compass-wrap{width:100%;max-width:290px;margin:.875rem auto;display:block;}
     /* Synthèse */
-    .ai-box{background:var(--bgs);border-left:3px solid var(--g);border-radius:0 var(--r) var(--r) 0;padding:1rem 1.25rem;font-size:13px;line-height:1.9;color:var(--tx);margin:.875rem 0;text-align:justify;}
+    .ai-box{background:var(--bgs);border-left:4px solid var(--g);border-radius:0 12px 12px 0;padding:1.25rem 1.5rem;font-family:"Open Sans",sans-serif;font-size:14px;line-height:1.95;color:var(--tx);margin:1rem 0;text-align:justify;box-shadow:0 2px 8px rgba(0,0,0,.04);}
     .ai-box p{margin-bottom:.875rem;}
     .ai-box p:last-child{margin-bottom:0;}
-    .ai-titre{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--g);margin-top:1.25rem;margin-bottom:.4rem;padding-top:.4rem;border-top:1px solid var(--gm);}
+    .ai-titre{font-family:"Montserrat",sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g);margin-top:1.5rem;margin-bottom:.5rem;padding-top:.5rem;border-top:2px solid var(--gm);}
     .ai-titre:first-child{margin-top:0;border-top:none;padding-top:0;}
     .ai-mot{font-weight:700;color:var(--gdp);font-style:italic;}
     .ai-note{font-size:11px;color:var(--ts);font-style:italic;line-height:1.5;margin-bottom:.75rem;}
@@ -121,7 +124,7 @@
     .approfondie-invite-title{font-size:14px;font-weight:700;color:var(--go);margin-bottom:.4rem;}
     .approfondie-invite-text{font-size:13px;color:var(--ts);line-height:1.65;margin-bottom:.875rem;}
     /* Besoins dans résultat */
-    .besoin-box{background:linear-gradient(135deg,var(--gl),var(--gp));border-radius:var(--r);padding:.875rem;margin:.875rem 0;border:.5px solid var(--gm);}
+    .besoin-box{background:linear-gradient(135deg,var(--gl),var(--gp));border-radius:14px;padding:1.1rem;margin:1rem 0;border:2px solid var(--gm);box-shadow:0 3px 12px rgba(29,158,117,.1);}
     .besoin-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gdp);margin-bottom:.4rem;}
     .besoin-content{font-size:13px;color:var(--tx);line-height:1.7;text-align:justify;}
     .besoin-content p{margin-bottom:.6rem;}
@@ -192,8 +195,8 @@
 <body>
 <div class="app">
 
-  <!-- ACCUEIL -->
-  <div class="step active" id="s0">
+  <!-- ACCUEIL SUPPRIME - DIRECT VERS BOUSSOLE -->
+  <div class="step" id="s0" style="display:none;">
     <div style="text-align:center;padding:.25rem 0 .875rem;">
       <svg class="compass-wrap" style="max-width:200px;" viewBox="-130 -130 260 260" xmlns="http://www.w3.org/2000/svg">
         <path d="M0,0 L-77,-77 A109,109 0 0,1 77,-77 Z" fill="#E8F8F3" stroke="white" stroke-width="1.5"/>
@@ -238,7 +241,7 @@
     <div style="text-align:center;margin-top:.875rem;"><button class="btn btn-g" onclick="show('s1');window.scrollTo({top:0,behavior:'smooth'});">Commencer &rarr;</button></div>
   </div>
 
-  <!-- INTENTION -->
+  <!-- INTENTION SUPPRIMEE -->
   <div class="step" id="s1">
     <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:14%"></div></div><div class="prog-label">Étape 1 / 7</div></div>
     <h2>Posez votre intention</h2>
@@ -254,10 +257,10 @@
   </div>
 
   <!-- POINT D'ENTRÉE — Boussole SVG cliquable -->
-  <div class="step" id="s2">
-    <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:28%"></div></div><div class="prog-label">Étape 2 / 7</div></div>
-    <h2>Par laquelle de ces 4 entrées voulez-vous commencer ?</h2>
-    <p class="sub" style="text-align:center;">En fonction de ce qui résonne le plus pour vous,<br>cliquez sur la direction choisie.</p>
+  <div class="step active" id="s2">
+    <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:20%"></div></div><div class="prog-label">Étape 1 / 5</div></div>
+    <h2>Par où voulez-vous commencer ?</h2>
+    <p class="sub" style="text-align:center;font-size:15px;">Cliquez sur la direction qui résonne le plus pour vous</p>
 
     <svg id="boussole-step2" viewBox="-175 -175 350 350" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;display:block;margin:0 auto;cursor:pointer;" font-family="-apple-system,BlinkMacSystemFont,sans-serif">
       <defs>
@@ -338,7 +341,7 @@
     </svg>
 
     <p style="text-align:center;font-size:13px;color:var(--ts);margin-top:.75rem;">Cliquez sur la partie de la boussole qui vous parle le plus</p>
-    <div class="nav"><button class="btn-back" onclick="show('s1')">← Retour</button></div>
+    <div class="nav"></div>
   </div>
 
   <!-- CASE COURANTE -->
@@ -422,7 +425,7 @@
   <!-- IDENTITÉ -->
   <div class="step" id="s-id">
     <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:86%"></div></div><div class="prog-label">Étape 6 / 7</div></div>
-    <h2>Votre synthèse personnalisée est prête</h2>
+    <h2>Accédez à votre synthèse</h2>
     <p class="sub">Renseignez vos coordonnées pour y accéder et la télécharger en PDF.</p>
     <div class="id-box">
       <h3>✦ Vos coordonnées</h3>
@@ -804,13 +807,11 @@ function showCase(){
   qbox.className='qbox'+(m.color==='OE'?' am':'');
   qbox.innerHTML=state.step===0?getEntryQ(key):buildTransQ(prev,key,state.data[prev]?state.data[prev].main:'…');
   var posture=document.getElementById('posture');
-  if(key==='O'){posture.style.display='block';posture.innerHTML="Observez depuis l'extérieur — sans jugement. Ce n'est pas un défaut : c'est un réflexe adaptatif. Notez ce qui vient dans le corps et les sensations.";}
-  else if(key==='E'){posture.style.display='block';posture.innerHTML="Ce qui vous agace chez l'autre est un signal précieux. Laissez venir les mots depuis les sensations, pas depuis le jugement.";}
-  else posture.style.display='none';
+  posture.style.display='none';
   var isExcess=(key==='O'||key==='E');
   document.getElementById('words-lbl').textContent=isExcess
-    ?'Notez 3 à 5 mots qualificatifs — depuis ce que vous ressentez (séparés par des virgules)'
-    :'Quels mots traduisent cette qualité ? Notez 3 à 5 qualificatifs — adjectifs, participes passés ou présents (séparés par des virgules)';
+    ?'Notez 2 ou 3 mots — depuis ce que vous ressentez (séparés par des virgules)'
+    :'Notez 2 ou 3 mots qui traduisent cette qualité (séparés par des virgules)';
   // Restaurer données existantes
   var existing=state.data[key];
   if(existing){
@@ -847,7 +848,7 @@ function getEntryQ(k){
 function buildTransQ(from,to,w){
   var b='<strong>'+w+'</strong>';
   var toExcess=(from==='S'&&to==='O')||(from==='N'&&to==='E')||(from==='O'&&to==='E')||(from==='E'&&to==='O');
-  if(toExcess) return "Visualisez quelqu'un qui se juge et se sent coupable de ne pas être suffisamment "+b+" — quelqu'un qui est même persuadé que sa valeur en dépend — et qui se sent donc obligé de prouver à lui-même et au monde qu'il a cette qualité. Il va alors avoir tendance à être cent mille fois trop "+b+". Selon vous, quels mots décrivent cet excès ?";
+  if(toExcess) return "Visualisez quelqu'un qui se juge de ne pas être suffisamment "+b+" et qui se sent donc obligé de prouver à lui-même et au monde qu'il a cette qualité. Selon vous, quels mots décrivent une personne qui est cent mille fois trop "+b+" ?";
   return "Comment qualifiez-vous une personne qui n'est pas du tout dans l'excès d'être "+b+" ? Quels mots décrivent la qualité à l'opposé ?";
 }
 
@@ -1434,3 +1435,4 @@ document.addEventListener("DOMContentLoaded",function(){
 </script>
 </body>
 </html>
+
