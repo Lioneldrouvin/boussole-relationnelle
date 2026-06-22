@@ -195,10 +195,10 @@
 <body>
 <div class="app">
 
-  <!-- ACCUEIL SUPPRIME - DIRECT VERS BOUSSOLE -->
-  <div class="step" id="s0" style="display:none;">
-    <div style="text-align:center;padding:.25rem 0 .875rem;">
-      <svg class="compass-wrap" style="max-width:200px;" viewBox="-130 -130 260 260" xmlns="http://www.w3.org/2000/svg">
+  <!-- ACCUEIL -->
+  <div class="step active" id="s0">
+    <div style="text-align:center;padding:.5rem 0 1rem;">
+      <svg class="compass-wrap" style="max-width:160px;" viewBox="-130 -130 260 260" xmlns="http://www.w3.org/2000/svg">
         <path d="M0,0 L-77,-77 A109,109 0 0,1 77,-77 Z" fill="#E8F8F3" stroke="white" stroke-width="1.5"/>
         <path d="M0,0 L77,-77 A109,109 0 0,1 77,77 Z" fill="#F0FAF6" stroke="white" stroke-width="1.5"/>
         <path d="M0,0 L77,77 A109,109 0 0,1 -77,77 Z" fill="#E8F8F3" stroke="white" stroke-width="1.5"/>
@@ -220,28 +220,26 @@
         <polygon points="50,50 38,38 18,28" fill="white" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
         <polygon points="-50,50 -38,38 -18,28" fill="#888780" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
         <polygon points="-50,50 -28,18 -38,38" fill="white" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
-        <text x="0" y="-102" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#085041" font-family="sans-serif">N</text>
-        <text x="0" y="102" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#085041" font-family="sans-serif">S</text>
-        <text x="102" y="0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#085041" font-family="sans-serif">E</text>
-        <text x="-102" y="0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#085041" font-family="sans-serif">O</text>
         <circle cx="0" cy="0" r="30" fill="white" stroke="#C9A84C" stroke-width="1.5"/>
         <text x="0" y="8" text-anchor="middle" font-size="22" font-weight="300" fill="#C9A84C" font-family="Georgia,serif">&amp;</text>
       </svg>
-      <h2 style="font-size:20px;margin-bottom:.15rem;">Boussole relationnelle</h2>
-      <p style="font-size:12px;color:var(--ts);margin-bottom:.875rem;">Lionel Drouvin — Coach relation &amp; Médiateur</p>
+      <h2 style="font-size:22px;margin-bottom:.4rem;margin-top:.5rem;">Votre Boussole relationnelle</h2>
+      <p style="font-size:15px;color:var(--ts);line-height:1.7;margin-bottom:1.25rem;padding:0 .5rem;">4 étapes pour voir plus clairement ce qui se joue en vous et autour de vous — et de là, ajuster votre direction.</p>
     </div>
-    <div class="pb-mirror">Vous reconnaissez-vous dans l'une de ces situations ?</div>
-    <div class="pb-grid">
-      <div class="pb-card"><span class="pb-icon">😤</span><span class="pb-text">Tensions, conflits ou difficulté à vous affirmer dans vos relations</span></div>
-      <div class="pb-card"><span class="pb-icon">🌫️</span><span class="pb-text">Sentiment de ne pas être à votre place, manquer de confiance, d'assurance</span></div>
-      <div class="pb-card"><span class="pb-icon">🔄</span><span class="pb-text">Relations tendues avec collègues, associés, clients, partenaires ou proches</span></div>
-      <div class="pb-card"><span class="pb-icon">⚡</span><span class="pb-text">Stress, pression, sensation d'être submergé, pas respecté, de devoir vous sur-adapter</span></div>
+
+    <div style="background:var(--gl);border:2px solid var(--gm);border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(29,158,117,.08);">
+      <label style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;color:var(--gdp);display:block;margin-bottom:.4rem;">✦ Votre intention pour cette Boussole</label>
+      <p style="font-size:13px;color:var(--ts);margin-bottom:.75rem;line-height:1.6;">Exprimez en quelques mots ce que vous souhaitez améliorer ou atteindre — votre cap pour cette Boussole.</p>
+      <textarea id="intention-text" style="margin-top:.25rem;" placeholder="Ex : gagner en lucidité, être plus stable face aux difficultés, développer mon discernement..."></textarea>
+      <p style="font-size:11px;color:var(--ts);margin-top:.5rem;font-style:italic;">Facultatif — mais conseillé pour une synthèse plus personnalisée.</p>
     </div>
-    <p style="text-align:center;font-size:15px;font-weight:500;color:var(--gdp);margin-top:.875rem;margin-bottom:.25rem;line-height:1.6;">La Boussole relationnelle vous aide à choisir votre cap<br>avec plus de lucidité et de clarté, depuis le lieu où vous êtes.</p>
-    <div style="text-align:center;margin-top:.875rem;"><button class="btn btn-g" onclick="show('s1');window.scrollTo({top:0,behavior:'smooth'});">Commencer &rarr;</button></div>
+
+    <div style="text-align:center;">
+      <button class="btn btn-g" onclick="show('s2');window.scrollTo({top:0,behavior:'smooth'});">Commencer &rarr;</button>
+    </div>
   </div>
 
-  <!-- INTENTION SUPPRIMEE -->
+    <!-- INTENTION SUPPRIMEE -->
   <div class="step" id="s1">
     <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:14%"></div></div><div class="prog-label">Étape 1 / 7</div></div>
     <h2>Posez votre intention</h2>
@@ -257,7 +255,7 @@
   </div>
 
   <!-- POINT D'ENTRÉE — Boussole SVG cliquable -->
-  <div class="step active" id="s2">
+  <div class="step" id="s2">
     <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:20%"></div></div><div class="prog-label">Étape 1 / 5</div></div>
     <h2>Par où voulez-vous commencer ?</h2>
     <p class="sub" style="text-align:center;font-size:15px;">Cliquez sur la direction qui résonne le plus pour vous</p>
