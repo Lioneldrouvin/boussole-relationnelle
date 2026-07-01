@@ -836,9 +836,9 @@ function showCase(){
 
 function getEntryQ(k){
   return{
-    S:'Quelle qualité vous reconnaissez-vous — et que vos proches reconnaissent également ?',
-    N:"Quelle qualité admirez-vous chez les autres — sans vous l'autoriser vraiment ?",
-    O:'Quel reproche ou défaut entendez-vous parfois — et/ou que vous vous reconnaissez ?',
+    S:'Quelle est selon vous la qualité à l\'opposé de être "'+state.data.O.main+'" ?',
+    N:'Quelle est selon vous la qualité à l\'opposé de être "'+state.data.O.main+'" ?',
+    O:'Quel reproche ou défaut entendez-vous parfois à votre sujet — et/ou dont vous avez conscience ?',
     E:'Quel comportement vous met en allergie, en réaction épidermique chez les autres ?'
   }[k];
 }
@@ -847,8 +847,8 @@ function buildTransQ(from,to,w){
   var b='<strong>'+w+'</strong>';
   var toExcess=(from==='S'&&to==='O')||(from==='N'&&to==='E')||(from==='O'&&to==='E')||(from==='E'&&to==='O');
   if(toExcess) return "Visualisez quelqu'un qui se juge de ne pas être suffisamment "+b+" et qui se sent donc obligé de prouver à lui-même et au monde qu'il a cette qualité. Selon vous, quels mots décrivent une personne qui est cent mille fois trop "+b+" ?";
-  if(to==='N') return "Quelle qualité admirez-vous chez les autres — sans vous l'autoriser vraiment ?";
-  if(to==='S') return "Quelle qualité vous reconnaissez-vous — et que vos proches reconnaissent également ?";
+  if(to==='N') return 'Quelle est selon vous la qualité à l\'opposé de être "'+(state.data.O?state.data.O.main:w)+'" ?';
+  if(to==='S') return 'Quelle est selon vous la qualité à l\'opposé de être "'+(state.data.O?state.data.O.main:w)+'" ?';
   return "Quelle qualité admirez-vous chez les autres — sans vous l'autoriser vraiment ?";
 }
 
@@ -1052,9 +1052,10 @@ function generateBesoinsInline(){
   var Sw=d.S?d.S.words.join(', '):'?', Nw=d.N?d.N.words.join(', '):'?';
   var prompt='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie.\n'
     +'Qualités : être "'+S+'" ('+Sw+') et être "'+N+'" ('+Nw+').\n'
-    +'2 phrases très courtes et percutantes :\n'
-    +'1. Être "'+S+'" exprime un besoin réel de [besoin précis en résonance avec '+Sw+'].\n'
-    +'2. Être "'+N+'" révèle un besoin réel de [besoin précis en résonance avec '+Nw+']. Leur alliance nourrit [ce que leur réunion permet].\n'
+    +'Réponds directement sans préambule ni numérotation. 2 phrases très courtes et percutantes :\n'
+    +'Phrase 1 : Être "'+S+'" exprime un besoin réel de [besoin précis en résonance avec '+Sw+'].\n'
+    +'Phrase 2 : Être "'+N+'" révèle un besoin réel de [besoin précis en résonance avec '+Nw+']. Leur alliance nourrit [ce que leur réunion permet].\n'
+    +'Ne pas écrire "Voici les deux phrases" ni aucun texte d\'introduction. Commencer directement par Être.'
     +'Soyez précis, concis, en résonance directe avec les mots cités.';
   fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:200,messages:[{role:'user',content:prompt}]})})
     .then(function(r){return r.json();})
