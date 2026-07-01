@@ -847,8 +847,8 @@ function buildTransQ(from,to,w){
   var b='<strong>'+w+'</strong>';
   var toExcess=(from==='S'&&to==='O')||(from==='N'&&to==='E')||(from==='O'&&to==='E')||(from==='E'&&to==='O');
   if(toExcess) return "Visualisez quelqu'un qui se juge de ne pas être suffisamment "+b+" et qui se sent donc obligé de prouver à lui-même et au monde qu'il a cette qualité. Selon vous, quels mots décrivent une personne qui est cent mille fois trop "+b+" ?";
-  if(to==='N') return (state.data&&state.data.O&&state.data.O.main)?'Quelle est selon vous la qualité d\'une personne qui n\'est pas du tout être "'+state.data.O.main+'" ?':"Quelle qualité admirez-vous chez les autres — sans vous l'autoriser vraiment ?";
-  if(to==='S') return (state.data&&state.data.O&&state.data.O.main)?'Quelle est selon vous la qualité d\'une personne qui n\'est pas du tout être "'+state.data.O.main+'" ?':'Quelle qualité vous reconnaissez-vous — et que vos proches reconnaissent également ?';
+  if(to==='N'){var prevIsExcess2=from==='O'||from==='E';return prevIsExcess2?'Quelle est selon vous la qualité d\'une personne qui n\'est pas du tout être "'+w+'" ?':"Quelle qualité admirez-vous chez les autres — sans vous l'autoriser vraiment ?";}
+  if(to==='S'){var prevIsExcess=from==='O'||from==='E';return prevIsExcess?'Quelle est selon vous la qualité d\'une personne qui n\'est pas du tout être "'+w+'" ?':'Quelle qualité vous reconnaissez-vous — et que vos proches reconnaissent également ?';}
   return "Quelle qualité admirez-vous chez les autres — sans vous l'autoriser vraiment ?";
 }
 
