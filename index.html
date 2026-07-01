@@ -836,8 +836,8 @@ function showCase(){
 
 function getEntryQ(k){
   return{
-    S:'Quelle est selon vous la qualité à l\'opposé de être "'+state.data.O.main+'" ?',
-    N:'Quelle est selon vous la qualité à l\'opposé de être "'+state.data.O.main+'" ?',
+    S:(state.data&&state.data.O?'Quelle est selon vous la qualité à l\'opposé de être "'+state.data.O.main+'" ?':'Quelle qualité vous reconnaissez-vous — et que vos proches reconnaissent également ?'),
+    N:(state.data&&state.data.O?'Quelle est selon vous la qualité à l\'opposé de être "'+state.data.O.main+'" ?':'Quelle qualité admirez-vous chez les autres — sans vous l\'autoriser vraiment ?'),
     O:'Quel reproche ou défaut entendez-vous parfois à votre sujet — et/ou dont vous avez conscience ?',
     E:'Quel comportement vous met en allergie, en réaction épidermique chez les autres ?'
   }[k];
@@ -847,8 +847,8 @@ function buildTransQ(from,to,w){
   var b='<strong>'+w+'</strong>';
   var toExcess=(from==='S'&&to==='O')||(from==='N'&&to==='E')||(from==='O'&&to==='E')||(from==='E'&&to==='O');
   if(toExcess) return "Visualisez quelqu'un qui se juge de ne pas être suffisamment "+b+" et qui se sent donc obligé de prouver à lui-même et au monde qu'il a cette qualité. Selon vous, quels mots décrivent une personne qui est cent mille fois trop "+b+" ?";
-  if(to==='N') return 'Quelle est selon vous la qualité à l\'opposé de être "'+(state.data.O?state.data.O.main:w)+'" ?';
-  if(to==='S') return 'Quelle est selon vous la qualité à l\'opposé de être "'+(state.data.O?state.data.O.main:w)+'" ?';
+  if(to==='N') return (state.data&&state.data.O&&state.data.O.main)?'Quelle est selon vous la qualité à l\'opposé de être "'+state.data.O.main+'" ?':'Quelle qualité admirez-vous chez les autres — sans vous l\'autoriser vraiment ?';
+  if(to==='S') return (state.data&&state.data.O&&state.data.O.main)?'Quelle est selon vous la qualité à l\'opposé de être "'+state.data.O.main+'" ?':'Quelle qualité vous reconnaissez-vous — et que vos proches reconnaissent également ?';
   return "Quelle qualité admirez-vous chez les autres — sans vous l'autoriser vraiment ?";
 }
 
