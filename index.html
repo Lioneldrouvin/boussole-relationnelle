@@ -938,9 +938,12 @@ function checkCase(){
 
 function saveCurrent(){
   var key=state.order[state.step];
+  var mainVal=document.getElementById('case-main').value.trim();
+  var wordsVal=document.getElementById('case-words').value.split(',').map(function(w){return w.trim();}).filter(Boolean);
+  if(wordsVal.length===0&&mainVal){wordsVal=[mainVal];}
   state.data[key]={
-    words:document.getElementById('case-words').value.split(',').map(function(w){return w.trim();}).filter(Boolean),
-    main:document.getElementById('case-main').value.trim()
+    words:wordsVal,
+    main:mainVal
   };
 }
 
