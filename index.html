@@ -917,8 +917,11 @@ function selectSynth(type){
       email:document.getElementById('id-email')?document.getElementById('id-email').value:''
     };
     try{localStorage.setItem('boussole_pending',JSON.stringify(saveData));}catch(e){}
-    // MODE TEST — paiement désactivé temporairement
-    show('s-id');
+    var stripeUrl='https://buy.stripe.com/14AeVcbwo11n17w7iQeQM00';
+    var win=window.open(stripeUrl,'_blank');
+    if(!win||win.closed||typeof win.closed=='undefined'){
+      window.location.href=stripeUrl;
+    }
   } else {
     show('s-id');
   }
