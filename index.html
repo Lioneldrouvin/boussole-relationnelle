@@ -661,6 +661,15 @@
 var API_URL='https://boussole-proxy.small-credit-84c1.workers.dev';
 var FORMSPREE_ID='xjgjpbyw'; // Remplacer par votre ID Formspree ex: xpwzvkgr
 var CIRCUIT=['S','O','N','E'];
+var META={
+  S:{label:'Qualité à stabiliser',color:'SN'},
+  N:{label:"Qualité à s'autoriser",color:'SN'},
+  O:{label:'Piège-refuge',color:'OE'},
+  E:{label:'Allergie-dépendance',color:'OE'}
+};
+var state={entry:null,order:[],step:0,data:{S:null,N:null,O:null,E:null},synthType:'essentiel',synthHtml:'',besoinsHtml:''};
+var synoVisible=false;
+var synoWords=[];
 
 // Détection retour Stripe après paiement
 function checkStripeReturn(){
