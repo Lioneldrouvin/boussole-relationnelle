@@ -1005,6 +1005,12 @@ function selectSynth(type){
 function buildResult(){
   saveCurrent();
   var d=state.data;
+  // Sécurité : si words vide pour une direction, utiliser main
+  ['S','N','O','E'].forEach(function(k){
+    if(d[k]&&d[k].main&&(!d[k].words||d[k].words.length===0)){
+      d[k].words=[d[k].main];
+    }
+  });
   ['N','S','O','E'].forEach(function(k){
     var el=document.getElementById('rv-'+k);
     if(el&&d[k]) el.textContent=d[k].main;
@@ -1051,6 +1057,9 @@ function submitFormspree(){
 
 function generateBesoinsInline(){
   var d=state.data;
+  // Sécurité : si words vide, utiliser main
+  if(d.S&&d.S.main&&(!d.S.words||d.S.words.length===0)){d.S.words=[d.S.main];}
+  if(d.N&&d.N.main&&(!d.N.words||d.N.words.length===0)){d.N.words=[d.N.main];}
   var S=d.S?d.S.main:'?', N=d.N?d.N.main:'?';
   var Sw=d.S?d.S.words.join(', '):'?', Nw=d.N?d.N.words.join(', '):'?';
   var prompt='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie.\n'
@@ -1070,6 +1079,9 @@ function generateBesoinsInline(){
 
 function generateBesoins(){
   var d=state.data;
+  // Sécurité : si words vide, utiliser main
+  if(d.S&&d.S.main&&(!d.S.words||d.S.words.length===0)){d.S.words=[d.S.main];}
+  if(d.N&&d.N.main&&(!d.N.words||d.N.words.length===0)){d.N.words=[d.N.main];}
   var S=d.S?d.S.main:'?', N=d.N?d.N.main:'?';
   var Sw=d.S?d.S.words.join(', '):'?', Nw=d.N?d.N.words.join(', '):'?';
   var prenom2=document.getElementById('id-prenom').value.trim();
