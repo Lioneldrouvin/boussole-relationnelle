@@ -665,88 +665,6 @@ var CIRCUIT=['S','O','N','E'];
 // Détection retour Stripe après paiement
 function checkStripeReturn(){
   var params=new URLSearchParams(window.location.search);
-  if(params.get('paid')==='true'){
-    var saved=null;
-    try{saved=JSON.parse(localStorage.getItem('boussole_pending')||'null');}catch(e){}
-    if(saved&&saved.data){
-      // Restaurer les données
-      state.data=saved.data;
-      state.order=saved.order||['S','O','N','E'];
-      state.entry=saved.entry||'S';
-      state.synthType='approfondie';
-      // Pré-remplir les champs identité si disponibles
-      if(saved.intention){var it=document.getElementById('intention-text');if(it)it.value=saved.intention;}
-      if(saved.prenom){var ip=document.getElementById('id-prenom');if(ip)ip.value=saved.prenom;}
-      if(saved.nom){var in2=document.getElementById('id-nom');if(in2)in2.value=saved.nom;}
-      if(saved.email){var ie=document.getElementById('id-email');if(ie)ie.value=saved.email;}
-      try{localStorage.removeItem('boussole_pending');}catch(e){}
-      // Nettoyer l'URL
-      window.history.replaceState({},'',window.location.pathname);
-      // Aller directement à la page identité puis résultat
-      show('s-id');
-      document.getElementById('btn-id').style.opacity='1';
-      document.getElementById('btn-id').style.pointerEvents='auto';
-      // Si les coordonnées sont déjà remplies, générer directement
-      if(saved.prenom&&saved.email){
-        setTimeout(function(){buildResult();},300);
-      }
-    } else {
-      // Paiement effectué mais données perdues — afficher message
-      show('s-id');
-      var msg=document.createElement('div');
-      msg.style.cssText='background:#E8F8F3;border-radius:8px;padding:.75rem 1rem;margin-bottom:1rem;font-size:13px;color:#085041;border:.5px solid #9FE1CB;';
-      msg.innerHTML='✦ Paiement confirmé ! Renseignez vos coordonnées pour accéder à votre Synthèse Approfondie.';
-      var idBox=document.querySelector('.id-box');
-      if(idBox)idBox.parentNode.insertBefore(msg,idBox);
-      state.synthType='approfondie';
-    }
-  }
-}
-var META={
-  S:{label:'Qualité à stabiliser',color:'SN'},
-  N:{label:"Qualité à s'autoriser",color:'SN'},
-  O:{label:'Piège-refuge',color:'OE'},
-  E:{label:'Allergie-dépendance',color:'OE'}
-};
-var state={entry:null,order:[],step:0,data:{S:null,N:null,O:null,E:null},synthType:'essentiel',synthHtml:'',besoinsHtml:''};
-var synoVisible=false;
-var synoWords=[];
-
-// Détection retour Stripe après paiement
-function checkStripeReturn(){
-  var params=new URLSearchParams(window.location.search);
-  if(params.get('paid')!=='true') return;
-  var saved=null;
-  try{saved=JSON.parse(localStorage.getItem('boussole_pending')||'null');}catch(e){}
-  window.history.replaceState({},'',window.location.pathname);
-  if(saved&&saved.data){
-    state.data=saved.data;
-    state.order=saved.order||['S','O','N','E'];
-    state.entry=saved.entry||'S';
-    state.synthType='approfondie';
-    if(saved.intention){var it=document.getElementById('intention-text');if(it)it.value=saved.intention;}
-    if(saved.prenom){var ip=document.getElementById('id-prenom');if(ip)ip.value=saved.prenom;}
-    if(saved.nom){var in2=document.getElementById('id-nom');if(in2)in2.value=saved.nom;}
-    if(saved.email){var ie=document.getElementById('id-email');if(ie)ie.value=saved.email;}
-    try{localStorage.removeItem('boussole_pending');}catch(e){}
-    show('s-id');
-    document.getElementById('btn-id').style.opacity='1';
-    document.getElementById('btn-id').style.pointerEvents='auto';
-    if(saved.prenom&&saved.email){setTimeout(function(){buildResult();},400);}
-  } else {
-    state.synthType='approfondie';
-    show('s-id');
-    var msg=document.createElement('div');
-    msg.style.cssText='background:#E8F8F3;border-radius:8px;padding:.75rem 1rem;margin-bottom:1rem;font-size:13px;color:#085041;border:.5px solid #9FE1CB;';
-    msg.innerHTML='✦ Paiement confirmé ! Renseignez vos coordonnées pour accéder à votre Synthèse Approfondie.';
-    var idBox=document.querySelector('.id-box');
-    if(idBox) idBox.parentNode.insertBefore(msg,idBox);
-  }
-}
-
-// Détection retour Stripe après paiement
-function checkStripeReturn(){
-  var params=new URLSearchParams(window.location.search);
   if(params.get('paid')!=='true') return;
   var saved=null;
   try{saved=JSON.parse(localStorage.getItem('boussole_pending')||'null');}catch(e){}
@@ -990,13 +908,8 @@ function selectSynth(type){
       email:document.getElementById('id-email')?document.getElementById('id-email').value:''
     };
     try{localStorage.setItem('boussole_pending',JSON.stringify(saveData));}catch(e){}
-    // Ouvrir Stripe dans nouvel onglet pour compatibilité iFrame mobile
-    var stripeUrl='https://buy.stripe.com/14AeVcbwo11n17w7iQeQM00';
-    var win=window.open(stripeUrl,'_blank');
-    if(!win||win.closed||typeof win.closed=='undefined'){
-      // Fallback si popup bloquée
-      window.location.href=stripeUrl;
-    }
+    // MODE TEST — paiement désactivé temporairement
+    show('s-id');
   } else {
     show('s-id');
   }
