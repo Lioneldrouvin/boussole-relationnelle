@@ -1277,7 +1277,6 @@ function downloadPDF(){
 
 // Vérifier retour Stripe au chargement
 if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",checkStripeReturn);}else{checkStripeReturn();}
-document.addEventListener("DOMContentLoaded",checkStripeReturn);
 
 // Communiquer la hauteur réelle à Wix pour ajuster l'iFrame automatiquement
 function sendHeight(){
