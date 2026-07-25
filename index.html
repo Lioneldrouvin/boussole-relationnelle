@@ -824,7 +824,7 @@ function renderSyno(){
     return;
   }
   document.getElementById('syno-tags').innerHTML=synoWords.slice(0,8).map(function(x){
-    return '<span class="stag" onclick="addSyno(\''+x.word+'\')">'+x.word+'</span>';
+    return '<span class="stag" onclick="addSyno(this.getAttribute(\"data-w\"))" data-w="'+x.word+'">'+x.word+'</span>';
   }).join('');
 }
 
@@ -1268,25 +1268,7 @@ function downloadPDF(){
     +synthHtml
     +(reflexionVal2?'<div class="reflexion"><div class="reflexion-title">Ce que cette Boussole a mis en lumière</div>'+reflexionVal2+'</div>':'')
     +'<div class="footer">Synthèse issue de l\'outil Boussole relationnelle de Lionel Drouvin · Rédigée avec l\'aide de l\'IA · Première lecture, non un diagnostic</div>'
-    +'
-<script>
-// DÉBOGAGE
-console.log('=== DÉBOGAGE BOUSSOLE ===');
-console.log('state défini:', typeof state !== 'undefined');
-console.log('META défini:', typeof META !== 'undefined');
-console.log('show défini:', typeof show !== 'undefined');
-console.log('chooseAndStart défini:', typeof chooseAndStart !== 'undefined');
-var s0 = document.getElementById('s0');
-var s2 = document.getElementById('s2');
-console.log('s0 existe:', !!s0);
-console.log('s0 active:', s0 && s0.classList.contains('active'));
-console.log('s2 existe:', !!s2);
-// Tester un clic simulé
-document.querySelectorAll('.qzone').forEach(function(el) {
-    console.log('qzone trouvé:', el.id, 'onclick:', el.getAttribute('onclick'));
-});
-</script>
-</body></html>';
+    +'</body></html>';
 
   // Ouvrir dans une nouvelle fenêtre et déclencher l'impression/sauvegarde PDF
   var win=window.open('','_blank');
@@ -1394,24 +1376,6 @@ document.addEventListener("DOMContentLoaded",function(){
     }
   });
 })();
-</script>
-
-<script>
-// DÉBOGAGE
-console.log('=== DÉBOGAGE BOUSSOLE ===');
-console.log('state défini:', typeof state !== 'undefined');
-console.log('META défini:', typeof META !== 'undefined');
-console.log('show défini:', typeof show !== 'undefined');
-console.log('chooseAndStart défini:', typeof chooseAndStart !== 'undefined');
-var s0 = document.getElementById('s0');
-var s2 = document.getElementById('s2');
-console.log('s0 existe:', !!s0);
-console.log('s0 active:', s0 && s0.classList.contains('active'));
-console.log('s2 existe:', !!s2);
-// Tester un clic simulé
-document.querySelectorAll('.qzone').forEach(function(el) {
-    console.log('qzone trouvé:', el.id, 'onclick:', el.getAttribute('onclick'));
-});
 </script>
 </body>
 </html>
