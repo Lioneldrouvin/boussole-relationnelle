@@ -487,10 +487,10 @@
       <text x="-84" y="12" text-anchor="middle" font-size="8" fill="#854F0B">piège-refuge</text>
       <circle cx="0" cy="0" r="36" fill="white" stroke="#C9A84C" stroke-width="1.5"/>
       <text x="0" y="-22" text-anchor="middle" font-size="7" fill="#C9A84C" font-style="italic">Être</text>
-      <text id="rv-S-in" x="0" y="-12" text-anchor="middle" font-size="9" font-weight="600" fill="#C9A84C">—</text>
+      <text id="rv-N-in" x="0" y="-12" text-anchor="middle" font-size="9" font-weight="600" fill="#C9A84C">—</text>
       <text x="0" y="2" text-anchor="middle" font-size="18" font-weight="300" fill="#C9A84C" font-family="Georgia,serif">&amp;</text>
       <text x="0" y="17" text-anchor="middle" font-size="7" fill="#C9A84C" font-style="italic">Être</text>
-      <text id="rv-N-in" x="0" y="27" text-anchor="middle" font-size="9" font-weight="600" fill="#C9A84C">—</text>
+      <text id="rv-S-in" x="0" y="27" text-anchor="middle" font-size="9" font-weight="600" fill="#C9A84C">—</text>
     </svg>
 
     <div class="besoin-box" id="besoin-box" style="display:none;">
@@ -1016,8 +1016,8 @@ function buildResult(){
     if(el&&d[k]) el.textContent=d[k].main;
   });
   var si=document.getElementById('rv-S-in');var ni=document.getElementById('rv-N-in');
-  if(si&&d.S) si.textContent=d.S.main;
-  if(ni&&d.N) ni.textContent=d.N.main;
+  if(si&&d.S&&d.S.main) si.textContent=d.S.main;
+  if(ni&&d.N&&d.N.main) ni.textContent=d.N.main;
   var prenom=document.getElementById('id-prenom').value.trim();
   if(prenom) document.getElementById('result-title').textContent='Boussole de '+prenom;
   var isApprofondie=state.synthType==='approfondie';
@@ -1107,6 +1107,8 @@ function generateBesoins(){
 
 function buildPrompt(approfondie){
   var d=state.data;
+  // Sécurité finale : forcer words=[main] si vide
+  ['S','N','O','E'].forEach(function(k){if(d[k]&&d[k].main&&(!d[k].words||d[k].words.length===0)){d[k].words=[d[k].main];}});
   var S=d.S?d.S.main:'?', O=d.O?d.O.main:'?', N=d.N?d.N.main:'?', E=d.E?d.E.main:'?';
   var SwArr=d.S?d.S.words.filter(function(w){return w.toLowerCase()!==S.toLowerCase()}):[];var Sw=SwArr.length>0?SwArr.join(', '):d.S?d.S.words.join(', '):'?';
   var OwArr=d.O?d.O.words.filter(function(w){return w.toLowerCase()!==O.toLowerCase()}):[];var Ow=OwArr.length>0?OwArr.join(', '):d.O?d.O.words.join(', '):'?';
