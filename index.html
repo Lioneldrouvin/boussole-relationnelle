@@ -522,27 +522,8 @@
     <!-- Encadré codes de réduction — visible uniquement après synthèse approfondie -->
     <div class="codes-box no-print" id="codes-box">
       <div class="codes-box-title">✦ Vos codes de réduction — à utiliser lors de votre réservation</div>
-      <div class="codes-grid">
-        <div class="code-item">
-          <div class="code-item-label">⚡ Speed-coaching<br>1h — 80€ <strong style="color:var(--go);">→ 69€</strong></div>
-          <div class="code-item-value" id="code1">BOUSSOLE11</div>
-          <button class="code-copy" onclick="copyCode('code1','copied1')">📋 Copier</button>
-          <div class="code-copied" id="copied1">✓ Copié !</div>
-        </div>
-        <div class="code-item">
-          <div class="code-item-label">🧭 Accompagnement Boussole<br>3 séances — 330€ <strong style="color:var(--go);">→ 319€</strong></div>
-          <div class="code-item-value" id="code2">BOUSSOLE-11</div>
-          <button class="code-copy" onclick="copyCode('code2','copied2')">📋 Copier</button>
-          <div class="code-copied" id="copied2">✓ Copié !</div>
-        </div>
-      </div>
-      <div class="codes-note">Ces codes déduisent les 11€ de votre Synthèse Approfondie de votre prochaine séance.<br>Saisissez-le lors de votre réservation sur Calendly.</div>
-    </div>
     <div class="action-btns">
       <button class="pdf-btn" onclick="downloadPDF()">⬇ Télécharger en PDF</button>
-      <div id="approfondie-wrap" style="display:none;text-align:center;">
-        <button class="approfondie-btn" id="btn-approfondie" onclick="switchToApprofondie()">🔍 Accéder à la Synthèse Approfondie</button>
-      </div>
       <button class="site-back-btn" onclick="window.open('https://www.lioneldrouvin.com/coaching-relationnel/boussole-relationnelle-et-qualites-naturelles','_blank')">← Retour au site</button>
     </div>
 
@@ -551,25 +532,6 @@
     <div class="cta-wrap">
       <p class="sub" style="text-align:center;margin-bottom:.875rem;">Et là, maintenant — qu'avez-vous envie de faire de ce que vous venez de voir ?</p>
       <div class="cta-grid">
-    <!-- Codes de réduction — visible uniquement après synthèse approfondie -->
-    <div class="codes-box no-print" id="codes-box">
-      <div class="codes-box-title">✦ Vos codes de réduction — à utiliser lors de votre réservation</div>
-      <div class="codes-grid">
-        <div class="code-item">
-          <div class="code-item-label">⚡ Speed-coaching<br>1h — 80€ <strong style="color:var(--go);">→ 69€</strong></div>
-          <div class="code-item-value" id="code1">BOUSSOLE11</div>
-          <button class="code-copy" onclick="copyCode('code1','copied1')">📋 Copier</button>
-          <div class="code-copied" id="copied1">✓ Copié !</div>
-        </div>
-        <div class="code-item">
-          <div class="code-item-label">🧭 Accompagnement Boussole<br>3 séances — 330€ <strong style="color:var(--go);">→ 319€</strong></div>
-          <div class="code-item-value" id="code2">BOUSSOLE-11</div>
-          <button class="code-copy" onclick="copyCode('code2','copied2')">📋 Copier</button>
-          <div class="code-copied" id="copied2">✓ Copié !</div>
-        </div>
-      </div>
-      <div class="codes-note">Ces codes déduisent les 11€ de votre Synthèse Approfondie de votre prochaine séance.<br>Saisissez-le lors de votre réservation sur Calendly.</div>
-    </div>
 
         <div class="cta-opt">
           <div class="cta-tag">⚡ Aller plus loin maintenant</div>
@@ -896,7 +858,7 @@ function buildResult(){
   state.synthType='approfondie';
   var isApprofondie=true;
   document.getElementById('synth-label').textContent='Synthèse — Ce qui a tendance à se jouer en vous —';
-  var aw=document.getElementById('approfondie-wrap'); if(aw) aw.style.display=isApprofondie?'none':'block';
+
   
   document.getElementById('besoin-box').style.display='block';
   var cl0=document.getElementById('compass-loading');
