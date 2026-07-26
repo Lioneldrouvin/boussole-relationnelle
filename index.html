@@ -406,14 +406,9 @@
       <div class="synth-card gold-card" id="choice-approfondie" onclick="selectSynth('approfondie')">
         <div class="synth-icon">🔍</div>
         <div class="synth-name">Synthèse Approfondie</div>
-        <div class="synth-prix go">11 €</div>
-        <div style="font-size:11px;color:var(--go);margin-bottom:.3rem;">(déduits de votre prochaine séance « Accompagnement Boussole »)</div>
+        <div class="synth-prix go">Offerte</div>
         <div class="synth-desc">Détailler le mécanisme en place, recevoir des indications précieuses pour amorcer votre libération, comprendre en profondeur ce qui se joue en vous — et repartir avec des éléments concrets pour avancer.</div>
       </div>
-    </div>
-    <div class="pay-box" id="pay-box" style="display:none;">
-      <p>Paiement sécurisé — 11 € pour accéder à votre Synthèse Approfondie</p>
-      <button class="btn btn-go btn-sm" onclick="alert('Solution de paiement à configurer — PayPal ou Stripe')">Payer 11 € &rarr;</button>
     </div>
     <div class="nav">
       <button class="btn-back" onclick="goBackToLastCase()">← Retour</button>
@@ -576,8 +571,7 @@
     <div class="action-btns">
       <button class="pdf-btn" onclick="downloadPDF()">⬇ Télécharger en PDF</button>
       <div id="approfondie-wrap" style="display:none;text-align:center;">
-        <button class="approfondie-btn" id="btn-approfondie" onclick="switchToApprofondie()">🔍 Accéder à la Synthèse Approfondie — 11€</button>
-        <div style="font-size:11px;color:var(--go);margin-top:.4rem;">(déduits de votre prochaine séance « Accompagnement Boussole »)</div>
+        <button class="approfondie-btn" id="btn-approfondie" onclick="switchToApprofondie()">🔍 Accéder à la Synthèse Approfondie</button>
       </div>
       <button class="site-back-btn" onclick="window.open('https://www.lioneldrouvin.com/coaching-relationnel/boussole-relationnelle-et-qualites-naturelles','_blank')">← Retour au site</button>
     </div>
@@ -680,6 +674,12 @@ function checkStripeReturn(){
   window.history.replaceState({},'',window.location.pathname);
   if(saved&&saved.data){
     state.data=saved.data;
+    // Sécurité : forcer words=[main] si vide pour chaque direction
+    ['S','N','O','E'].forEach(function(k){
+      if(state.data[k]&&state.data[k].main&&(!state.data[k].words||state.data[k].words.length===0)){
+        state.data[k].words=[state.data[k].main];
+      }
+    });
     state.order=saved.order||['S','O','N','E'];
     state.entry=saved.entry||'S';
     state.synthType='approfondie';
@@ -689,7 +689,7 @@ function checkStripeReturn(){
     if(saved.email){var ie=document.getElementById('id-email');if(ie)ie.value=saved.email;}
     try{localStorage.removeItem('boussole_pending');}catch(e){}
     show('s-id');
-    var cb2=document.getElementById('codes-box'); if(cb2) cb2.style.display='block';
+  
     var btnId=document.getElementById('btn-id');
     if(btnId){btnId.style.opacity='1';btnId.style.pointerEvents='auto';}
     if(saved.prenom&&saved.email){setTimeout(function(){buildResult();},400);}
@@ -903,25 +903,10 @@ function selectSynth(type){
   state.synthType=type;
   document.getElementById('choice-essentiel').classList.toggle('sel',type==='essentiel');
   document.getElementById('choice-approfondie').classList.toggle('sel',type==='approfondie');
-  document.getElementById('pay-box').style.display=type==='approfondie'?'block':'none';
+  // pay-box supprimé - accès gratuit
   saveCurrent();
   if(type==='approfondie'){
-    // Sauvegarder toutes les données dans localStorage avant redirection Stripe
-    var saveData={
-      data:state.data,
-      order:state.order,
-      entry:state.entry,
-      intention:document.getElementById('intention-text')?document.getElementById('intention-text').value:'',
-      prenom:document.getElementById('id-prenom')?document.getElementById('id-prenom').value:'',
-      nom:document.getElementById('id-nom')?document.getElementById('id-nom').value:'',
-      email:document.getElementById('id-email')?document.getElementById('id-email').value:''
-    };
-    try{localStorage.setItem('boussole_pending',JSON.stringify(saveData));}catch(e){}
-    var stripeUrl='https://buy.stripe.com/14AeVcbwo11n17w7iQeQM00';
-    var win=window.open(stripeUrl,'_blank');
-    if(!win||win.closed||typeof win.closed=='undefined'){
-      window.location.href=stripeUrl;
-    }
+    show('s-id');
   } else {
     show('s-id');
   }
@@ -952,7 +937,7 @@ function buildResult(){
   document.getElementById('besoin-box').style.display='block';
   var cl0=document.getElementById('compass-loading');
   if(cl0) cl0.style.display='flex';
-  // Afficher les codes de réduction uniquement pour la synthèse approfondie
+
   var cb=document.getElementById('codes-box');
   if(cb) cb.style.display=isApprofondie?'block':'none';
   show('s-result');
@@ -1143,24 +1128,18 @@ function generateAI(approfondie){
 }
 
 function switchToApprofondie(){
-  // Sauvegarder les données avant redirection Stripe
-  var saveData={
-    data:state.data,
-    order:state.order,
-    entry:state.entry,
-    synthType:'approfondie',
-    intention:document.getElementById('intention-text')?document.getElementById('intention-text').value:'',
-    prenom:document.getElementById('id-prenom')?document.getElementById('id-prenom').value:'',
-    nom:document.getElementById('id-nom')?document.getElementById('id-nom').value:'',
-    email:document.getElementById('id-email')?document.getElementById('id-email').value:''
-  };
-  try{localStorage.setItem('boussole_pending',JSON.stringify(saveData));}catch(e){}
-  var stripeUrl2='https://buy.stripe.com/14AeVcbwo11n17w7iQeQM00';
-  var win2=window.open(stripeUrl2,'_blank');
-  if(!win2||win2.closed||typeof win2.closed=='undefined'){
-    window.location.href=stripeUrl2;
-  }
+  state.synthType='approfondie';
+  // Sécurité : forcer words=[main] si vide
+  ['S','N','O','E'].forEach(function(k){
+    if(state.data[k]&&state.data[k].main&&(!state.data[k].words||state.data[k].words.length===0)){
+      state.data[k].words=[state.data[k].main];
+    }
+  });
+  show('s-id');
+  var btnId=document.getElementById('btn-id');
+  if(btnId){btnId.style.opacity='1';btnId.style.pointerEvents='auto';}
 }
+
 
 function copyCode(codeId, confirmedId){
   var code=document.getElementById(codeId).textContent;
