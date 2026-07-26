@@ -383,38 +383,12 @@
     <div class="nav">
       <button class="btn-back" onclick="goBackCase()">← Retour</button>
       <button class="btn btn-g" id="btn-case" style="display:none;" onclick="saveAndNext()">Continuer &rarr;</button>
-      <button class="btn btn-g" id="btn-synthese" style="display:none;" onclick="show('s-choice')">Voir ma synthèse &rarr;</button>
+      <button class="btn btn-g" id="btn-synthese" style="display:none;" onclick="show('s-id')">Voir ma synthèse &rarr;</button>
     </div>
   </div>
 
   <!-- CHOIX SYNTHÈSE -->
-  <div class="step" id="s-choice">
-    <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:72%"></div></div><div class="prog-label">Étape 5 / 7</div></div>
-    <h2>Choisissez votre synthèse</h2>
-    <p class="sub">Deux niveaux de lecture pour explorer ce que votre Boussole a révélé.</p>
-    <div style="background:var(--gl);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:.875rem;border:.5px solid var(--gm);font-size:13px;color:var(--gdp);line-height:1.6;">
-      ✦ Votre synthèse vous est <strong>strictement personnelle</strong> — je ne la reçois pas. Je reçois uniquement vos coordonnées pour pouvoir vous recontacter si vous le souhaitez. Vous pouvez télécharger votre synthèse et choisir librement de me l'envoyer pour avoir mon éclairage lors d'une séance de coaching.
-    </div>
-    <div class="synth-choice">
-      <div class="synth-card" id="choice-essentiel" onclick="selectSynth('essentiel')">
-        <div class="synth-icon">✦</div>
-        <div class="synth-name">Synthèse — Ce qui a tendance à se jouer en vous —</div>
-        <div class="synth-prix">Offerte</div>
-        <div class="synth-desc">Les points clés de votre Boussole — concis, clair, immédiatement utile. Grâce à vos réponses, elle vous propose des éléments concrets et de suite disponibles pour vivre mieux vos relations.</div>
-      </div>
-      <div class="synth-card gold-card" id="choice-approfondie" onclick="selectSynth('approfondie')">
-        <div class="synth-icon">🔍</div>
-        <div class="synth-name">Synthèse — Ce qui a tendance à se jouer en vous —</div>
-        <div class="synth-prix go">Offerte</div>
-        <div class="synth-desc">Détailler le mécanisme en place, recevoir des indications précieuses pour amorcer votre libération, comprendre en profondeur ce qui se joue en vous — et repartir avec des éléments concrets pour avancer.</div>
-      </div>
-    </div>
-    <div class="nav">
-      <button class="btn-back" onclick="goBackToLastCase()">← Retour</button>
-    </div>
-  </div>
 
-  <!-- IDENTITÉ -->
   <div class="step" id="s-id">
     <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:86%"></div></div><div class="prog-label">Étape 6 / 7</div></div>
     <h2>Accédez à votre synthèse</h2>
@@ -434,7 +408,7 @@
       </div>
     </div>
     <div class="nav">
-      <button class="btn-back" onclick="show('s-choice')">← Retour</button>
+      <button class="btn-back" onclick="goBackToLastCase()">← Retour</button>
       <button class="btn btn-g" id="btn-id" style="opacity:.5;pointer-events:none;" onclick="buildResult()">Accéder à ma synthèse &rarr;</button>
     </div>
   </div>
@@ -896,16 +870,9 @@ function checkId(){
 }
 
 function selectSynth(type){
-  state.synthType=type;
-  document.getElementById('choice-essentiel').classList.toggle('sel',type==='essentiel');
-  document.getElementById('choice-approfondie').classList.toggle('sel',type==='approfondie');
-  // pay-box supprimé - accès gratuit
+  state.synthType='approfondie';
   saveCurrent();
-  if(type==='approfondie'){
-    show('s-id');
-  } else {
-    show('s-id');
-  }
+  show('s-id');
 }
 
 function buildResult(){
@@ -926,7 +893,8 @@ function buildResult(){
   if(ni&&d.N&&d.N.main) ni.textContent=d.N.main;
   var prenom=document.getElementById('id-prenom').value.trim();
   if(prenom) document.getElementById('result-title').textContent='Boussole de '+prenom;
-  var isApprofondie=state.synthType==='approfondie';
+  state.synthType='approfondie';
+  var isApprofondie=true;
   document.getElementById('synth-label').textContent='Synthèse — Ce qui a tendance à se jouer en vous —';
   var aw=document.getElementById('approfondie-wrap'); if(aw) aw.style.display=isApprofondie?'none':'block';
   
