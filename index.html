@@ -181,13 +181,13 @@
     .loading-dots::after{content:'...';animation:dots 1.2s steps(4,end) infinite;}
     @keyframes dots{0%,100%{content:'.'}33%{content:'..'}66%{content:'...'}}
     .compass-loading{display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:1.5rem 1rem;}
-    .compass-needle{transform-origin:50% 50%;animation:needle-spin 1.8s ease-in-out infinite;}
-    @keyframes needle-spin{0%{transform:rotate(0deg)}30%{transform:rotate(185deg)}50%{transform:rotate(175deg)}80%{transform:rotate(355deg)}100%{transform:rotate(360deg)}}
+    .compass-needle{transform-origin:50% 50%;animation:needle-spin 6s linear infinite;}
+    @keyframes needle-spin{0%{transform:rotate(0deg)}40%{transform:rotate(720deg)}50%{transform:rotate(720deg)}90%{transform:rotate(0deg)}100%{transform:rotate(0deg)}}
     .compass-loading-text{font-size:13px;color:var(--ts);font-style:italic;text-align:center;line-height:1.6;}
     .compass-loading{display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:1.5rem;}
     .compass-loading svg{animation:compass-spin 0s linear infinite;}
-    .compass-needle{transform-origin:50% 50%;animation:needle-spin 1.8s ease-in-out infinite;}
-    @keyframes needle-spin{0%{transform:rotate(0deg)}25%{transform:rotate(180deg)}50%{transform:rotate(160deg)}75%{transform:rotate(340deg)}100%{transform:rotate(360deg)}};
+    .compass-needle{transform-origin:50% 50%;animation:needle-spin 6s linear infinite;}
+    @keyframes needle-spin{0%{transform:rotate(0deg)}40%{transform:rotate(720deg)}50%{transform:rotate(720deg)}90%{transform:rotate(0deg)}100%{transform:rotate(0deg)}};
     .compass-loading-text{font-size:13px;color:var(--ts);font-style:italic;text-align:center;line-height:1.6;}
     @media(max-width:480px){body{padding:0;}.app{border-radius:0;box-shadow:none;}.id-grid{grid-template-columns:1fr;}.pb-grid{grid-template-columns:1fr;}.synth-choice{grid-template-columns:1fr;}.cta-btns{flex-direction:column;}.action-btns{flex-direction:column;}}
   </style>
@@ -239,7 +239,6 @@
     </div>
   </div>
 
-    <!-- INTENTION SUPPRIMEE -->
   <div class="step" id="s1">
     <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:14%"></div></div><div class="prog-label">Étape 1 / 7</div></div>
     <h2>Posez votre intention</h2>
