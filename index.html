@@ -398,13 +398,13 @@
     <div class="synth-choice">
       <div class="synth-card" id="choice-essentiel" onclick="selectSynth('essentiel')">
         <div class="synth-icon">✦</div>
-        <div class="synth-name">Synthèse Essentielle</div>
+        <div class="synth-name">Synthèse — Ce qui a tendance à se jouer en vous —</div>
         <div class="synth-prix">Offerte</div>
         <div class="synth-desc">Les points clés de votre Boussole — concis, clair, immédiatement utile. Grâce à vos réponses, elle vous propose des éléments concrets et de suite disponibles pour vivre mieux vos relations.</div>
       </div>
       <div class="synth-card gold-card" id="choice-approfondie" onclick="selectSynth('approfondie')">
         <div class="synth-icon">🔍</div>
-        <div class="synth-name">Synthèse Approfondie</div>
+        <div class="synth-name">Synthèse — Ce qui a tendance à se jouer en vous —</div>
         <div class="synth-prix go">Offerte</div>
         <div class="synth-desc">Détailler le mécanisme en place, recevoir des indications précieuses pour amorcer votre libération, comprendre en profondeur ce qui se joue en vous — et repartir avec des éléments concrets pour avancer.</div>
       </div>
@@ -504,16 +504,13 @@
             <style>
               .needle-anim {
                 transform-origin: 0px 0px;
-                animation: needle-wobble 2.4s ease-in-out infinite;
+                animation: needle-wobble 6s linear infinite;
               }
               @keyframes needle-wobble {
-                0%   { transform: rotate(-30deg); }
-                15%  { transform: rotate(40deg); }
-                30%  { transform: rotate(-20deg); }
-                45%  { transform: rotate(30deg); }
-                60%  { transform: rotate(-10deg); }
-                75%  { transform: rotate(15deg); }
-                88%  { transform: rotate(-5deg); }
+                0%   { transform: rotate(0deg); }
+                40%  { transform: rotate(720deg); }
+                50%  { transform: rotate(720deg); }
+                90%  { transform: rotate(0deg); }
                 100% { transform: rotate(0deg); }
               }
             </style>
@@ -772,7 +769,7 @@ function getEntryQ(k){
 function buildTransQ(from,to,w){
   var b='<strong>'+w+'</strong>';
   var toExcess=(from==='S'&&to==='O')||(from==='N'&&to==='E')||(from==='O'&&to==='E')||(from==='E'&&to==='O');
-  if(toExcess) return 'Selon vous, quels mots décrivent quelqu\'un qui est cent mille fois trop '+b+' ?';
+  if(toExcess) return 'Selon vous, quels mots décrivent quelqu\'un qui est cent mille fois trop '+b+' — et qui devient alors '+b+' à l\'excès ?';
   if(to==='N'){var prevIsExcess2=from==='O'||from==='E';return prevIsExcess2?'Quelle est selon vous la qualité de quelqu\'un qui n\'est pas du tout "'+w+'" ?':"Quelle qualité admirez-vous chez les autres — sans vous l'autoriser vraiment ?";}
   if(to==='S'){var prevIsExcess=from==='O'||from==='E';return prevIsExcess?'Quelle est selon vous la qualité de quelqu\'un qui n\'est pas du tout "'+w+'" ?':'Quelle qualité vous reconnaissez-vous — et que vos proches reconnaissent également ?';}
   return "Quelle qualité admirez-vous chez les autres — sans vous l'autoriser vraiment ?";
@@ -930,7 +927,7 @@ function buildResult(){
   var prenom=document.getElementById('id-prenom').value.trim();
   if(prenom) document.getElementById('result-title').textContent='Boussole de '+prenom;
   var isApprofondie=state.synthType==='approfondie';
-  document.getElementById('synth-label').textContent=isApprofondie?'Synthèse Approfondie':'Synthèse Essentielle';
+  document.getElementById('synth-label').textContent='Synthèse — Ce qui a tendance à se jouer en vous —';
   var aw=document.getElementById('approfondie-wrap'); if(aw) aw.style.display=isApprofondie?'none':'block';
   
   document.getElementById('besoin-box').style.display='block';
