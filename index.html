@@ -473,7 +473,7 @@
 
     <hr>
     <div style="font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;" id="synth-label">Synthèse</div>
-    <p class="ai-note">Cette synthèse découle de l'outil développé par Lionel Drouvin et de sa vision de ce qui se joue dans la relation à soi et avec les autres. Elle est personnalisée selon vos mots, rédigée avec l'aide de l'IA. Ce n'est pas un plat servi tout fait — c'est une invitation à regarder, sentir et explorer à votre propre rythme. Première lecture, non un diagnostic.</p>
+    <p class="ai-note">Cette synthèse découle de l'outil que j'ai développé et de ma vision de ce qui se joue dans la relation — à soi et avec les autres. Elle est personnalisée grâce à vos mots, et rédigée avec l'aide de l'IA. Je vous invite à la lire et à la découvrir à votre propre rythme. C'est une première lecture, non un diagnostic.</p>
     <div class="compass-loading" id="compass-loading">
         <svg width="90" height="90" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -792,8 +792,9 @@ function buildTransQ(from,to,w){
 
 function onWords(){
   var val=document.getElementById('case-words').value;
-  var words=val.split(',').map(function(w){return w.trim();}).filter(function(w){return w.length>1;});
-  var isExcess=META[state.order[state.step]].color==='OE';
+  var words=val.split(',').map(function(w){return w.trim();}).filter(function(w){return w.length>0;});
+  var currentKey=state.order&&state.order[state.step];
+  var isExcess=currentKey&&META[currentKey]?META[currentKey].color==='OE':false;
   document.getElementById('case-tags').innerHTML=words.map(function(w){return '<span class="tag'+(isExcess?' am':'')+'">'+w+'</span>';}).join('');
   // Bouton synonymes
   if(words[0]&&words[0].length>2){
@@ -860,9 +861,14 @@ function addSyno(w){
     mainEl.value=w;
   }
   onWords();
-  // Scroll vers case-tags pour que la personne voie l'ajout
+  // Assurer que case-tags est visible
   var tagsEl=document.getElementById('case-tags');
-  if(tagsEl) tagsEl.scrollIntoView({behavior:'smooth',block:'nearest'});
+  if(tagsEl){
+    tagsEl.style.display='flex';
+    tagsEl.style.flexWrap='wrap';
+    tagsEl.style.gap='4px';
+    tagsEl.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
 }
 
 function checkCase(){
