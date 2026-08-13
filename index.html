@@ -466,7 +466,6 @@
     <div style="font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;" id="synth-label">Synthèse</div>
     <p class="ai-note" style="border-left:3px solid var(--go);background:var(--gol);padding:.875rem 1rem;font-size:13px;font-style:normal;color:var(--gdp);margin-bottom:.75rem;">✦ Votre valeur ne dépend de qui ni de quoi que ce soit. Elle est. Simplement.</p>
     <p class="ai-note" style="background:var(--gol);border:.5px solid var(--go);border-radius:8px;padding:.75rem 1rem;font-size:13px;font-style:normal;color:var(--gdp);margin-bottom:.75rem;">✦ Nos besoins-réels sont comme un point d'arrivée. Nos qualités-naturelles, le chemin pour y arriver.</p>
-    <p class="ai-note" style="background:var(--gp);border:.5px solid var(--gm);border-radius:8px;padding:.75rem 1rem;font-size:13px;font-style:normal;color:var(--tx);margin-bottom:.75rem;">Ce n'est pas un travail en force. Il s'agit de connaître et reconnaître les formes que prennent vos excès — jusqu'ici occultées. Voir le mécanisme à l'œuvre, c'est avoir à disposition des points de vigilance, des repères qui indiquent que c'est le pilote automatique qui a pris vos commandes en main et que peut-être vous êtes en train de vous quitter vous-même. C'est la vigilance sensible et nécessaire d'un commandant de bord — pour garder le cap et arriver à bon port.</p>
     <p class="ai-note">Cette synthèse découle de l'outil développé par Lionel Drouvin et de sa vision de ce qui se joue dans la relation à soi et avec les autres. Elle est personnalisée selon vos mots, rédigée avec l'aide de l'IA. Ce n'est pas un plat servi tout fait — c'est une invitation à regarder, sentir et explorer à votre propre rythme. Première lecture, non un diagnostic.</p>
     <div class="compass-loading" id="compass-loading">
         <svg width="90" height="90" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -777,12 +776,6 @@ function checkCase(){
   document.getElementById('btn-synthese').style.display=(v&&isLast)?'inline-block':'none';
   if(v&&isLast){
     document.getElementById('cta-mid').style.display='block';
-    // Déclencher besoins réels inline si pas encore fait
-    if(document.getElementById('besoin-inline').style.display==='none'){
-      saveCurrent();
-      document.getElementById('besoin-inline').style.display='block';
-      generateBesoinsInline();
-    }
   } else {
     document.getElementById('cta-mid').style.display='none';
   }
@@ -827,6 +820,9 @@ function checkId(){
 function selectSynth(type){
   state.synthType='approfondie';
   saveCurrent();
+  // Générer les besoins inline maintenant que tout est sauvegardé
+  document.getElementById('besoin-inline').style.display='block';
+  generateBesoinsInline();
   show('s-id');
 }
 
