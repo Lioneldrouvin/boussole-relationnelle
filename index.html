@@ -226,11 +226,14 @@
     <div style="background:var(--gl);border:2px solid var(--gm);border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(29,158,117,.08);">
       <label style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;color:var(--gdp);display:block;margin-bottom:.4rem;">✦ Votre intention pour cette Boussole</label>
       <p style="font-size:13px;color:var(--ts);margin-bottom:.75rem;line-height:1.6;">Exprimez en quelques mots ce que vous souhaitez améliorer ou atteindre — votre cap pour cette Boussole.</p>
-      <textarea id="intention-text" style="margin-top:.25rem;" placeholder="Ex : gagner en lucidité, être plus stable face aux difficultés, développer mon discernement..."></textarea>
+      <textarea id="intention-text" oninput="autoSave()" style="margin-top:.25rem;" placeholder="Ex : gagner en lucidité, être plus stable face aux difficultés, développer mon discernement..."></textarea>
       <p style="font-size:11px;color:var(--ts);margin-top:.5rem;font-style:italic;">Facultatif — mais conseillé pour une synthèse plus personnalisée.</p>
     </div>
 
     <div style="text-align:center;">
+      <div id="resume-banner" style="display:none;background:var(--gl);border:.5px solid var(--gm);border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem;font-size:13px;color:var(--gdp);text-align:center;">
+        ✦ Vous avez une Boussole en cours — <strong><a href="#" onclick="resumeBoussole();return false;" style="color:var(--go);">reprendre où vous en étiez</a></strong> ou <a href="#" onclick="clearAutoSave();document.getElementById('resume-banner').style.display='none';return false;" style="color:var(--g);">recommencer</a>
+      </div>
       <button class="btn btn-g" onclick="show('s2');window.scrollTo({top:0,behavior:'smooth'});">Commencer &rarr;</button>
     </div>
   </div>
@@ -634,6 +637,67 @@ function show(id){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+
+// ============================================================
+// SAUVEGARDE AUTOMATIQUE
+// ============================================================
+var AUTO_SAVE_KEY = 'boussole_autosave';
+
+function autoSave(){
+  try {
+    var saveData = {
+      entry: state.entry,
+      order: state.order,
+      step: state.step,
+      data: state.data,
+      intention: document.getElementById('intention-text') ? document.getElementById('intention-text').value : '',
+      ts: Date.now()
+    };
+    localStorage.setItem(AUTO_SAVE_KEY, JSON.stringify(saveData));
+  } catch(e) {}
+}
+
+function autoRestore(){
+  try {
+    var saved = JSON.parse(localStorage.getItem(AUTO_SAVE_KEY) || 'null');
+    if (!saved || !saved.data || !saved.entry) return false;
+    // Ne pas restaurer si la sauvegarde a plus de 7 jours
+    if (Date.now() - saved.ts > 7 * 24 * 60 * 60 * 1000) {
+      localStorage.removeItem(AUTO_SAVE_KEY);
+      return false;
+    }
+    // Vérifier qu'au moins une direction a été remplie
+    var hasData = ['S','N','O','E'].some(function(k){ return saved.data[k] && saved.data[k].main; });
+    if (!hasData) return false;
+    return saved;
+  } catch(e) { return false; }
+}
+
+function clearAutoSave(){
+  try { localStorage.removeItem(AUTO_SAVE_KEY); } catch(e) {}
+}
+
+function resumeBoussole(){
+  var saved = autoRestore();
+  if (!saved) return;
+  state.data = saved.data;
+  state.order = saved.order;
+  state.entry = saved.entry;
+  state.step = saved.step || 0;
+  // Sécurité words
+  ['S','N','O','E'].forEach(function(k){
+    if(state.data[k]&&state.data[k].main&&(!state.data[k].words||state.data[k].words.length===0)){
+      state.data[k].words=[state.data[k].main];
+    }
+  });
+  if(saved.intention){
+    var it=document.getElementById('intention-text');
+    if(it) it.value=saved.intention;
+  }
+  showCase();
+  show('s-case');
+}
+
 function chooseAndStart(k){
   state.entry=k;
   var idx=CIRCUIT.indexOf(k);
@@ -790,6 +854,7 @@ function saveCurrent(){
     words:wordsVal,
     main:mainVal
   };
+  autoSave();
 }
 
 function saveAndNext(){
@@ -855,6 +920,8 @@ function buildResult(){
 
   show('s-result');
   submitFormspree();
+  // Effacer la sauvegarde auto une fois la synthèse générée
+  clearAutoSave();
   generateBesoins();
   generateAI(isApprofondie);
 }
@@ -1180,7 +1247,15 @@ function downloadPDF(){
 }
 
 // Vérifier retour Stripe au chargement
-if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",checkStripeReturn);}else{checkStripeReturn();}
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){checkStripeReturn();checkResumeBanner();});}else{checkStripeReturn();checkResumeBanner();}
+
+function checkResumeBanner(){
+  var saved = autoRestore();
+  if(saved){
+    var banner = document.getElementById('resume-banner');
+    if(banner) banner.style.display='block';
+  }
+}
 
 // Communiquer la hauteur réelle à Wix pour ajuster l'iFrame automatiquement
 function sendHeight(){
@@ -1507,6 +1582,9 @@ document.addEventListener("DOMContentLoaded",function(){
     </div>
 
     <div style="text-align:center;">
+      <div id="resume-banner" style="display:none;background:var(--gl);border:.5px solid var(--gm);border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem;font-size:13px;color:var(--gdp);text-align:center;">
+        ✦ Vous avez une Boussole en cours — <strong><a href="#" onclick="resumeBoussole();return false;" style="color:var(--go);">reprendre où vous en étiez</a></strong> ou <a href="#" onclick="clearAutoSave();document.getElementById('resume-banner').style.display='none';return false;" style="color:var(--g);">recommencer</a>
+      </div>
       <button class="btn btn-g" onclick="show('s2');window.scrollTo({top:0,behavior:'smooth'});">Commencer &rarr;</button>
     </div>
   </div>
