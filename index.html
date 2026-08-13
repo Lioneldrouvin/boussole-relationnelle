@@ -475,8 +475,6 @@
 
     <hr>
     <div style="font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;" id="synth-label">Synthèse</div>
-    <p class="ai-note" style="border-left:3px solid var(--go);background:var(--gol);padding:.875rem 1rem;font-size:13px;font-style:normal;color:var(--gdp);margin-bottom:.75rem;">✦ Votre valeur ne dépend de qui ni de quoi que ce soit. Elle est. Simplement.</p>
-    <p class="ai-note" style="background:var(--gol);border:.5px solid var(--go);border-radius:8px;padding:.75rem 1rem;font-size:13px;font-style:normal;color:var(--gdp);margin-bottom:.75rem;">✦ Nos besoins-réels sont comme un point d'arrivée. Nos qualités-naturelles, le chemin pour y arriver.</p>
     <p class="ai-note">Cette synthèse découle de l'outil développé par Lionel Drouvin et de sa vision de ce qui se joue dans la relation à soi et avec les autres. Elle est personnalisée selon vos mots, rédigée avec l'aide de l'IA. Ce n'est pas un plat servi tout fait — c'est une invitation à regarder, sentir et explorer à votre propre rythme. Première lecture, non un diagnostic.</p>
     <div class="compass-loading" id="compass-loading">
         <svg width="90" height="90" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -518,6 +516,11 @@
         </svg>
         <div class="compass-loading-text">Votre Boussole est en cours de génération...<br><span style="font-size:11px;">Cela peut prendre quelques secondes</span></div>
       </div>
+    <!-- RÉSUMÉ AVANT SYNTHÈSE -->
+    <div id="synth-resume-wrap" style="display:none;background:var(--gl);border:.5px solid var(--gm);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.25rem;">
+      <div style="font-size:11px;font-weight:700;color:var(--go);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem;">✦ En un coup d’œil</div>
+      <div id="synth-resume-content" style="font-size:13px;line-height:1.8;color:var(--gdp);"></div>
+    </div>
     <div class="ai-box" id="ai-text"></div>
 
     <!-- Boutons action sous synthèse -->
@@ -1080,7 +1083,7 @@ function buildPrompt(approfondie){
     +'- Qualité à s\'autoriser (Nord) : être "'+N+'" — mots : '+Nw+'\n'
     +'- Allergie-dépendance (Est) : être "'+E+'" — mots : '+Ew+'\n'
     +(intention?'- Intention posée : "'+intention+'"\n':'')
-    +'\nRédige une synthèse structurée en prose justifiée, avec ces 8 titres précédés de §, dans cet ordre. Aucune liste ni tiret, sauf pour §LE MÉCANISME EN JEU et §LA COMPENSATION INCONSCIENTE où tu utiliseras des tirets pour chaque élément clé. Chaque phrase commence obligatoirement par une majuscule, y compris les phrases commençant par le mot être.\n\n'
+    +'\nCOMMENCE par un résumé de 3 à 5 paragraphes courts, précédé du titre ---RESUME---. Écris en langage simple et accessible, sans jargon technique, pour quelqu’un qui découvre cet univers. Ce résumé doit donner envie de lire la synthèse complète ou de contacter Lionel Drouvin. Nomme les qualités avec leurs mots (pas de sigles). Après le résumé, écris ---FIN RESUME--- puis la synthèse complète.\n'    +'Rédige une synthèse structurée en prose justifiée, avec ces 8 titres précédés de §, dans cet ordre. Aucune liste ni tiret, sauf pour §LE MÉCANISME EN JEU et §LA COMPENSATION INCONSCIENTE où tu utiliseras des tirets pour chaque élément clé. Chaque phrase commence obligatoirement par une majuscule, y compris les phrases commençant par le mot être.\n\n'
     +'§LE MÉCANISME EN JEU\n'
     +'Expliquer : la peur de ne pas suffisamment être "'+S+'" pousse, à votre insu, vers être "'+O+'". Cette peur est souvent liée à un besoin profond de ne pas être rejeté par sa tribu — famille, groupe professionnel ou social — ce qui amène à se sur-adapter au détriment de soi-même. Le cerveau automatise ce passage via des biais heuristiques — ces raccourcis mentaux rapides et automatiques (heuristiques) qui, dans certains contextes, s\'avèrent erronés et nous font basculer dans l\'excès sans que nous en ayons conscience. Ce même mécanisme de l’excès opère entre être "'+N+'" et être "'+E+'" : c\'est la peur d\'être perçu comme trop "'+N+'" — et donc d\'être "'+E+'" — qui déclenche un repli vers le piège-refuge : être "'+O+'". Parce qu\'entre deux maux, le cerveau nous fait choisir le moindre.\n\n'
     +'§LA MISE EN ALLIANCE AU CENTRE\n'
@@ -1113,7 +1116,7 @@ function buildPrompt(approfondie){
 
 function generateAI(approfondie){
   var prompt=buildPrompt(approfondie);
-  var maxTok=approfondie?4000:2500;
+  var maxTok=approfondie?5000:3000;
   var d=state.data;
   var S=d.S?d.S.main:'?', O=d.O?d.O.main:'?', N=d.N?d.N.main:'?', E=d.E?d.E.main:'?';
   fetch(API_URL,{
@@ -1125,6 +1128,19 @@ function generateAI(approfondie){
   .then(function(data){
     var raw=data.content&&data.content[0]?data.content[0].text:null;
     if(raw){
+      // Extraire le résumé s'il existe
+      var resumeMatch=raw.match(/---RESUME---([\s\S]*?)---FIN RESUME---/);
+      if(resumeMatch){
+        var resumeText=resumeMatch[1].trim();
+        var resumeWrap=document.getElementById('synth-resume-wrap');
+        var resumeContent=document.getElementById('synth-resume-content');
+        if(resumeWrap&&resumeContent){
+          var resumeHtml=resumeText.split(/\n\n+/).map(function(p){return '<p style="margin-bottom:.6rem;">'+p.trim()+'</p>';}).join('');
+          resumeContent.innerHTML=resumeHtml;
+          resumeWrap.style.display='block';
+        }
+        raw=raw.replace(/---RESUME---[\s\S]*?---FIN RESUME---/,'').trim();
+      }
       var mots=[S,N,O,E];
       var html=raw.split(/\n\n+/).map(function(p){
         p=p.trim();
