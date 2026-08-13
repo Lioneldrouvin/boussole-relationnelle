@@ -141,8 +141,6 @@
     .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
     @media(max-width:480px){body{overflow-x:hidden;}.app{border-radius:0;box-shadow:none;padding:1rem .75rem;}.id-grid{grid-template-columns:1fr;}.pb-grid{grid-template-columns:1fr;}.synth-choice{grid-template-columns:1fr;}.cta-grid{grid-template-columns:1fr;}.pdf-btn{font-size:16px;padding:10px 20px;}.action-btns{flex-direction:column;gap:.5rem;}}
     .cta-q{font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.6rem;padding:.75rem;background:var(--gl);border-radius:var(--r);border:.5px solid var(--gm);line-height:1.6;}
-    .cta-reflexion{width:100%;font-size:13px;padding:8px 12px;border:1px solid var(--bd);border-radius:var(--r);background:var(--bg);color:var(--tx);margin-top:.4rem;margin-bottom:.875rem;min-height:52px;resize:vertical;line-height:1.6;}
-    .cta-reflexion:focus{outline:none;border-color:var(--g);}
     .cta-opt{border:1px solid var(--bd);border-radius:var(--r);padding:1rem;margin-bottom:.6rem;background:var(--bg);}
     .cta-opt.gold{border-color:var(--go);background:linear-gradient(135deg,#fffdf5,#fff9e6);}
     .cta-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--g);margin-bottom:.3rem;}
@@ -519,14 +517,13 @@
     <!-- RÉSUMÉ AVANT SYNTHÈSE -->
     <div id="synth-resume-wrap" style="display:none;background:var(--gl);border:.5px solid var(--gm);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.25rem;">
       <div style="font-size:11px;font-weight:700;color:var(--go);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem;">✦ En un coup d’œil</div>
-      <div id="synth-resume-content" style="font-size:13px;line-height:1.8;color:var(--gdp);"></div>
+      <div id="synth-resume-content" style="font-size:13px;line-height:1.8;color:var(--gdp);text-align:justify;"></div>
     </div>
     <div class="ai-box" id="ai-text"></div>
 
     <!-- Boutons action sous synthèse -->
-    <div class="reflexion-wrap" style="background:var(--gl);border-radius:var(--rl);padding:1rem;margin:.875rem 0;border:.5px solid var(--gm);">
-      <div style="font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.5rem;">Ce que vous venez de traverser et de découvrir est déjà précieux en soi. Pour aller plus loin, réservez votre séance. Voir mes offres d’accompagnement ci-dessous.</div>
-      <textarea class="cta-reflexion" id="reflexion" placeholder="Quelques mots librement... (facultatif)"></textarea>
+    <div style="background:var(--gl);border-radius:var(--rl);padding:1rem;margin:.875rem 0;border:.5px solid var(--gm);text-align:center;">
+      <div style="font-size:13px;font-weight:600;color:var(--gdp);">Ce que vous venez de traverser et de découvrir est déjà précieux en soi. Pour aller plus loin, réservez votre séance. Voir mes offres d’accompagnement ci-dessous.</div>
     </div>
     <div class="action-btns">
       <button class="pdf-btn" onclick="downloadPDF()">⬇ Télécharger en PDF</button>
@@ -1083,7 +1080,7 @@ function buildPrompt(approfondie){
     +'- Qualité à s\'autoriser (Nord) : être "'+N+'" — mots : '+Nw+'\n'
     +'- Allergie-dépendance (Est) : être "'+E+'" — mots : '+Ew+'\n'
     +(intention?'- Intention posée : "'+intention+'"\n':'')
-    +'\nCOMMENCE par un résumé de 3 à 5 paragraphes courts, précédé du titre ---RESUME---. Écris en langage simple et accessible, sans jargon technique, pour quelqu’un qui découvre cet univers. Ton nuancé et bienveillant : utilise des formulations comme "il semble que", "vous pourriez avoir tendance à", "on pourrait observer chez vous", "il se peut que" plutôt que des affirmations directes. Ce résumé doit donner envie de lire la synthèse complète ou de contacter Lionel Drouvin. Nomme les qualités avec leurs mots (pas de sigles). Après le résumé, écris ---FIN RESUME--- puis la synthèse complète.\n'    +'Rédige une synthèse structurée en prose justifiée, avec ces 8 titres précédés de §, dans cet ordre. Aucune liste ni tiret, sauf pour §LE MÉCANISME EN JEU et §LA COMPENSATION INCONSCIENTE où tu utiliseras des tirets pour chaque élément clé. Chaque phrase commence obligatoirement par une majuscule, y compris les phrases commençant par le mot être.\n\n'
+    +'\nCOMMENCE par un résumé de 3 à 5 paragraphes courts, précédé du titre ---RESUME---. Écris en langage simple et accessible, sans jargon technique, pour quelqu’un qui découvre cet univers. Ton nuancé et bienveillant : utilise des formulations comme "il semble que", "vous pourriez avoir tendance à", "on pourrait observer chez vous", "il se peut que" plutôt que des affirmations directes. Ce résumé doit donner envie de lire la synthèse complète ou de contacter Lionel Drouvin. Nomme les qualités avec leurs mots (pas de sigles). Pour la qualité au Sud (qualité à stabiliser), sois direct et affirmatif : utilise une formulation du type "Votre Boussole montre que vous êtes une personne [mot Sud] — quelqu\'un de [mots associés]." Pour les autres parties (excès, qualité Nord, allergie), utilise des formulations nuancées comme "il semble que", "vous pourriez avoir tendance à". Termine par ce paragraphe exact, mot pour mot : "La synthèse ci-dessous vous propose un éclairage bienveillant sur ces mécanismes, pour vous permettre de les observer sans jugement et de vous réapproprier progressivement votre liberté d\'être. Elle constitue une invitation à un chemin de découverte personnelle, chemin sur lequel je serai heureux de vous accompagner." Après le résumé, écris ---FIN RESUME--- puis la synthèse complète.\n'    +'Rédige une synthèse structurée en prose justifiée, avec ces 8 titres précédés de §, dans cet ordre. Aucune liste ni tiret, sauf pour §LE MÉCANISME EN JEU et §LA COMPENSATION INCONSCIENTE où tu utiliseras des tirets pour chaque élément clé. Chaque phrase commence obligatoirement par une majuscule, y compris les phrases commençant par le mot être.\n\n'
     +'§LE MÉCANISME EN JEU\n'
     +'Expliquer : la peur de ne pas suffisamment être "'+S+'" pousse, à votre insu, vers être "'+O+'". Cette peur est souvent liée à un besoin profond de ne pas être rejeté par sa tribu — famille, groupe professionnel ou social — ce qui amène à se sur-adapter au détriment de soi-même. Le cerveau automatise ce passage via des biais heuristiques — ces raccourcis mentaux rapides et automatiques (heuristiques) qui, dans certains contextes, s\'avèrent erronés et nous font basculer dans l\'excès sans que nous en ayons conscience. Ce même mécanisme de l’excès opère entre être "'+N+'" et être "'+E+'" : c\'est la peur d\'être perçu comme trop "'+N+'" — et donc d\'être "'+E+'" — qui déclenche un repli vers le piège-refuge : être "'+O+'". Parce qu\'entre deux maux, le cerveau nous fait choisir le moindre.\n\n'
     +'§LA MISE EN ALLIANCE AU CENTRE\n'
@@ -1236,8 +1233,6 @@ function downloadPDF(){
 
   var synthBox=document.getElementById('ai-text');
   var besoinsBox=document.getElementById('besoin-content');
-  var reflexionEl2=document.getElementById('reflexion');
-  var reflexionVal2=reflexionEl2&&reflexionEl2.value.trim()?reflexionEl2.value.trim():'';
 
   // SVG boussole avec les 4 mots
   var svgBoussole='<svg width="220" height="220" viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">'
@@ -1286,8 +1281,6 @@ function downloadPDF(){
     +'.ai-titre:first-child{border-top:none;margin-top:0;}'
     +'.ai-mot{font-weight:bold;color:#085041;font-style:italic;}'
     +'p{font-size:13px;line-height:1.9;margin-bottom:10px;text-align:justify;}'
-    +'.reflexion{background:#E8F8F3;border-radius:6px;padding:14px 16px;margin-top:18px;text-align:justify;line-height:1.8;}'
-    +'.reflexion-title{font-size:11px;font-weight:bold;text-transform:uppercase;color:#085041;margin-bottom:7px;}'
     +'.footer{font-size:12px;color:#6b7280;text-align:center;margin-top:20px;border-top:1px solid #e5e7eb;padding-top:12px;line-height:1.8;}'
     +'</style></head><body>'
     +'<div class="header">'
@@ -1300,7 +1293,6 @@ function downloadPDF(){
     +'<div class="boussole-wrap">'+svgBoussole+'</div>'
     +'<div class="besoin"><div class="besoin-title">Vos besoins réels en potentiel</div>'+besoinsHtml+'</div>'
     +synthHtml
-    +(reflexionVal2?'<div class="reflexion"><div class="reflexion-title">Ce que cette Boussole a mis en lumière</div>'+reflexionVal2+'</div>':'')
     +'<div class="footer">Synthèse issue de l\'outil Boussole relationnelle de Lionel Drouvin · Rédigée avec l\'aide de l\'IA · Première lecture, non un diagnostic</div>'
     +'</body></html>';
 
@@ -1564,8 +1556,6 @@ document.addEventListener("DOMContentLoaded",function(){
     .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
     @media(max-width:480px){body{overflow-x:hidden;}.app{border-radius:0;box-shadow:none;padding:1rem .75rem;}.id-grid{grid-template-columns:1fr;}.pb-grid{grid-template-columns:1fr;}.synth-choice{grid-template-columns:1fr;}.cta-grid{grid-template-columns:1fr;}.pdf-btn{font-size:16px;padding:10px 20px;}.action-btns{flex-direction:column;gap:.5rem;}}
     .cta-q{font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.6rem;padding:.75rem;background:var(--gl);border-radius:var(--r);border:.5px solid var(--gm);line-height:1.6;}
-    .cta-reflexion{width:100%;font-size:13px;padding:8px 12px;border:1px solid var(--bd);border-radius:var(--r);background:var(--bg);color:var(--tx);margin-top:.4rem;margin-bottom:.875rem;min-height:52px;resize:vertical;line-height:1.6;}
-    .cta-reflexion:focus{outline:none;border-color:var(--g);}
     .cta-opt{border:1px solid var(--bd);border-radius:var(--r);padding:1rem;margin-bottom:.6rem;background:var(--bg);}
     .cta-opt.gold{border-color:var(--go);background:linear-gradient(135deg,#fffdf5,#fff9e6);}
     .cta-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--g);margin-bottom:.3rem;}
