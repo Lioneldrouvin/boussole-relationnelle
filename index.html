@@ -368,7 +368,8 @@
     <!-- Besoins réels inline (après dernière case) -->
     <div class="besoin-inline" id="besoin-inline" style="display:none;">
       <div class="besoin-inline-title">✦ Vos besoins réels en potentiel</div>
-      <div class="besoin-inline-content" id="besoin-inline-content"><span class="loading-dots">Identification en cours</span></div>
+      <p style="font-size:13px;line-height:1.7;color:var(--gdp);margin-bottom:.75rem;font-style:italic;">Vos qualités-naturelles pointent vers vos besoins-réels — certains déjà nourris en partie, d’autres que vous ne vous autorisez pas encore à satisfaire, et qui restent alors en manque.</p>
+      <div class="besoin-inline-content" id="besoin-inline-content"></div>
       <div id="besoin-synthese-wrap" style="display:none;border-top:1px solid var(--gm);margin-top:.875rem;padding-top:.875rem;">
         <div style="font-size:11px;font-weight:700;color:var(--go);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;">✦ Synthèse de votre Boussole</div>
         <div id="besoin-synthese-content" style="font-size:13px;line-height:1.7;color:var(--gdp);font-style:italic;"></div>
@@ -889,6 +890,11 @@ function checkCase(){
   document.getElementById('btn-synthese').style.display=(v&&isLast)?'inline-block':'none';
   if(v&&isLast){
     document.getElementById('cta-mid').style.display='block';
+    // Afficher l'encadré besoins-réels avec la phrase introductive
+    var besoinInline=document.getElementById('besoin-inline');
+    if(besoinInline&&besoinInline.style.display==='none'){
+      besoinInline.style.display='block';
+    }
   } else {
     document.getElementById('cta-mid').style.display='none';
   }
