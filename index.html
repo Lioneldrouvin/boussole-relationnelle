@@ -369,11 +369,12 @@
     <div class="besoin-inline" id="besoin-inline" style="display:none;">
       <div class="besoin-inline-title">✦ Vos besoins réels en potentiel</div>
       <p style="font-size:13px;line-height:1.7;color:var(--gdp);margin-bottom:.75rem;font-style:italic;">Vos qualités-naturelles pointent vers vos besoins-réels — certains déjà nourris en partie, d’autres que vous ne vous autorisez pas encore à satisfaire, et qui restent alors en manque.</p>
-      <div class="besoin-inline-content" id="besoin-inline-content"></div>
+      <div class="besoin-inline-content" id="besoin-inline-content"><span style="color:var(--ts);font-style:italic;font-size:12px;">Identification en cours…</span></div>
       <div id="besoin-synthese-wrap" style="display:none;border-top:1px solid var(--gm);margin-top:.875rem;padding-top:.875rem;">
         <div style="font-size:11px;font-weight:700;color:var(--go);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;">✦ Synthèse de votre Boussole</div>
         <div id="besoin-synthese-content" style="font-size:13px;line-height:1.7;color:var(--gdp);font-style:italic;"></div>
       </div>
+      <p id="besoin-invite" style="display:none;font-size:13px;color:var(--gdp);margin-top:.875rem;font-style:italic;text-align:center;">Pour aller plus loin dans la lecture de ce qui se joue en vous, je vous invite à cliquer sur « Voir ma synthèse ».</p>
     </div>
 
     <!-- CTA intermédiaire (après dernière case) -->
@@ -1010,13 +1011,20 @@ function submitFormspree(){
 
 function generateBesoinsInline(){
   var d=state.data;
+  // Vérifier que S et N sont disponibles
+  if(!d.S||!d.S.main||!d.N||!d.N.main){
+    document.getElementById('besoin-inline-content').textContent='';
+    return;
+  }
   // Sécurité : si words vide, utiliser main
-  if(d.S&&d.S.main&&(!d.S.words||d.S.words.length===0)){d.S.words=[d.S.main];}
-  if(d.N&&d.N.main&&(!d.N.words||d.N.words.length===0)){d.N.words=[d.N.main];}
+  ['S','N','O','E'].forEach(function(k){
+    if(d[k]&&d[k].main&&(!d[k].words||d[k].words.length===0)){d[k].words=[d[k].main];}
+  });
   var S=d.S?d.S.main:'?', N=d.N?d.N.main:'?';
   var Sw=d.S?d.S.words.join(', '):'?', Nw=d.N?d.N.words.join(', '):'?';
-  var prompt='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie.\n'
-    +'Qualités : être "'+S+'" ('+Sw+') et être "'+N+'" ('+Nw+').\n'
+  var O=d.O?d.O.main:'?', E=d.E?d.E.main:'?';
+  var Ow=d.O?d.O.words.join(', '):'?', Ew=d.E?d.E.words.join(', '):'?';
+  var prompt='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie.\n'    +'Boussole : Sud=être "'+S+'" ('+Sw+'), Ouest=être "'+O+'" ('+Ow+'), Nord=être "'+N+'" ('+Nw+'), Est=être "'+E+'" ('+Ew+').\n'
     +'Réponds directement sans préambule ni numérotation. 2 phrases très courtes et percutantes :\n'
     +'Phrase 1 : Être "'+S+'" exprime un besoin réel de [besoin précis en résonance avec '+Sw+'].\n'
     +'Phrase 2 : Être "'+N+'" révèle un besoin réel de [besoin précis en résonance avec '+Nw+']. Leur alliance nourrit [ce que leur réunion permet].\n'
@@ -1029,6 +1037,9 @@ function generateBesoinsInline(){
       if(text){
         var parts=text.split('---');
         document.getElementById('besoin-inline-content').textContent=parts[0].trim();
+        // Afficher la phrase d'invitation
+        var inviteEl=document.getElementById('besoin-invite');
+        if(inviteEl) inviteEl.style.display='block';
         if(parts[1]){
           var syntheseWrap=document.getElementById('besoin-synthese-wrap');
           var syntheseContent=document.getElementById('besoin-synthese-content');
