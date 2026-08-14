@@ -832,13 +832,22 @@ function toggleSyno(){
 }
 
 function renderSyno(){
+  var container=document.getElementById('syno-tags');
   if(!synoWords.length){
-    document.getElementById('syno-tags').innerHTML='<span style="font-size:12px;color:var(--ts);">Aucune suggestion disponible pour ce mot.</span>';
+    container.innerHTML='<span style="font-size:12px;color:var(--ts);">Aucune suggestion disponible pour ce mot.</span>';
     return;
   }
-  document.getElementById('syno-tags').innerHTML=synoWords.slice(0,8).map(function(x){
-    return '<span class="stag" onclick="addSyno(this.getAttribute(\"data-w\"))" data-w="'+x.word+'">'+x.word+'</span>';
-  }).join('');
+  container.innerHTML='';
+  synoWords.slice(0,8).forEach(function(x){
+    var span=document.createElement('span');
+    span.className='stag';
+    span.textContent=x.word;
+    span.setAttribute('data-w', x.word);
+    span.addEventListener('click', function(){
+      addSyno(this.getAttribute('data-w'));
+    });
+    container.appendChild(span);
+  });
 }
 
 function addSyno(w){
@@ -890,10 +899,12 @@ function checkCase(){
   document.getElementById('btn-synthese').style.display=(v&&isLast)?'inline-block':'none';
   if(v&&isLast){
     document.getElementById('cta-mid').style.display='block';
-    // Afficher l'encadré besoins-réels avec la phrase introductive
+    // Afficher l'encadré besoins-réels et générer le texte IA
     var besoinInline=document.getElementById('besoin-inline');
     if(besoinInline&&besoinInline.style.display==='none'){
       besoinInline.style.display='block';
+      saveCurrent();
+      generateBesoinsInline();
     }
   } else {
     document.getElementById('cta-mid').style.display='none';
@@ -940,9 +951,6 @@ function checkId(){
 function selectSynth(type){
   state.synthType='approfondie';
   saveCurrent();
-  // Générer les besoins inline maintenant que tout est sauvegardé
-  document.getElementById('besoin-inline').style.display='block';
-  generateBesoinsInline();
   show('s-id');
 }
 
