@@ -857,6 +857,8 @@ function addSyno(w){
   var existing=i.value.split(',').map(function(x){return x.trim().toLowerCase();});
   if(existing.indexOf(w.toLowerCase())>=0) return;
   i.value=i.value.trim()?i.value.trim()+', '+w:w;
+  // Forcer le déclenchement de oninput
+  i.dispatchEvent(new Event('input'));
   // Marquer le tag comme sélectionné
   document.querySelectorAll('#syno-tags .stag').forEach(function(el){
     if(el.getAttribute('data-w')===w){
