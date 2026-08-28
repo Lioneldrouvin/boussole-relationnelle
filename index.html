@@ -232,8 +232,7 @@
       <div id="resume-banner" style="display:none;background:var(--gl);border:.5px solid var(--gm);border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem;font-size:13px;color:var(--gdp);text-align:center;">
         ✦ Vous avez une Boussole en cours — <strong><a href="#" onclick="resumeBoussole();return false;" style="color:var(--go);">reprendre où vous en étiez</a></strong> ou <a href="#" onclick="clearAutoSave();document.getElementById('resume-banner').style.display='none';return false;" style="color:var(--g);">recommencer</a>
       </div>
-      <button class="btn btn-g" onclick="showIntentionInfusion()">Commencer &rarr;</button>
-      <div id="infusion-msg" style="display:none;background:var(--gl);border:.5px solid var(--gm);border-radius:10px;padding:1rem 1.25rem;margin-top:.75rem;text-align:center;">
+      <div id="infusion-msg" style="background:var(--gl);border:.5px solid var(--gm);border-radius:10px;padding:1rem 1.25rem;margin-top:.75rem;text-align:center;">
         <p style="font-size:14px;color:var(--gdp);font-style:italic;margin-bottom:.75rem;">Prenez quelques instants afin de laisser votre intention résonner et s’infuser en vous.</p>
         <button class="btn btn-g" onclick="show('s2');window.scrollTo({top:0,behavior:'smooth'});">Je suis prêt·e &rarr;</button>
       </div>
@@ -451,15 +450,15 @@
       <text x="0" y="-90" text-anchor="middle" font-size="8" fill="#0F6E56" font-style="italic">Être</text>
       <text id="rv-N" x="0" y="-77" text-anchor="middle" font-size="14" font-weight="600" fill="#085041">—</text>
       <text x="0" y="-62" text-anchor="middle" font-size="8" fill="#0F6E56">qualité à s'autoriser</text>
-      <text x="0" y="60" text-anchor="middle" font-size="8" fill="#0F6E56">qualité à stabiliser</text>
+      <text x="0" y="60" text-anchor="middle" font-size="11" fill="#0F6E56">qualité à stabiliser</text>
       <text x="0" y="73" text-anchor="middle" font-size="8" fill="#0F6E56" font-style="italic">Être</text>
       <text id="rv-S" x="0" y="86" text-anchor="middle" font-size="14" font-weight="600" fill="#085041">—</text>
       <text x="84" y="-13" text-anchor="middle" font-size="7" fill="#854F0B" font-style="italic">Être</text>
       <text id="rv-E" x="84" y="-1" text-anchor="middle" font-size="12" font-weight="600" fill="#633806">—</text>
-      <text x="84" y="12" text-anchor="middle" font-size="8" fill="#854F0B">allergie-dépendance</text>
+      <text x="84" y="12" text-anchor="middle" font-size="11" fill="#854F0B">allergie-dépendance</text>
       <text x="-84" y="-13" text-anchor="middle" font-size="7" fill="#854F0B" font-style="italic">Être</text>
       <text id="rv-O" x="-84" y="-1" text-anchor="middle" font-size="12" font-weight="600" fill="#633806">—</text>
-      <text x="-84" y="12" text-anchor="middle" font-size="8" fill="#854F0B">piège-refuge</text>
+      <text x="-84" y="12" text-anchor="middle" font-size="11" fill="#854F0B">piège-refuge</text>
       <circle cx="0" cy="0" r="36" fill="white" stroke="#C9A84C" stroke-width="1.5"/>
       <text x="0" y="-22" text-anchor="middle" font-size="7" fill="#C9A84C" font-style="italic">Être</text>
       <text id="rv-N-in" x="0" y="-12" text-anchor="middle" font-size="9" font-weight="600" fill="#C9A84C">—</text>
@@ -687,20 +686,6 @@ function clearAutoSave(){
   try { localStorage.removeItem(AUTO_SAVE_KEY); } catch(e) {}
 }
 
-function showIntentionInfusion(){
-  var intentionEl=document.getElementById('intention-text');
-  var intention=intentionEl?intentionEl.value.trim():'';
-  var msg=document.getElementById('infusion-msg');
-  if(intention&&msg){
-    // Il y a une intention : montrer le message d'infusion
-    msg.style.display='block';
-    document.querySelector('#infusion-msg .btn').focus();
-  } else {
-    // Pas d'intention : aller directement à s2
-    show('s2');
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-}
 
 function resumeBoussole(){
   var saved = autoRestore();
@@ -996,7 +981,7 @@ function submitFormspree(){
   var prenom=document.getElementById('id-prenom').value.trim();
   var nom=document.getElementById('id-nom').value.trim();
   var email=document.getElementById('id-email').value.trim();
-  var synthType=state.synthType==='approfondie'?'Synthèse Approfondie (11€)':'Synthèse Essentielle (offerte)';
+  var synthType='Synthèse';
   var d=state.data;
   var resume='S:'+( d.S?d.S.main:'?')+' O:'+(d.O?d.O.main:'?')+' N:'+(d.N?d.N.main:'?')+' E:'+(d.E?d.E.main:'?');
   if(FORMSPREE_ID==='VOTRE_ID_FORMSPREE') return; // Pas encore configuré
