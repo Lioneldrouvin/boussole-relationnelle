@@ -887,15 +887,27 @@ function checkCase(){
   document.getElementById('btn-synthese').style.display=(v&&isLast)?'inline-block':'none';
   if(v&&isLast){
     document.getElementById('cta-mid').style.display='block';
-    // Afficher l'encadré besoins-réels et générer le texte IA
+    // Afficher l'encadré besoins-réels
     var besoinInline=document.getElementById('besoin-inline');
     if(besoinInline&&besoinInline.style.display==='none'){
       besoinInline.style.display='block';
-      saveCurrent();
-      generateBesoinsInline();
     }
+    // Générer les besoins uniquement quand le mot est complet (min 3 lettres)
+    // et après un délai pour éviter de déclencher à chaque frappe
+    clearTimeout(window._besoinTimer);
+    window._besoinTimer=setTimeout(function(){
+      var mainNow=document.getElementById('case-main').value.trim();
+      var contentEl=document.getElementById('besoin-inline-content');
+      // Ne regénérer que si le mot a changé et fait au moins 3 lettres
+      if(mainNow.length>=3 && mainNow!==window._lastBesoinMain){
+        window._lastBesoinMain=mainNow;
+        saveCurrent();
+        generateBesoinsInline();
+      }
+    }, 1500);
   } else {
     document.getElementById('cta-mid').style.display='none';
+    clearTimeout(window._besoinTimer);
   }
 }
 
@@ -1089,7 +1101,7 @@ function buildPrompt(approfondie){
   var prompt='Tu es un accompagnateur bienveillant en coaching relationnel.\n'
     +niveauDetail+'\n'
     +'Ne jamais écrire deux fois le mot être à la suite dans une phrase.\n'
-    +'Mentionner "être '+S+'", "être '+O+'", "être '+N+'", "être '+E+'" à chaque mention de ces mots. Mettre en gras et italique les mots désignant les qualités et les excès dans toutes les rubriques.\n'
+    +'Mentionner "être '+S+'", "être '+O+'", "être '+N+'", "être '+E+'" à chaque mention de ces mots.\n'
     +'Ne pas réécrire le mot retenu à côté de ses mots associés.\n'
     +(prenom?'Commence par le prénom "'+prenom+'" seul en premier mot. Utilise-le une deuxième fois uniquement au début de §VOTRE CHEMIN DE LIBÉRATION. Jamais en dernier mot d\'une phrase.\n':'')
     +'\nBoussole :\n'
@@ -1149,12 +1161,22 @@ function generateAI(approfondie){
         var resumeWrap=document.getElementById('synth-resume-wrap');
         var resumeContent=document.getElementById('synth-resume-content');
         if(resumeWrap&&resumeContent){
+          resumeText=resumeText.replace(/\*\*\*([^*]+)\*\*\*/g,'<strong><em>$1</em></strong>');
+          resumeText=resumeText.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+          resumeText=resumeText.replace(/\*([^*]+)\*/g,'<em>$1</em>');
+          resumeText=resumeText.replace(/\*/g,'');
           var resumeHtml=resumeText.split(/\n\n+/).map(function(p){return '<p style="margin-bottom:.6rem;">'+p.trim()+'</p>';}).join('');
           resumeContent.innerHTML=resumeHtml;
           resumeWrap.style.display='block';
         }
         raw=raw.replace(/---RESUME---[\s\S]*?---FIN RESUME---/,'').trim();
       }
+      // Convertir le Markdown gras/italique en HTML ou supprimer les astérisques
+      raw=raw.replace(/\*\*\*([^*]+)\*\*\*/g,'<strong><em>$1</em></strong>');
+      raw=raw.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+      raw=raw.replace(/\*([^*]+)\*/g,'<em>$1</em>');
+      // Supprimer les astérisques résiduels
+      raw=raw.replace(/\*/g,'');
       var mots=[S,N,O,E];
       var html=raw.split(/\n\n+/).map(function(p){
         p=p.trim();
