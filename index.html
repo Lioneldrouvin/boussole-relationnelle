@@ -1039,7 +1039,7 @@ function generateBesoinsInline(){
   var prompt='Tu es un accompagnateur bienveillant en coaching relationnel. Vouvoie.\n'    +'Boussole : Sud=être "'+S+'" ('+Sw+'), Ouest=être "'+O+'" ('+Ow+'), Nord=être "'+N+'" ('+Nw+'), Est=être "'+E+'" ('+Ew+').\n'
     +'Réponds directement sans préambule ni numérotation. 2 phrases très courtes et percutantes :\n'
     +'Phrase 1 : Être "'+S+'" exprime un besoin réel de [besoin précis en résonance avec '+Sw+'].\n'
-    +'Phrase 2 : Être "'+N+'" révèle un besoin réel de [besoin précis en résonance avec '+Nw+']. Alliance de être "'+S+'" et être "'+N+'" : une présence authentique, ancrée sans être pesante.\n'
+    +'Phrase 2 : Être "'+N+'" révèle un besoin réel de [besoin précis en résonance avec '+Nw+']. Nouvelle ligne : Alliance de être "'+S+'" et être "'+N+'" nourrit [ce que leur alliance rend possible concrètement, en une formulation courte et nuancée].\n'
     +'Ne pas écrire "Voici les deux phrases" ni aucun texte d\'introduction. Commencer directement par Être.'
     +'Soyez précis, concis, en résonance directe avec les mots cités.';
   fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,messages:[{role:'user',content:prompt}]})})
@@ -1050,7 +1050,7 @@ function generateBesoinsInline(){
         var parts=text.split('---');
         var besoinText=parts[0].trim();
         // Séparer les deux phrases du paragraphe alliance
-        var allianceMarker='Alliance de ';
+        var allianceMarker='Alliance de être';
         var allianceIdx=besoinText.indexOf(allianceMarker);
         var besoinEl=document.getElementById('besoin-inline-content');
         if(allianceIdx>=0 && besoinEl){
@@ -1136,11 +1136,11 @@ function buildPrompt(approfondie){
     +(intention?'- Intention posée : "'+intention+'"\n':'')
     +'\\nCOMMENCE par un résumé de 3 à 5 paragraphes courts, précédé du titre ---RESUME---. Écris en langage simple et accessible, sans jargon technique, pour quelqu\'un qui découvre cet univers. Ton nuancé et bienveillant : utilise des formulations comme il semble que, vous pourriez avoir tendance à, on pourrait observer chez vous, il se peut que plutôt que des affirmations directes. Ce résumé doit donner envie de lire la synthèse complète ou de contacter Lionel Drouvin. Nomme les qualités avec leurs mots. Après le résumé, écris ---FIN RESUME--- puis démarre la synthèse par cette phrase exacte : Ci-dessous, je vous présente les étapes que nous aurons l\'occasion de parcourir ensemble lors de l\'accompagnement spécifique Boussole relationnelle. Puis continue avec les 9 titres.\n'
     +'§EXPLORER LE MÉCANISME EN JEU\n'
-    +'Il semblerait que la peur de ne pas être suffisamment **être '+S+'** pousse, à votre insu, vers **être '+O+'**. Ce glissement dit quelque chose d’important sur ce qui se joue en vous.\n\n'
+    +'Il semblerait que la peur de ne pas demeurer suffisamment **être '+N+'** vous pousse à devoir vous réfugier, à votre insu, dans **être '+O+'** — un glissement rendu possible tant que vous vous interdisez d’être pleinement **être '+S+'**.\n\n'
     +'§CONNECTER VOS QUALITÉS ALLIÉES\n'
     +'Il se peut qu’être **'+S+'** et être **'+N+'** soient moins opposés qu’il n’y paraît. Ensemble, ils pourraient nourrir quelque chose de plus libre et de plus juste en vous.\n\n'
     +'§S’INFORMER VIA LA DÉCONFUSION LIBÉRATRICE\n'
-    +'Commencer par : Cette étape est un temps de ré-information et de cohérence. Elle nécessite de se poser en présence à soi, en conscience. C\'est une étape essentielle dans le processus de libération de l\'emprise des conditionnements hérités dès l\'enfance.\n'
+    +'Commencer par cette phrase exacte : C\'est une étape de ré-information essentielle dans le processus de libération de l\'emprise des conditionnements hérités dès l\'enfance.\n'
     +'1re Première déconfusion — entre être "'+N+'" ('+Nw+') et être "'+E+'" ('+Ew+'). En 2 phrases sobres : définir la qualité naturelle en gras, puis son excès en gras. Conclure par : Prenez tranquillement conscience que : être [qualité] et être [excès], ce n\'est pas la même chose. Ton neutre, sans jugement. avant de passer à la deuxième.\n\n'
     +'2e Deuxième déconfusion — entre être "'+S+'" ('+Sw+') et être "'+O+'" ('+Ow+'). En 2 phrases sobres : définir la qualité naturelle en gras, puis son excès en gras. Conclure par : Constatez simplement la différence entre être [qualité] et être [excès]. Ce ne sont pas les mêmes informations. Ton neutre, sans jugement.\n\n'
     +'Conclure par : S\'informer — ré-informer son cerveau — est un acte de souveraineté. Mention de ne plus être dans le flou, clarté, libre-arbitre.\n\n'
@@ -1212,7 +1212,7 @@ function generateAI(approfondie){
           if(titre.indexOf('EXPLORER')>-1){icone=''; titre='ÉTAPE 1 — '+titre;}
           else if(titre.indexOf('CONNECTER')>-1){icone=''; titre='ÉTAPE 2 — '+titre;}
           else if(titre.indexOf('INFORMER')>-1||titre.indexOf('DÉCONFUSION')>-1){icone=''; titre='ÉTAPE 3 — '+titre;}
-          else if(titre.indexOf('ALLIANCE')>-1){icone=''; titre='ÉTAPE 4 — '+titre;}
+          else if(titre.indexOf('MISE EN ALLIANCE')>-1||titre.indexOf('ALLIANCE AU CENTRE')>-1){icone=''; titre='ÉTAPE 4 — '+titre;}
           else if(titre.indexOf('PIÈGE')>-1){icone=''; titre='ÉTAPE 5 — '+titre;}
           else if(titre.indexOf('ALLERGIE')>-1){icone=''; titre='ÉTAPE 6 — '+titre;}
           else if(titre.indexOf('DYNAMIQUE')>-1){icone=''; titre='ÉTAPE 7 — '+titre;}
