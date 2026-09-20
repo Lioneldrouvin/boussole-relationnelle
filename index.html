@@ -194,10 +194,10 @@
   <div class="step active" id="s0">
     <div style="text-align:center;padding:.5rem 0 1rem;">
       <svg class="compass-wrap" style="max-width:160px;" viewBox="-130 -130 260 260" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,0 L-77,-77 A109,109 0 0,1 77,-77 Z" fill="#E8F8F3" stroke="white" stroke-width="1.5"/>
-        <path d="M0,0 L77,-77 A109,109 0 0,1 77,77 Z" fill="#F0FAF6" stroke="white" stroke-width="1.5"/>
-        <path d="M0,0 L77,77 A109,109 0 0,1 -77,77 Z" fill="#E8F8F3" stroke="white" stroke-width="1.5"/>
-        <path d="M0,0 L-77,77 A109,109 0 0,1 -77,-77 Z" fill="#F0FAF6" stroke="white" stroke-width="1.5"/>
+        <path d="M0,0 L-77,-77 A109,109 0 0,1 77,-77 Z" fill="#8EDCC0" stroke="white" stroke-width="2.5"/>
+        <path d="M0,0 L77,-77 A109,109 0 0,1 77,77 Z" fill="#A8E6D0" stroke="white" stroke-width="2.5"/>
+        <path d="M0,0 L77,77 A109,109 0 0,1 -77,77 Z" fill="#8EDCC0" stroke="white" stroke-width="2.5"/>
+        <path d="M0,0 L-77,77 A109,109 0 0,1 -77,-77 Z" fill="#A8E6D0" stroke="white" stroke-width="2.5"/>
         <circle cx="0" cy="0" r="109" fill="none" stroke="#9FE1CB" stroke-width="1.2"/>
         <polygon points="0,-95 -10,-28 0,-28" fill="#888780" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
         <polygon points="0,-95 0,-28 10,-28" fill="white" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
@@ -215,7 +215,7 @@
         <polygon points="50,50 38,38 18,28" fill="white" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
         <polygon points="-50,50 -38,38 -18,28" fill="#888780" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
         <polygon points="-50,50 -28,18 -38,38" fill="white" stroke="#1D9E75" stroke-width="0.6" stroke-linejoin="round"/>
-        <circle cx="0" cy="0" r="30" fill="white" stroke="#C9A84C" stroke-width="1.5"/>
+        <circle cx="0" cy="0" r="30" fill="white" stroke="#C9A84C" stroke-width="2.5"/>
         <text x="0" y="8" text-anchor="middle" font-size="22" font-weight="300" fill="#C9A84C" font-family="Georgia,serif">&amp;</text>
       </svg>
       <h2 style="font-size:22px;margin-bottom:.4rem;margin-top:.5rem;">Votre Boussole relationnelle</h2>
@@ -273,16 +273,16 @@
       </defs>
 
       <!-- Cercle extérieur -->
-      <circle cx="0" cy="0" r="148" fill="none" stroke="#9FE1CB" stroke-width="1"/>
+      <circle cx="0" cy="0" r="148" fill="none" stroke="#9FE1CB" stroke-width="2"/>
 
       <!-- NORD — qualité que vous aimez chez l'autre -->
-      <path class="qzone qzone-N" id="qz-N" d="M0,0 L-105,-105 A148,148 0 0,1 105,-105 Z" fill="#E8F8F3" stroke="white" stroke-width="2" onclick="chooseAndStart('N')" style="cursor:pointer;transform-origin:0px 0px;"/>
+      <path class="qzone qzone-N" id="qz-N" d="M0,0 L-105,-105 A148,148 0 0,1 105,-105 Z" fill="#8EDCC0" stroke="white" stroke-width="2" onclick="chooseAndStart('N')" style="cursor:pointer;transform-origin:0px 0px;"/>
       <!-- SUD — qualité que vous vous reconnaissez -->
-      <path class="qzone qzone-S" id="qz-S" d="M0,0 L105,105 A148,148 0 0,1 -105,105 Z" fill="#E8F8F3" stroke="white" stroke-width="2" onclick="chooseAndStart('S')" style="cursor:pointer;transform-origin:0px 0px;"/>
+      <path class="qzone qzone-S" id="qz-S" d="M0,0 L105,105 A148,148 0 0,1 -105,105 Z" fill="#8EDCC0" stroke="white" stroke-width="2" onclick="chooseAndStart('S')" style="cursor:pointer;transform-origin:0px 0px;"/>
       <!-- EST — défaut chez l'autre qui vous agace -->
-      <path class="qzone qzone-E" id="qz-E" d="M0,0 L105,-105 A148,148 0 0,1 105,105 Z" fill="#FAEEDA" stroke="white" stroke-width="2" onclick="chooseAndStart('E')" style="cursor:pointer;transform-origin:0px 0px;"/>
+      <path class="qzone qzone-E" id="qz-E" d="M0,0 L105,-105 A148,148 0 0,1 105,105 Z" fill="#F0C060" stroke="white" stroke-width="2" onclick="chooseAndStart('E')" style="cursor:pointer;transform-origin:0px 0px;"/>
       <!-- OUEST — défaut que vous vous reconnaissez -->
-      <path class="qzone qzone-O" id="qz-O" d="M0,0 L-105,105 A148,148 0 0,1 -105,-105 Z" fill="#FAEEDA" stroke="white" stroke-width="2" onclick="chooseAndStart('O')" style="cursor:pointer;transform-origin:0px 0px;"/>
+      <path class="qzone qzone-O" id="qz-O" d="M0,0 L-105,105 A148,148 0 0,1 -105,-105 Z" fill="#F0C060" stroke="white" stroke-width="2" onclick="chooseAndStart('O')" style="cursor:pointer;transform-origin:0px 0px;"/>
 
       <!-- Rose des vents en filigrane -->
       <g opacity="0.10" pointer-events="none">
@@ -334,7 +334,7 @@
       <text onclick="chooseAndStart('O')" style="cursor:pointer;" x="-93" y="20" text-anchor="middle" font-size="11" font-weight="600" fill="#633806" pointer-events="all">reconnaissez</text>
 
       <!-- Cercle central or -->
-      <circle cx="0" cy="0" r="34" fill="white" stroke="#C9A84C" stroke-width="1.5" pointer-events="none"/>
+      <circle cx="0" cy="0" r="34" fill="white" stroke="#C9A84C" stroke-width="2.5" pointer-events="none"/>
       <text x="0" y="8" text-anchor="middle" font-size="22" font-weight="300" fill="#C9A84C" font-family="Georgia,serif" pointer-events="none">&amp;</text>
     </svg>
 
@@ -428,12 +428,12 @@
 
     <!-- SCHÉMA -->
     <svg class="compass-wrap" viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
-      <circle cx="0" cy="0" r="140" fill="none" stroke="#9FE1CB" stroke-width="1"/>
-      <path d="M0,0 L-99,-99 A140,140 0 0,1 99,-99 Z" fill="#E8F8F3" stroke="white" stroke-width="2"/>
-      <path d="M0,0 L99,-99 A140,140 0 0,1 99,99 Z" fill="#F0FAF6" stroke="white" stroke-width="2"/>
-      <path d="M0,0 L99,99 A140,140 0 0,1 -99,99 Z" fill="#E8F8F3" stroke="white" stroke-width="2"/>
-      <path d="M0,0 L-99,99 A140,140 0 0,1 -99,-99 Z" fill="#F0FAF6" stroke="white" stroke-width="2"/>
-      <circle cx="0" cy="0" r="36" fill="white" stroke="#C9A84C" stroke-width="1.5"/>
+      <circle cx="0" cy="0" r="140" fill="none" stroke="#9FE1CB" stroke-width="2"/>
+      <path d="M0,0 L-99,-99 A140,140 0 0,1 99,-99 Z" fill="#8EDCC0" stroke="white" stroke-width="2"/>
+      <path d="M0,0 L99,-99 A140,140 0 0,1 99,99 Z" fill="#A8E6D0" stroke="white" stroke-width="2"/>
+      <path d="M0,0 L99,99 A140,140 0 0,1 -99,99 Z" fill="#8EDCC0" stroke="white" stroke-width="2"/>
+      <path d="M0,0 L-99,99 A140,140 0 0,1 -99,-99 Z" fill="#A8E6D0" stroke="white" stroke-width="2"/>
+      <circle cx="0" cy="0" r="36" fill="white" stroke="#C9A84C" stroke-width="2.5"/>
       <g opacity="0.07">
         <polygon points="0,-148 -7,-36 0,-36" fill="#1D9E75"/><polygon points="0,-148 0,-36 7,-36" fill="#1D9E75"/>
         <polygon points="0,148 0,36 -7,36" fill="#1D9E75"/><polygon points="0,148 7,36 0,36" fill="#1D9E75"/>
@@ -460,7 +460,7 @@
       <text x="-84" y="-13" text-anchor="middle" font-size="7" fill="#854F0B" font-style="italic">Être</text>
       <text id="rv-O" x="-84" y="-1" text-anchor="middle" font-size="12" font-weight="600" fill="#633806">—</text>
       <text x="-84" y="12" text-anchor="middle" font-size="11" fill="#854F0B">piège-refuge</text>
-      <circle cx="0" cy="0" r="36" fill="white" stroke="#C9A84C" stroke-width="1.5"/>
+      <circle cx="0" cy="0" r="36" fill="white" stroke="#C9A84C" stroke-width="2.5"/>
       <text x="0" y="-22" text-anchor="middle" font-size="7" fill="#C9A84C" font-style="italic">Être</text>
       <text id="rv-N-in" x="0" y="-12" text-anchor="middle" font-size="9" font-weight="600" fill="#C9A84C">—</text>
       <text x="0" y="2" text-anchor="middle" font-size="18" font-weight="300" fill="#C9A84C" font-family="Georgia,serif">&amp;</text>
@@ -475,7 +475,7 @@
 
     <hr>
     <div style="font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;" id="synth-label">Synthèse</div>
-    <p class="ai-note">Cette synthèse découle de l'outil que j'ai développé et de ma vision de ce qui se joue dans la relation — à soi et avec les autres. Elle est personnalisée grâce à vos mots, et rédigée avec l'aide de l'IA. Je vous invite à la lire et à la découvrir à votre propre rythme. C'est une première lecture, non un diagnostic.</p>
+    <p class="ai-note">Cette synthèse découle de l'outil que j'ai développé et de ma vision de ce qui se joue dans la relation — à soi et avec les autres. Elle est personnalisée grâce à vos mots, et rédigée avec l'aide de l'IA. Je vous invite à la lire et à la découvrir à votre propre rythme. C'est une première lecture, non un diagnostic. Rien ne remplace l’échange réel en direct — je vous invite à réserver une ou trois séances spécifique Boussole pour des réponses plus précises et plus personnelles.</p>
     <div class="compass-loading" id="compass-loading">
         <svg width="90" height="90" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -494,11 +494,11 @@
             </style>
           </defs>
           <!-- Fond boussole -->
-          <circle cx="0" cy="0" r="46" fill="#E8F8F3" stroke="#9FE1CB" stroke-width="1.5"/>
-          <path d="M0,0 L-33,-33 A46,46 0 0,1 33,-33 Z" fill="#E8F8F3" stroke="white" stroke-width="1"/>
-          <path d="M0,0 L33,-33 A46,46 0 0,1 33,33 Z" fill="#F0FAF6" stroke="white" stroke-width="1"/>
-          <path d="M0,0 L33,33 A46,46 0 0,1 -33,33 Z" fill="#E8F8F3" stroke="white" stroke-width="1"/>
-          <path d="M0,0 L-33,33 A46,46 0 0,1 -33,-33 Z" fill="#F0FAF6" stroke="white" stroke-width="1"/>
+          <circle cx="0" cy="0" r="46" fill="#8EDCC0" stroke="#9FE1CB" stroke-width="2.5"/>
+          <path d="M0,0 L-33,-33 A46,46 0 0,1 33,-33 Z" fill="#8EDCC0" stroke="white" stroke-width="2"/>
+          <path d="M0,0 L33,-33 A46,46 0 0,1 33,33 Z" fill="#A8E6D0" stroke="white" stroke-width="2"/>
+          <path d="M0,0 L33,33 A46,46 0 0,1 -33,33 Z" fill="#8EDCC0" stroke="white" stroke-width="2"/>
+          <path d="M0,0 L-33,33 A46,46 0 0,1 -33,-33 Z" fill="#A8E6D0" stroke="white" stroke-width="2"/>
           <!-- Lettres cardinales fixes -->
           <text x="0" y="-39" text-anchor="middle" font-size="7" font-weight="700" fill="#085041">N</text>
           <text x="0" y="44" text-anchor="middle" font-size="7" font-weight="700" fill="#085041">S</text>
@@ -512,7 +512,7 @@
             <polygon points="0,35 -4,0 4,0" fill="#888780"/>
           </g>
           <!-- Pivot central -->
-          <circle cx="0" cy="0" r="5" fill="white" stroke="#C9A84C" stroke-width="1.5"/>
+          <circle cx="0" cy="0" r="5" fill="white" stroke="#C9A84C" stroke-width="2.5"/>
         </svg>
         <div class="compass-loading-text">Votre Boussole est en cours de génération...<br><span style="font-size:11px;">Cela peut prendre quelques secondes</span></div>
       </div>
@@ -1137,7 +1137,7 @@ function buildPrompt(approfondie){
     +'- Piège-refuge (Ouest) : être "'+O+'" — mots : '+Ow+'\n'
     +'- Qualité à s\'autoriser (Nord) : être "'+N+'" — mots : '+Nw+'\n'
     +'- Allergie-dépendance (Est) : être "'+E+'" — mots : '+Ew+'\n'
-    +(intention?'- Intention posée : "'+intention+'"\n':'')
+    +(intention?'Si intention formulée : commencer le résumé par une phrase directe du type [Prénom], vous cherchez à [intention] - sans nuance. Puis continuer.\\n':'')
     +'\\nCOMMENCE par un résumé de 3 à 5 paragraphes courts, précédé du titre ---RESUME---. Écris en langage simple et accessible, sans jargon technique, pour quelqu\'un qui découvre cet univers. Ton nuancé et bienveillant : utilise des formulations comme il semble que, vous pourriez avoir tendance à, on pourrait observer chez vous, il se peut que plutôt que des affirmations directes. Ce résumé doit donner envie de lire la synthèse complète ou de contacter Lionel Drouvin. Nomme les qualités avec leurs mots. Après le résumé, écris ---FIN RESUME--- puis démarre la synthèse par cette phrase exacte : Ci-dessous, je vous présente les étapes que nous aurons l\'occasion de parcourir ensemble lors de l\'accompagnement spécifique Boussole relationnelle. Puis continue avec les 9 titres.\n'
     +'§EXPLORER LE MÉCANISME EN JEU\n'
     +'Il semblerait que la peur de ne pas demeurer suffisamment **être '+N+'** vous pousse à devoir vous réfugier, à votre insu, dans **être '+O+'** — un glissement rendu possible tant que vous vous interdisez d’être pleinement **être '+S+'**.\n\n'
@@ -1154,19 +1154,19 @@ function buildPrompt(approfondie){
     +'Expliquer : Il se peut que basculer vers **être '+O+'** soit une façon de se mettre à l’abri — sans en avoir vraiment conscience. Stabiliser **être '+S+'** pourrait progressivement rendre ce refuge moins nécessaire.\n\n'
     +'§L\'ALLERGIE-DÉPENDANCE\n'
     +(approfondie
-      ?'Il semblerait que la tension entre **être '+S+'** et **être '+O+'** se joue d’abord en vous — avant même qu’elle ne se joue avec l’autre. Reconnaître cela, c’est peut-être le premier pas vers des relations plus apaisées.\n\n'
+      ?'La tension entre **être '+S+'** et **être '+O+'** se joue d’abord en vous — avant même qu’elle ne se joue avec l’autre. Reconnaître cela, c’est peut-être le premier pas vers des relations plus apaisées.\n\n'
       :'Il semblerait que la tension entre **être '+S+'** et **être '+O+'** se joue d’abord en vous. Reconnaître cela, c’est peut-être le premier pas vers des relations plus apaisées.\n\n')
     +'§LA DYNAMIQUE RELATIONNELLE ET LES CONFLITS\n'
     +(approfondie
-      ?'Il se peut que lorsque **être '+E+'** se manifeste chez l’autre, vous ayez tendance à vous réfugier dans **être '+O+'** — créant une tension qui s’alimente d’elle-même. Voir ce mécanisme, c’est déjà commencer à en sortir.\n\n'
+      ?'Il se peut que lorsque vous repérez — ou même interprétez — quelque chose de **'+E+'** chez l’autre, vous ayez tendance à vous réfugier dans un état **'+O+'** — créant une tension qui s’auto-alimente. Voir ce mécanisme, c’est déjà commencer à en sortir.\n\n'
       :'Il se peut que lorsque **être '+E+'** se manifeste chez l’autre, vous ayez tendance à vous réfugier dans **être '+O+'**. Voir ce mécanisme, c’est déjà commencer à en sortir.\n\n')
     +'§LE CONFLIT INTÉRIEUR\n'
     +(approfondie
       ?'3-4 phrases en forme d\'invitation, jamais d\'injonction. Utiliser des formulations comme "il se peut que...", "vous pourrez certainement observer...", "une tendance à...". Évoquer la possibilité de se libérer du mécanisme, d\'être auteur de sa vie, d\'être souverain, de libre-arbitre. Utiliser "indications" ou "informations" jamais "cartographie".\\n'
     +'§VOTRE CHEMIN DE LIBÉRATION\n'
     +'Rédiger 2 phrases nuancées qui disent ce que ce parcours rend possible. Terminer par : Voici votre chemin — un chemin vers plus d\'autonomie, de sérénité et de liberté d\'être pleinement vous-même dans toutes vos relations.\\n\\n'
-    +'Terminer par ce paragraphe exact : "Ce que vous venez d\'explorer et de découvrir est déjà une avancée précieuse. Je vous propose une séance — visio ou présentiel — pour parcourir ensemble les 8 étapes présentées dans votre synthèse. Ensemble, nous pourrons entrer dans le nœud du mécanisme et vous permettre de desserrer l\'emprise des conditionnements — et de retrouver un accès plus libre à vos qualités naturelles pour nourrir vos besoins réels."'
-      :'2-3 phrases en forme d\'invitation, jamais d\'injonction. Utiliser des formulations comme "il se peut que...", "vous pourrez certainement observer...". Évoquer la possibilité de se libérer du mécanisme, d\'être auteur de sa vie, d\'être souverain. Utiliser "indications" ou "informations" jamais "cartographie". Terminer par ce paragraphe exact : "Ce que vous venez d\'explorer et de découvrir est déjà une avancée précieuse. Je vous propose une séance — visio ou présentiel — pour parcourir ensemble les 8 étapes présentées dans votre synthèse. Ensemble, nous pourrons entrer dans le nœud du mécanisme et vous permettre de desserrer l\'emprise des conditionnements — et de retrouver un accès plus libre à vos qualités naturelles pour nourrir vos besoins réels."');
+    +'Terminer par ce paragraphe exact : "Ce que vous venez d\'explorer et de découvrir demeure déjà une avancée précieuse. Je vous propose une ou trois séances en visio pour parcourir ensemble les étapes présentées dans votre synthèse. Ensemble, nous pourrons entrer dans le nœud du mécanisme et vous permettre de desserrer l\'emprise des conditionnements — pour retrouver l\'accès à vos qualités naturelles, nourrir vos besoins réels et vous exprimer pleinement, quel que soit le contexte relationnel."'
+      :'2-3 phrases en forme d\'invitation, jamais d\'injonction. Utiliser des formulations comme "il se peut que...", "vous pourrez certainement observer...". Évoquer la possibilité de se libérer du mécanisme, d\'être auteur de sa vie, d\'être souverain. Utiliser "indications" ou "informations" jamais "cartographie". Terminer par ce paragraphe exact : "Ce que vous venez d\'explorer et de découvrir demeure déjà une avancée précieuse. Je vous propose une ou trois séances en visio pour parcourir ensemble les étapes présentées dans votre synthèse. Ensemble, nous pourrons entrer dans le nœud du mécanisme et vous permettre de desserrer l\'emprise des conditionnements — pour retrouver l\'accès à vos qualités naturelles, nourrir vos besoins réels et vous exprimer pleinement, quel que soit le contexte relationnel."');
 
   return prompt;
 }
@@ -1228,11 +1228,11 @@ function generateAI(approfondie){
           var phrasesFixe = {
             'EXPLORER': 'Explorer et voir comment le mécanisme semble s’enclencher en vous — le lien entre votre qualité naturelle et la façon dont elle peut basculer dans l’excès sans que vous en ayez conscience.',
             'CONNECTER': 'Mettre en connexion les deux qualités que vous avez mises en lumière avec votre Boussole. Contrairement à des croyances conditionnées, elles ne sont pas incompatibles, bien au contraire.',
-            'INFORMER': 'Pour sortir du flou qu’impose le mécanisme, réaliser deux distinctions essentielles — entre votre qualité naturelle et son excès. Les voir clairement, c’est déjà commencer à s’en libérer.',
-            'ALLIANCE': 'Mettre en alliance vos deux qualités naturelles — celle que vous incarnez et celle que maintenant vous vous autorisez — et réaliser ce qu’elles peuvent produire ensemble lorsqu’elles sont alliées et non plus opposées.',
+            'INFORMER': 'Pour sortir du flou que vous impose le mécanisme, réaliser deux distinctions essentielles — entre votre qualité naturelle et son excès. Les voir clairement, c’est déjà commencer à s’en libérer.',
+            'ALLIANCE': 'Mettre en alliance vos deux qualités naturelles — celle que vous incarnez et celle que maintenant vous vous autorisez — et réaliser ce qu’elles peuvent produire ensemble lorsqu’elles sont alliées et non plus en opposition et vues comme étant contraires.',
             'PIÈGE': 'Comprendre comment stabiliser votre qualité naturelle pour vous libérer progressivement du besoin compensatoire de vous réfugier dans votre piège — à votre insu.',
             'ALLERGIE': 'Prendre conscience de ce qui vous met en allergie et de la dépendance à cette énergie réactive — et comment utiliser cette réaction pour retrouver et nourrir vos besoins oubliés.',
-            'DYNAMIQUE': 'Constater ce qui se joue dans vos relations lorsque les mécanismes entrent en résonance — et comment la médiation peut inverser le sens de la spirale afin de retrouver puis franchir à nouveau le point de bascule.',
+            'DYNAMIQUE': 'Constater ce qui se joue dans vos relations lorsque les mécanismes entrent en résonance — et comment la médiation peut inverser le sens de la spirale afin de retrouver puis franchir à nouveau le « point de bascule ».',
             'CONFLIT': 'Prendre responsabilité du fait que le conflit se joue en vous — avant même qu’il ne se joue avec l’autre — et ainsi vivre des relations plus sereines, plus riches, plus respectueuses.',
             'CHEMIN': 'Voici votre chemin — ce que ce travail sur votre Boussole rend possible, concrètement. Un chemin vers plus d’autonomie, de sérénité et de liberté d’être pleinement vous-même dans toutes vos relations.'
           };
@@ -1323,11 +1323,11 @@ function downloadPDF(){
 
   // SVG boussole avec les 4 mots
   var svgBoussole='<svg width="220" height="220" viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">'
-    +'<circle cx="0" cy="0" r="140" fill="none" stroke="#9FE1CB" stroke-width="1"/>'
-    +'<path d="M0,0 L-99,-99 A140,140 0 0,1 99,-99 Z" fill="#E8F8F3" stroke="white" stroke-width="2"/>'
-    +'<path d="M0,0 L99,-99 A140,140 0 0,1 99,99 Z" fill="#F0FAF6" stroke="white" stroke-width="2"/>'
-    +'<path d="M0,0 L99,99 A140,140 0 0,1 -99,99 Z" fill="#E8F8F3" stroke="white" stroke-width="2"/>'
-    +'<path d="M0,0 L-99,99 A140,140 0 0,1 -99,-99 Z" fill="#F0FAF6" stroke="white" stroke-width="2"/>'
+    +'<circle cx="0" cy="0" r="140" fill="none" stroke="#9FE1CB" stroke-width="2"/>'
+    +'<path d="M0,0 L-99,-99 A140,140 0 0,1 99,-99 Z" fill="#8EDCC0" stroke="white" stroke-width="2"/>'
+    +'<path d="M0,0 L99,-99 A140,140 0 0,1 99,99 Z" fill="#A8E6D0" stroke="white" stroke-width="2"/>'
+    +'<path d="M0,0 L99,99 A140,140 0 0,1 -99,99 Z" fill="#8EDCC0" stroke="white" stroke-width="2"/>'
+    +'<path d="M0,0 L-99,99 A140,140 0 0,1 -99,-99 Z" fill="#A8E6D0" stroke="white" stroke-width="2"/>'
     +'<text x="0" y="-130" text-anchor="middle" font-size="10" font-weight="700" fill="#085041">N</text>'
     +'<text x="0" y="130" text-anchor="middle" font-size="10" font-weight="700" fill="#085041">S</text>'
     +'<text x="130" y="0" text-anchor="middle" font-size="10" font-weight="700" fill="#085041">E</text>'
@@ -1344,7 +1344,7 @@ function downloadPDF(){
     +'<text x="-84" y="-14" text-anchor="middle" font-size="7" fill="#854F0B" font-style="italic">Être</text>'
     +'<text x="-84" y="-2" text-anchor="middle" font-size="12" font-weight="600" fill="#633806">'+ON+'</text>'
     +'<text x="-84" y="12" text-anchor="middle" font-size="11" fill="#854F0B">piège-refuge</text>'
-    +'<circle cx="0" cy="0" r="34" fill="white" stroke="#C9A84C" stroke-width="1.5"/>'
+    +'<circle cx="0" cy="0" r="34" fill="white" stroke="#C9A84C" stroke-width="2.5"/>'
     +'<text x="0" y="-12" text-anchor="middle" font-size="8" font-weight="600" fill="#C9A84C">'+SN+'</text>'
     +'<text x="0" y="2" text-anchor="middle" font-size="16" font-weight="300" fill="#C9A84C" font-family="Georgia,serif">&amp;</text>'
     +'<text x="0" y="16" text-anchor="middle" font-size="8" font-weight="600" fill="#C9A84C">'+NN+'</text>'
