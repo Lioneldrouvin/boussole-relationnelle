@@ -1149,7 +1149,9 @@ function buildPrompt(approfondie){
     +'§METTRE EN ALLIANCE VOS DEUX QUALITÉS NATURELLES\n'
     +'Il semblerait que **'+S+'** et **'+N+'** ensemble puissent créer quelque chose de plus stable et de plus vivant — un équilibre qui n\'est pas une ligne de crête, mais une plénitude.\n'
     +'§DISCERNER ET ANCRER\n'
-    +'Il se peut que ce travail d\'ancrage vous permette de reconnaître, de plus en plus tôt, le moment où le mécanisme s\'enclenche — et de choisir autrement.\n\n'
+    +'Ce travail d\'ancrage vous permettra de reconnaître, de plus en plus tôt, le moment où le mécanisme s\'enclenche — et de choisir autrement. Vous pourrez développer une capacité à sentir l\'instant précis où votre qualité commence à basculer vers son excès — avant que le mouvement ne vous emporte.\n\n'
+    +'§VOTRE CHEMIN DE LIBÉRATION\\n'
+    +'Rédiger 1 phrase nuancée qui dit le chemin possible avec les qualités de la personne. Puis terminer par ce bloc HTML exact, mot pour mot :\\n'
     +'Terminer par ce paragraphe exact : "Ce que vous venez d\'explorer et de découvrir demeure déjà une avancée précieuse. Je vous propose une ou trois séances en visio pour parcourir ensemble les étapes présentées dans votre synthèse. Ensemble, nous pourrons entrer dans le nœud du mécanisme et vous permettre de desserrer l\'emprise des conditionnements — pour retrouver l\'accès à vos qualités naturelles, nourrir vos besoins réels et vous exprimer pleinement, quel que soit le contexte relationnel."';
 
   return prompt;
@@ -1209,11 +1211,11 @@ function generateAI(approfondie){
           else if(titre.indexOf('DISCERNER')>-1||titre.indexOf('ANCRER')>-1){icone=''; titre='ÉTAPE 5 — DISCERNER ET ANCRER';}
           else if(titre.indexOf('DYNAMIQUE')>-1){icone=''; titre='ÉTAPE 7 — '+titre;}
           else if(titre.indexOf('CONFLIT')>-1){icone=''; titre='ÉTAPE 8 — '+titre;}
-          else if(titre.indexOf('CHEMIN')>-1&&titre.indexOf('ALLIANCE')<0&&titre.indexOf('DISCERNER')<0){icone='🧭 ';}
+          else if(titre.indexOf('CHEMIN')>-1&&titre.indexOf('ALLIANCE')<0&&titre.indexOf('DISCERNER')<0){icone='🧭 '; titre='🧭 VOTRE CHEMIN DE LIBÉRATION';}
           var phrasesFixe = {
             'ÉTAPE 1': 'Votre Boussole met en lumière deux qualités naturelles — l\'une que vous incarnez déjà en partie et qu\'il s\'agit de stabiliser pleinement, l\'autre que vous vous interdisez d\'exprimer et qu\'il s\'agit de vous autoriser.',
             'ÉTAPE 2': 'Chacune de vos qualités naturelles peut, sous pression et par conditionnement, basculer dans son excès, sans que vous en ayez conscience. La qualité incarnée vous fait basculer dans un piège — qui est aussi un refuge, la qualité interdite alimente une allergie qui a tendance à devenir une dépendance. L\'observer sans se juger, c\'est déjà commencer à s\'en responsabiliser.',
-            'ÉTAPE 3': 'Votre cerveau a engrammé des informations qui confondent la qualité et son excès. Les distinguer clairement, c\'est réinformer votre cerveau — et commencer à desserrer l\'emprise des conditionnements hérités.',
+            'ÉTAPE 3': 'Notre cerveau a engrammé des informations qui confondent la qualité et son excès. Les distinguer clairement, c\'est réinformer notre cerveau — et commencer à desserrer l\'emprise des conditionnements dont nous avons hérité.',
             'ÉTAPE 4': 'Contrairement à ce que vos conditionnements vous ont fait croire, ces deux qualités ne sont pas incompatibles : elles sont complémentaires. Mises en alliance, elles produisent quelque chose qu\'aucune des deux ne pourrait créer seule — et ouvrent l\'accès à vos besoins réels.',
             'ÉTAPE 5': 'Ce travail subtil et puissant s\'effectue en séance — il ne s\'explique pas, il se vit. En revisitant les 4 espaces de votre Boussole à travers vos sensations, vos émotions et vos ressentis, vous intégrerez l\'alliance de vos qualités comme une ressource réelle et disponible — pour nourrir vos besoins réels et retrouver, par vous-même, ce qui avait été mis de côté depuis l\'enfance.',
           };
@@ -1235,6 +1237,31 @@ function generateAI(approfondie){
           if(titre.indexOf('ÉTAPE 1') >= 0) etapeStyle += '';
           var titreHtml = '<div class="ai-titre" style="'+etapeStyle+'">'+titre+'</div>';
           var phraseFixeHtml = phraseKey ? '<div style="background:var(--gl);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:.6rem .875rem;margin:.4rem 0 .6rem;font-size:13px;color:var(--gdp);line-height:1.7;font-style:italic;">'+phrasesFixe[phraseKey]+'</div>' : '';
+          if(titre.indexOf('CHEMIN')>-1||titre.indexOf('LIBERTÉ')>-1){
+            var calendly1='https://calendly.com/contact-8hjw/speed-coaching-60mn';
+            var calendly3='https://calendly.com/contact-8hjw/accompagnement-3-seances';
+            var cheminHtml='<div class="ai-titre" style="margin-top:1.5rem;padding-top:1rem;border-top:2px solid var(--gm);">'+titre+'</div>';
+            cheminHtml+='<div id="chemin-ia-phrase"></div>';
+            cheminHtml+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.875rem;">';
+            cheminHtml+='<div style="border:1.5px solid var(--gm);border-radius:var(--rl);padding:1rem;background:var(--gl);">';
+            cheminHtml+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--g);margin-bottom:.4rem;">1 séance</div>';
+            cheminHtml+='<div style="font-size:15px;font-weight:700;color:var(--gdp);margin-bottom:.3rem;">80 €</div>';
+            cheminHtml+='<div style="font-size:12px;color:var(--ts);line-height:1.6;margin-bottom:.75rem;">Nous travaillons ensemble les 4 premières étapes à partir de votre Boussole.<br><strong>Objectif :</strong> intégrer l’alliance de vos deux qualités.</div>';
+            cheminHtml+='<button class="btn btn-g btn-sm" style="width:100%;" onclick="window.open(\''+calendly1+'\',\'_blank\')">Réserver</button>';
+            cheminHtml+='</div>';
+            cheminHtml+='<div style="border:1.5px solid var(--go);border-radius:var(--rl);padding:1rem;background:var(--gol);">';
+            cheminHtml+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--go);margin-bottom:.4rem;">3 séances</div>';
+            cheminHtml+='<div style="font-size:15px;font-weight:700;color:var(--amd);margin-bottom:.3rem;">210 €</div>';
+            cheminHtml+='<div style="font-size:12px;color:var(--ts);line-height:1.6;margin-bottom:.75rem;">Les 4 premières étapes + le travail de discernement, d’ancrage et d’autonomisation.<br><strong>Objectif :</strong> utiliser la Boussole de façon autonome.</div>';
+            cheminHtml+='<button class="btn btn-go btn-sm" style="width:100%;" onclick="window.open(\''+calendly3+'\',\'_blank\')">Réserver</button>';
+            cheminHtml+='</div>';
+            cheminHtml+='</div>';
+            cheminHtml+='<div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;">';
+            cheminHtml+='<a href="tel:+33614678098" style="display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--g);border:1px solid var(--gm);border-radius:var(--r);padding:6px 14px;text-decoration:none;">&#x1F4DE; M’appeler</a>';
+            cheminHtml+='<a href="mailto:contact@lioneldrouvin.com" style="display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--g);border:1px solid var(--gm);border-radius:var(--r);padding:6px 14px;text-decoration:none;">&#x2709;&#xFE0F; M’écrire</a>';
+            cheminHtml+='</div>';
+            return cheminHtml;
+          }
           return titreHtml + phraseFixeHtml;
         }
         mots.forEach(function(mot){
