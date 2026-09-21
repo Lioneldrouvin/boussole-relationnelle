@@ -1140,16 +1140,11 @@ function buildPrompt(approfondie){
     +(intention?'Si intention formulée : commencer le résumé par une phrase directe du type [Prénom], vous cherchez à [intention] - sans nuance. Puis continuer.\\n':'')
     +'\\nCOMMENCE par un résumé de 3 à 5 paragraphes courts, précédé du titre ---RESUME---. Écris en langage simple et accessible, sans jargon technique, pour quelqu\'un qui découvre cet univers. Ton nuancé et bienveillant : utilise des formulations comme il semble que, vous pourriez avoir tendance à, on pourrait observer chez vous, il se peut que plutôt que des affirmations directes. Ce résumé doit donner envie de lire la synthèse complète ou de contacter Lionel Drouvin. Nomme les qualités avec leurs mots. Après le résumé, écris ---FIN RESUME--- puis démarre la synthèse par cette phrase exacte : Ci-dessous, je vous présente les étapes que nous aurons l\'occasion de parcourir ensemble lors de l\'accompagnement spécifique Boussole relationnelle. Puis continue avec les 9 titres.\n'
     +'§EXPLORER LE MÉCANISME EN JEU\n'
-    +'Il semblerait que la peur de ne pas demeurer suffisamment **être '+N+'** vous pousse à devoir vous réfugier, à votre insu, dans **être '+O+'** — un glissement rendu possible tant que vous vous interdisez d’être pleinement **être '+S+'**.\n\n'
+    +'Il semblerait que **'+S+'** soit déjà présent en vous — et que **'+N+'** attende encore autorisation pour s’exprimer pleinement.\n'
     +'§CONNECTER VOS QUALITÉS ALLIÉES\n'
-    +'Il se peut qu’être **'+S+'** et être **'+N+'** soient moins opposés qu’il n’y paraît. Ensemble, ils pourraient nourrir quelque chose de plus libre et de plus juste en vous.\n\n'
-    +'§S’INFORMER VIA LA DÉCONFUSION LIBÉRATRICE\n'
-    +'Commencer par cette phrase exacte : C\'est une étape de ré-information essentielle dans le processus de libération de l\'emprise des conditionnements hérités dès l\'enfance.\n'
-    +'1re Première déconfusion — entre être "'+N+'" ('+Nw+') et être "'+E+'" ('+Ew+'). En 2 phrases sobres : définir la qualité naturelle en gras, puis son excès en gras. Conclure par : Prenez tranquillement conscience que : être [qualité] et être [excès], ce n\'est pas la même chose. Ton neutre, sans jugement. avant de passer à la deuxième.\n\n'
-    +'2e Deuxième déconfusion — entre être "'+S+'" ('+Sw+') et être "'+O+'" ('+Ow+'). En 2 phrases sobres : définir la qualité naturelle en gras, puis son excès en gras. Conclure par : Constatez simplement la différence entre être [qualité] et être [excès]. Ce ne sont pas les mêmes informations. Ton neutre, sans jugement.\n\n'
-    +'Conclure par : S\'informer — ré-informer son cerveau — est un acte de souveraineté. Mention de ne plus être dans le flou, clarté, libre-arbitre.\n\n'
-    +'§LA MISE EN ALLIANCE AU CENTRE\\n'
-    +'Il semblerait que **'+S+'** et **'+N+'** ensemble puissent créer quelque chose qu\'aucun des deux ne peut produire seul — peut-être votre point naturel de rencontre.\\n\\n'
+    +'Il se peut que sous pression, **'+S+'** bascule vers **'+O+'** — et que ce que vous percevez de **'+E+'** chez l\'autre mette en réaction quelque chose en vous.\n'
+    +'§DÉCONFUSIONNER VOS QUALITÉS DE LEURS EXCÈS\\n'
+    +'Il semblerait que **'+S+'** et **'+N+'** ensemble puissent créer quelque chose de plus stable et de plus vivant — un équilibre qui n\'est pas une ligne de crête, mais une plénitude.\n'
     +'§LE PIÈGE-REFUGE\n'
     +'Expliquer : Il se peut que basculer vers **être '+O+'** soit une façon de se mettre à l’abri — sans en avoir vraiment conscience. Stabiliser **être '+S+'** pourrait progressivement rendre ce refuge moins nécessaire.\n\n'
     +'§L\'ALLERGIE-DÉPENDANCE\n'
@@ -1216,27 +1211,22 @@ function generateAI(approfondie){
         if(p.charAt(0)==='§'){
           var titre=p.slice(1).trim();
           var icone='';
-          if(titre.indexOf('EXPLORER')>-1){icone=''; titre='ÉTAPE 1 — '+titre;}
-          else if(titre.indexOf('CONNECTER')>-1){icone=''; titre='ÉTAPE 2 — '+titre;}
-          else if(titre.indexOf('INFORMER')>-1||titre.indexOf('DÉCONFUSION')>-1){icone=''; titre='ÉTAPE 3 — '+titre;}
-          else if(titre.indexOf('MISE EN ALLIANCE')>-1||titre.indexOf('ALLIANCE AU CENTRE')>-1){icone=''; titre='ÉTAPE 4 — '+titre;}
-          else if(titre.indexOf('PIÈGE')>-1){icone=''; titre='ÉTAPE 5 — '+titre;}
-          else if(titre.indexOf('ALLERGIE')>-1){icone=''; titre='ÉTAPE 6 — '+titre;}
+          if(titre.indexOf('EXPLORER')>-1||titre.indexOf('QUALITÉS ALLIÉES')>-1){icone=''; titre='ÉTAPE 1 — EXPLORER ET DÉCOUVRIR VOS QUALITÉS ALLIÉES';}
+          else if(titre.indexOf('CONNECTER')>-1||titre.indexOf('EXPRESSION')>-1||titre.indexOf('EXCESSIVE')>-1){icone=''; titre='ÉTAPE 2 — COMPRENDRE L\'EXPRESSION EXCESSIVE DE VOS QUALITÉS';}
+          else if(titre.indexOf('INFORMER')>-1||titre.indexOf('DÉCONFUSION')>-1||titre.indexOf('DÉCONFUSIONNER')>-1){icone=''; titre='ÉTAPE 3 — DÉCONFUSIONNER VOS QUALITÉS DE LEURS EXCÈS';}
+          else if(titre.indexOf('MISE EN ALLIANCE')>-1||titre.indexOf('ALLIANCE')>-1){icone=''; titre='ÉTAPE 4 — METTRE EN ALLIANCE VOS DEUX QUALITÉS NATURELLES';}
+          else if(titre.indexOf('DISCERNER')>-1||titre.indexOf('ANCRER')>-1){icone=''; titre='ÉTAPE 5 — DISCERNER ET ANCRER';}
           else if(titre.indexOf('DYNAMIQUE')>-1){icone=''; titre='ÉTAPE 7 — '+titre;}
           else if(titre.indexOf('CONFLIT')>-1){icone=''; titre='ÉTAPE 8 — '+titre;}
           else if(titre.indexOf('CHEMIN')>-1){icone='🧭 ';}
           var phrasesFixe = {
-            'EXPLORER': 'Explorer et voir comment le mécanisme semble s’enclencher en vous — le lien entre votre qualité naturelle et la façon dont elle peut basculer dans l’excès sans que vous en ayez conscience.',
-            'CONNECTER': 'Mettre en connexion les deux qualités que vous avez mises en lumière avec votre Boussole. Contrairement à des croyances conditionnées, elles ne sont pas incompatibles, bien au contraire.',
-            'INFORMER': 'Pour sortir du flou que vous impose le mécanisme, réaliser deux distinctions essentielles — entre votre qualité naturelle et son excès. Les voir clairement, c’est déjà commencer à s’en libérer.',
-            'ALLIANCE': 'Mettre en alliance vos deux qualités naturelles — celle que vous incarnez et celle que maintenant vous vous autorisez — et réaliser ce qu’elles peuvent produire ensemble lorsqu’elles sont alliées et non plus en opposition et vues comme étant contraires.',
-            'PIÈGE': 'Comprendre comment stabiliser votre qualité naturelle pour vous libérer progressivement du besoin compensatoire de vous réfugier dans votre piège — à votre insu.',
-            'ALLERGIE': 'Prendre conscience de ce qui vous met en allergie et de la dépendance à cette énergie réactive — et comment utiliser cette réaction pour retrouver et nourrir vos besoins oubliés.',
-            'DYNAMIQUE': 'Constater ce qui se joue dans vos relations lorsque les mécanismes entrent en résonance — et comment la médiation peut inverser le sens de la spirale afin de retrouver puis franchir à nouveau le « point de bascule ».',
-            'CONFLIT': 'Prendre responsabilité du fait que le conflit se joue en vous — avant même qu’il ne se joue avec l’autre — et ainsi vivre des relations plus sereines, plus riches, plus respectueuses.',
-            'CHEMIN': 'Voici votre chemin — ce que ce travail sur votre Boussole rend possible, concrètement. Un chemin vers plus d’autonomie, de sérénité et de liberté d’être pleinement vous-même dans toutes vos relations.'
+            'ÉTAPE 1': 'Votre Boussole met en lumière deux qualités naturelles — l\'une que vous incarnez déjà en partie et qu\'il s\'agit de stabiliser pleinement, l\'autre que vous vous interdisez d\'exprimer et qu\'il s\'agit de vous autoriser.',
+            'ÉTAPE 2': 'Chacune de vos qualités naturelles peut, sous pression et par conditionnement, basculer dans son excès, sans que vous en ayez conscience. La qualité incarnée vous fait basculer dans un piège — qui est aussi un refuge, la qualité interdite alimente une allergie qui a tendance à devenir une dépendance. L\'observer sans se juger, c\'est déjà commencer à s\'en responsabiliser.',
+            'ÉTAPE 3': 'Votre cerveau a engrammé des informations qui confondent la qualité et son excès. Les distinguer clairement, c\'est réinformer votre cerveau — et commencer à desserrer l\'emprise des conditionnements hérités.',
+            'ÉTAPE 4': 'Contrairement à ce que vos conditionnements vous ont fait croire, ces deux qualités ne sont pas incompatibles : elles sont complémentaires. Mises en alliance, elles produisent quelque chose qu\'aucune des deux ne pourrait créer seule — et ouvrent l\'accès à vos besoins réels.',
+            'ÉTAPE 5': 'Ce travail d\'ancrage vous permettra d\'intégrer durablement l\'alliance de vos deux qualités — pour qu\'elle devienne un réflexe naturel plutôt qu\'un effort conscient.'
           };
-          var phraseKey = Object.keys(phrasesFixe).find(function(k){ return titre.toUpperCase().indexOf(k) >= 0; });
+          var phraseKey = Object.keys(phrasesFixe).find(function(k){ return titre.toUpperCase().indexOf(k.toUpperCase()) >= 0; });
           var phraseHtml = phraseKey ? '<p class="etape-phrase">'+phrasesFixe[phraseKey]+'</p>' : '';
           return '<div class="ai-titre">'+icone+titre+'</div>'+phraseHtml;
         }
