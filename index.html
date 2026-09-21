@@ -1013,6 +1013,7 @@ function submitFormspree(){
   var synthType='Synthèse';
   var d=state.data;
   var resume='S:'+( d.S?d.S.main:'?')+' O:'+(d.O?d.O.main:'?')+' N:'+(d.N?d.N.main:'?')+' E:'+(d.E?d.E.main:'?');
+  console.log('Formspree: prenom='+prenom+' email='+email+' ID='+FORMSPREE_ID);
   if(FORMSPREE_ID==='VOTRE_ID_FORMSPREE') return; // Pas encore configuré
   fetch('https://formspree.io/f/'+FORMSPREE_ID,{
     method:'POST',
@@ -1022,7 +1023,19 @@ function submitFormspree(){
       synthese:synthType,boussole:resume,
       date:new Date().toLocaleDateString('fr-FR')
     })
-  }).then(function(){console.log('Coordonnées envoyées');}).catch(function(){});
+  }).then(function(resp){
+    if(resp.ok){
+      console.log('Formspree OK - soumission envoyée');
+    } else {
+      resp.json().then(function(data){
+        console.error('Formspree erreur:', resp.status, JSON.stringify(data));
+      }).catch(function(){
+        console.error('Formspree erreur HTTP:', resp.status);
+      });
+    }
+  }).catch(function(err){
+    console.error('Formspree réseau erreur:', err);
+  });
 }
 
 function generateBesoinsInline(){
