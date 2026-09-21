@@ -1129,6 +1129,7 @@ function buildPrompt(approfondie){
   var prompt='Tu es un accompagnateur bienveillant en coaching relationnel.\n'
     +niveauDetail+'\n'
     +'Ne jamais écrire deux fois le mot être à la suite dans une phrase.\n'
+    +'Ne jamais utiliser de ## ou de balises Markdown. Les titres commencent directement par § sans aucun préfixe.\n'
     +'Mentionner "être '+S+'", "être '+O+'", "être '+N+'", "être '+E+'" à chaque mention de ces mots.\n'
     +'Ne pas réécrire le mot retenu à côté de ses mots associés.\n'
     +(prenom?'Commence par le prénom "'+prenom+'" seul en premier mot. Utilise-le une deuxième fois uniquement au début de §VOTRE CHEMIN DE LIBÉRATION. Jamais en dernier mot d\'une phrase.\n':'')
@@ -1196,6 +1197,8 @@ function generateAI(approfondie){
       var mots=[S,N,O,E];
       var html=raw.split(/\n\n+/).map(function(p){
         p=p.trim();
+        // Nettoyer les ## markdown
+        p=p.replace(/^#+\\s*/,'');
         if(p.charAt(0)==='§'){
           var titre=p.slice(1).trim();
           var icone='';
@@ -1206,7 +1209,7 @@ function generateAI(approfondie){
           else if(titre.indexOf('DISCERNER')>-1||titre.indexOf('ANCRER')>-1){icone=''; titre='ÉTAPE 5 — DISCERNER ET ANCRER';}
           else if(titre.indexOf('DYNAMIQUE')>-1){icone=''; titre='ÉTAPE 7 — '+titre;}
           else if(titre.indexOf('CONFLIT')>-1){icone=''; titre='ÉTAPE 8 — '+titre;}
-          else if(titre.indexOf('CHEMIN')>-1){icone='🧭 ';}
+          else if(titre.indexOf('CHEMIN')>-1&&titre.indexOf('ALLIANCE')<0&&titre.indexOf('DISCERNER')<0){icone='🧭 ';}
           var phrasesFixe = {
             'ÉTAPE 1': 'Votre Boussole met en lumière deux qualités naturelles — l\'une que vous incarnez déjà en partie et qu\'il s\'agit de stabiliser pleinement, l\'autre que vous vous interdisez d\'exprimer et qu\'il s\'agit de vous autoriser.',
             'ÉTAPE 2': 'Chacune de vos qualités naturelles peut, sous pression et par conditionnement, basculer dans son excès, sans que vous en ayez conscience. La qualité incarnée vous fait basculer dans un piège — qui est aussi un refuge, la qualité interdite alimente une allergie qui a tendance à devenir une dépendance. L\'observer sans se juger, c\'est déjà commencer à s\'en responsabiliser.',
@@ -1218,7 +1221,7 @@ function generateAI(approfondie){
             'EXPLORER': 'ÉTAPE 1', 'QUALITÉS ALLIÉES': 'ÉTAPE 1',
             'EXPRESSION': 'ÉTAPE 2', 'EXCESSIVE': 'ÉTAPE 2', 'COMPRENDRE': 'ÉTAPE 2',
             'DÉCONFUSIONNER': 'ÉTAPE 3', 'DÉCONFUSION': 'ÉTAPE 3',
-            'ALLIANCE': 'ÉTAPE 4', 'METTRE EN ALLIANCE': 'ÉTAPE 4',
+            'METTRE EN ALLIANCE': 'ÉTAPE 4', 'ALLIANCE': 'ÉTAPE 4', 'LIBÉRATION': 'ÉTAPE 4',
             'DISCERNER': 'ÉTAPE 5', 'ANCRER': 'ÉTAPE 5'
           };
           var titreUp = titre.toUpperCase();
@@ -1377,14 +1380,11 @@ function downloadPDF(){
     +'<div class="footer">Synthèse issue de l\'outil Boussole relationnelle de Lionel Drouvin · Rédigée avec l\'aide de l\'IA · Première lecture, non un diagnostic</div>'
     +'</body></html>';
 
-  // Ouvrir dans une nouvelle fenêtre et déclencher l'impression/sauvegarde PDF
   var win=window.open('','_blank');
   if(win){
     win.document.write(html);
     win.document.close();
-    // Attendre le rendu complet avant d'imprimer
     win.onload=function(){win.print();};
-    // Fallback si onload ne se déclenche pas
     setTimeout(function(){try{win.print();}catch(e){}},800);
   } else {
     alert('Veuillez autoriser les popups de ce site pour télécharger le PDF.');
@@ -1402,22 +1402,17 @@ function checkResumeBanner(){
   }
 }
 
-// Communiquer la hauteur réelle à Wix pour ajuster l'iFrame automatiquement
 function sendHeight(){
   var h=document.body.scrollHeight||document.documentElement.scrollHeight;
   window.parent.postMessage({type:"wix-height",height:h+40},"*");
 }
-// Envoyer la hauteur au chargement et à chaque changement
 document.addEventListener("DOMContentLoaded",function(){
   sendHeight();
-  // Observer les changements de contenu
   var obs=new MutationObserver(function(){setTimeout(sendHeight,300);});
   obs.observe(document.body,{childList:true,subtree:true,attributes:true});
-  // Aussi envoyer à intervalles réguliers pendant la génération
   setInterval(sendHeight,1000);
 });
 
-// Animation séquentielle des quartiers de la boussole étape 2
 (function(){
   var sequence=['S','O','N','E'];
   var colors={N:'#C8EFE4',S:'#C8EFE4',E:'#F5DFB8',O:'#F5DFB8'};
@@ -1426,7 +1421,6 @@ document.addEventListener("DOMContentLoaded",function(){
   var animInterval=null;
 
   function animateQuartier(){
-    // Désactiver le précédent
     var prev=sequence[(current-1+4)%4];
     var elPrev=document.getElementById('qz-'+prev);
     if(elPrev){
@@ -1434,7 +1428,6 @@ document.addEventListener("DOMContentLoaded",function(){
       elPrev.style.fill=baseColors[prev];
       elPrev.style.transform='scale(1)';
     }
-    // Activer le courant
     var cur=sequence[current];
     var elCur=document.getElementById('qz-'+cur);
     if(elCur){
@@ -1453,7 +1446,6 @@ document.addEventListener("DOMContentLoaded",function(){
 
   function stopCompassAnim(){
     if(animInterval){clearInterval(animInterval);animInterval=null;}
-    // Remettre tous les quartiers à leur état de base
     sequence.forEach(function(k){
       var el=document.getElementById('qz-'+k);
       if(el){el.classList.remove('qactive');el.style.fill=baseColors[k];el.style.transform='scale(1)';}
@@ -1461,7 +1453,6 @@ document.addEventListener("DOMContentLoaded",function(){
     current=0;
   }
 
-  // Observer quand l'étape 2 devient active
   var observer=new MutationObserver(function(){
     var s2=document.getElementById('s2');
     if(s2&&s2.classList.contains('active')){
@@ -1475,7 +1466,6 @@ document.addEventListener("DOMContentLoaded",function(){
     var s2=document.getElementById('s2');
     if(s2) observer.observe(s2,{attributes:true,attributeFilter:['class']});
 
-    // Pause au survol de la boussole, reprise à la sortie
     var svgBoussole=document.getElementById('boussole-step2');
     if(svgBoussole){
       svgBoussole.addEventListener('mouseenter',function(){
@@ -1494,210 +1484,3 @@ document.addEventListener("DOMContentLoaded",function(){
 </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boussole relationnelle — Lionel Drouvin</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    :root{
-      --g:#1D9E75;--gd:#0F6E56;--gdp:#085041;--gl:#E8F8F3;--gp:#F0FAF6;--gm:#9FE1CB;
-      --go:#C9A84C;--gol:#FDF6E3;
-      --am:#BA7517;--aml:#FAEEDA;--amd:#633806;
-      --tx:#1a1a1a;--ts:#6b7280;--bd:#e5e7eb;--bg:#fff;--bgs:#f9fafb;
-      --r:10px;--rl:14px;
-    }
-    *{box-sizing:border-box;margin:0;padding:0;}
-    html,body{margin:0;padding:0;}
-    body{font-family:'Open Sans',sans-serif;background:#f0f4f3;padding:1.5rem 1rem;}
-    .app{width:100%;max-width:640px;margin:0 auto;}
-    .app{background:var(--bg);border-radius:16px;box-shadow:0 8px 40px rgba(8,80,65,.13);width:100%;max-width:640px;padding:2rem;}
-    .step{display:none;}.step.active{display:block;}
-    h2{font-family:"Montserrat",sans-serif;font-size:20px;font-weight:700;color:var(--gdp);margin-bottom:.5rem;letter-spacing:-.01em;}
-    .sub{font-size:14px;color:var(--ts);line-height:1.7;margin-bottom:.875rem;}
-    .prog-wrap{margin-bottom:1.25rem;}
-    .prog-bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;}
-    .prog-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--gd));border-radius:3px;transition:width .4s ease;}
-    .prog-label{font-size:11px;color:var(--ts);text-align:right;margin-top:4px;}
-    .nav{display:flex;gap:.5rem;margin-top:1rem;align-items:center;flex-wrap:wrap;}
-    .btn-back{font-size:13px;color:var(--ts);background:none;border:none;cursor:pointer;padding:6px 0;}
-    .btn-back:hover{color:var(--tx);}
-    .btn{display:inline-block;padding:10px 22px;font-family:"Montserrat",sans-serif;font-size:14px;font-weight:600;border:2px solid var(--bd);border-radius:12px;background:transparent;color:var(--tx);cursor:pointer;transition:all .2s;}
-    .btn:hover{background:var(--bgs);}
-    .btn-g{background:var(--g);color:#fff;border-color:var(--g);box-shadow:0 3px 12px rgba(29,158,117,.3);}
-    .btn-g:hover{background:var(--gd);box-shadow:0 5px 16px rgba(29,158,117,.4);transform:translateY(-1px);}
-    .btn-go{background:var(--go);color:#fff;border-color:var(--go);}
-    .btn-go:hover{background:#a8883a;}
-    .btn-sm{padding:7px 14px;font-size:13px;}
-    .btn-out{background:none;border:1px solid var(--g);color:var(--g);font-size:13px;padding:7px 14px;border-radius:var(--r);cursor:pointer;}
-    .btn-out:hover{background:var(--gl);}
-    hr{border:none;border-top:1px solid var(--bd);margin:1rem 0;}
-    /* Accueil */
-    .pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.875rem 0;}
-    .pb-card{background:var(--bg);border:1.5px solid var(--gm);border-radius:var(--rl);padding:1rem;display:flex;align-items:flex-start;gap:.75rem;box-shadow:0 2px 8px rgba(29,158,117,.07);}
-    .pb-icon{font-size:26px;flex-shrink:0;}
-    .pb-text{font-size:14px;color:var(--tx);line-height:1.55;font-weight:500;}
-    .pb-mirror{background:var(--gl);border-radius:var(--r);padding:.75rem 1rem;font-size:14px;font-weight:500;color:var(--gdp);text-align:center;margin-bottom:.875rem;border:.5px solid var(--gm);}
-    .int-box{background:linear-gradient(135deg,var(--gl),var(--gol));border-radius:var(--rl);padding:1rem;margin-bottom:1rem;border:.5px solid var(--gm);}
-    .int-box h3{font-size:14px;font-weight:600;color:var(--gdp);margin-bottom:.4rem;}
-    /* Entrée */
-    .ec{background:var(--bg);border:1px solid var(--bd);border-radius:var(--rl);padding:1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color .15s,box-shadow .15s;}
-    .ec:hover{border-color:var(--gm);box-shadow:0 2px 8px rgba(29,158,117,.1);}
-    .ec.sel{border:1.5px solid var(--g);background:var(--gl);}
-    .ec-dir{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:2px;}
-    .ec-badge{font-size:10px;font-weight:500;color:var(--g);background:var(--gl);padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:middle;}
-    .ec-badge.am{color:var(--am);background:var(--aml);}
-    .ec-sub{font-size:12px;color:var(--ts);margin-top:2px;line-height:1.5;}
-    /* Case */
-    .dir-badge{display:inline-block;font-family:"Montserrat",sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 14px;border-radius:999px;margin-bottom:.875rem;border:1.5px solid currentColor;}
-    .badge-SN{background:var(--gl);color:var(--gdp);}
-    .badge-OE{background:var(--aml);color:var(--amd);}
-    .qbox{background:var(--gl);border-left:4px solid var(--g);border-radius:0 12px 12px 0;padding:1.1rem 1.25rem;margin-bottom:1.25rem;font-family:"Open Sans",sans-serif;font-size:16px;font-weight:500;color:var(--gdp);line-height:1.8;box-shadow:0 2px 8px rgba(29,158,117,.08);}
-    .qbox.am{border-left-color:var(--am);background:var(--aml);}
-    .posture{font-size:12px;color:var(--ts);background:var(--bgs);border-left:3px solid var(--am);border-radius:0 var(--r) var(--r) 0;padding:.6rem .875rem;margin-bottom:.875rem;line-height:1.6;}
-    label{font-family:"Open Sans",sans-serif;font-size:13px;font-weight:600;color:var(--gdp);display:block;margin-bottom:6px;margin-top:1rem;}
-    textarea,input[type=text],input[type=email]{width:100%;font-family:"Open Sans",sans-serif;font-size:14px;padding:10px 14px;border:2px solid var(--gm);border-radius:12px;background:var(--bg);color:var(--tx);transition:border-color .2s,box-shadow .2s;}
-    textarea:focus,input:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.15);}
-    textarea{resize:vertical;min-height:80px;line-height:1.7;font-size:15px;}
-    .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
-    .tag{display:inline-block;background:var(--gl);color:var(--gdp);border-radius:6px;padding:2px 9px;font-size:12px;font-weight:500;}
-    .tag.am{background:var(--aml);color:var(--amd);}
-    .mot-retenu-wrap{margin-top:.6rem;}
-    .mot-retenu-principal{font-family:"Montserrat",sans-serif;font-size:17px;font-weight:800;color:var(--gdp);}
-    .mot-retenu-autres{font-size:13px;color:var(--ts);margin-left:6px;}
-    .mot-note{font-size:12px;color:var(--ts);background:var(--bgs);border-radius:8px;padding:.6rem .875rem;margin-top:.5rem;line-height:1.5;border-left:3px solid var(--g);font-style:italic;}
-    /* Bouton synonymes */
-    .syno-btn{font-size:12px;color:var(--g);background:none;border:1px solid var(--gm);border-radius:999px;padding:4px 12px;cursor:pointer;margin-top:.5rem;}
-    .syno-btn:hover{background:var(--gl);}
-    #syno-area{display:none;margin-top:.6rem;}
-    .stag{font-size:11px;padding:3px 9px;border-radius:999px;background:var(--bgs);border:1px solid var(--bd);color:var(--ts);cursor:pointer;}
-    .stag:hover{border-color:var(--g);color:var(--g);}
-    /* Besoins réels inline */
-    .besoin-inline{background:linear-gradient(135deg,var(--gl),var(--gp));border-radius:var(--r);padding:.875rem;margin:1rem 0;border:.5px solid var(--gm);}
-    .besoin-inline-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gdp);margin-bottom:.4rem;}
-    .besoin-inline-content{font-size:13px;color:var(--tx);line-height:1.7;}
-    /* CTA intermédiaire */
-    .cta-mid{background:linear-gradient(135deg,var(--gl),var(--gol));border-radius:var(--rl);padding:1rem;margin-top:.75rem;border:.5px solid var(--gm);}
-    .cta-mid-t{font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.4rem;}
-    .cta-mid p{font-size:13px;color:var(--ts);margin-bottom:.75rem;line-height:1.6;}
-    .cta-mid-btns{display:flex;flex-wrap:wrap;gap:.4rem;}
-    /* Choix synthèse */
-    .synth-choice{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1rem 0;}
-    .synth-card{border:1.5px solid var(--bd);border-radius:var(--rl);padding:1rem;cursor:pointer;transition:border-color .15s,box-shadow .15s;text-align:center;}
-    .synth-card:hover{border-color:var(--g);box-shadow:0 2px 8px rgba(29,158,117,.1);}
-    .synth-card.sel{border-color:var(--g);background:var(--gl);}
-    .synth-card.gold-card{border-color:var(--go);}
-    .synth-card.gold-card.sel{background:var(--gol);border-color:var(--go);}
-    .synth-icon{font-size:24px;margin-bottom:.4rem;}
-    .synth-name{font-size:17px;font-weight:700;color:var(--tx);margin-bottom:.3rem;}
-    .synth-prix{font-size:17px;font-weight:700;color:var(--g);margin-bottom:.4rem;}
-    .synth-prix.go{color:var(--go);}
-    .synth-desc{font-size:12px;color:var(--ts);line-height:1.5;}
-    .pay-box{background:var(--gol);border:1px dashed var(--go);border-radius:var(--r);padding:1rem;text-align:center;margin:.5rem 0;}
-    .pay-box p{font-size:13px;color:var(--ts);margin-bottom:.5rem;}
-    /* Identité */
-    .id-box{background:var(--gl);border-radius:16px;padding:1.25rem;margin-bottom:1rem;border:2px solid var(--gm);box-shadow:0 2px 12px rgba(29,158,117,.08);}
-    .id-box h3{font-size:14px;font-weight:600;color:var(--gdp);margin-bottom:.25rem;}
-    .id-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
-    .rgpd{font-size:11px;color:var(--ts);display:flex;gap:.5rem;align-items:flex-start;margin-top:.75rem;line-height:1.5;}
-    .rgpd input{width:auto;flex-shrink:0;margin-top:2px;}
-    /* Schéma */
-    .compass-wrap{width:100%;max-width:290px;margin:.875rem auto;display:block;}
-    /* Synthèse */
-    .ai-box{background:var(--bgs);border-left:4px solid var(--g);border-radius:0 12px 12px 0;padding:1.25rem 1.5rem;font-family:"Open Sans",sans-serif;font-size:14px;line-height:1.95;color:var(--tx);margin:1rem 0;text-align:justify;box-shadow:0 2px 8px rgba(0,0,0,.04);}
-    .ai-box p{margin-bottom:.875rem;}
-    .ai-box p:last-child{margin-bottom:0;}
-    .ai-titre{font-family:"Montserrat",sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g);margin-top:1.5rem;margin-bottom:.5rem;padding-top:.5rem;border-top:2px solid var(--gm);}
-    .ai-titre:first-child{margin-top:0;border-top:none;padding-top:0;}.etape-phrase{background:var(--gl);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:.6rem .875rem;margin:.4rem 0 .6rem;font-size:13px;color:var(--gdp);line-height:1.7;font-style:italic;}
-    .ai-mot{font-weight:700;color:var(--gdp);font-style:italic;}
-    .ai-note{font-size:11px;color:var(--ts);font-style:italic;line-height:1.5;margin-bottom:.75rem;}
-    .approfondie-invite{background:linear-gradient(135deg,var(--gol),#fff8e6);border:1.5px solid var(--go);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-top:1.25rem;text-align:center;}
-    .approfondie-invite-title{font-size:14px;font-weight:700;color:var(--go);margin-bottom:.4rem;}
-    .approfondie-invite-text{font-size:13px;color:var(--ts);line-height:1.65;margin-bottom:.875rem;}
-    /* Besoins dans résultat */
-    .besoin-box{background:linear-gradient(135deg,var(--gl),var(--gp));border-radius:14px;padding:1.1rem;margin:1rem 0;border:2px solid var(--gm);box-shadow:0 3px 12px rgba(29,158,117,.1);}
-    .besoin-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gdp);margin-bottom:.4rem;}
-    .besoin-content{font-size:13px;color:var(--tx);line-height:1.7;text-align:justify;}
-    .besoin-content p{margin-bottom:.6rem;}
-    /* Boutons PDF / accès */
-    .action-btns{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem;align-items:center;}
-    .pdf-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--g);background:none;border:1px solid var(--gm);border-radius:var(--r);padding:6px 14px;cursor:pointer;}
-    .pdf-btn:hover{background:var(--gl);}
-    .approfondie-btn{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:600;color:var(--go);background:var(--gol);border:2px solid var(--go);border-radius:var(--r);padding:10px 22px;cursor:pointer;box-shadow:0 2px 8px rgba(201,168,76,.2);}
-    .approfondie-btn:hover{background:#fff3cc;box-shadow:0 4px 12px rgba(201,168,76,.3);}
-    .site-back-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--ts);background:none;border:1px solid var(--bd);border-radius:var(--r);padding:6px 14px;cursor:pointer;}
-    .site-back-btn:hover{border-color:var(--g);color:var(--g);}
-    /* CTA finaux */
-    .cta-wrap{background:var(--bgs);border-radius:var(--rl);padding:1rem;}
-    .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
-    @media(max-width:480px){body{overflow-x:hidden;}.app{border-radius:0;box-shadow:none;padding:1rem .75rem;}.id-grid{grid-template-columns:1fr;}.pb-grid{grid-template-columns:1fr;}.synth-choice{grid-template-columns:1fr;}.cta-grid{grid-template-columns:1fr;}.pdf-btn{font-size:16px;padding:10px 20px;}.action-btns{flex-direction:column;gap:.5rem;}}
-    .cta-q{font-size:13px;font-weight:600;color:var(--gdp);margin-bottom:.6rem;padding:.75rem;background:var(--gl);border-radius:var(--r);border:.5px solid var(--gm);line-height:1.6;}
-    .cta-opt{border:1px solid var(--bd);border-radius:var(--r);padding:1rem;margin-bottom:.6rem;background:var(--bg);}
-    .cta-opt.gold{border-color:var(--go);background:linear-gradient(135deg,#fffdf5,#fff9e6);}
-    .cta-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--g);margin-bottom:.3rem;}
-    .cta-tag.go{color:var(--go);}
-    .cta-title{font-size:15px;font-weight:600;color:var(--tx);margin-bottom:.2rem;}
-    .cta-prix{font-size:13px;font-weight:600;color:var(--g);margin-bottom:.4rem;}
-    .cta-desc{font-size:13px;color:var(--ts);line-height:1.6;margin-bottom:.75rem;}
-    .cta-btns{display:flex;flex-direction:column;gap:.4rem;}
-    .cta-btns-left{display:flex;gap:.5rem;flex-wrap:wrap;}
-    /* Retour site tout en bas */
-    .footer-site-back{text-align:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--bd);}
-    .br-footer{text-align:center;margin-top:.5rem;font-size:12px;color:var(--ts);}
-    .codes-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
-    .code-item{background:white;border-radius:var(--r);padding:.75rem;text-align:center;border:1px solid var(--go);}
-    .code-item-label{font-size:11px;color:var(--ts);margin-bottom:.3rem;line-height:1.4;}
-    .code-item-value{font-size:20px;font-weight:800;color:var(--go);letter-spacing:.1em;font-family:monospace;margin-bottom:.4rem;}
-    .code-copy{font-size:11px;color:var(--go);background:none;border:1px solid var(--go);border-radius:6px;padding:3px 10px;cursor:pointer;}
-    .code-copy:hover{background:var(--gol);}
-    .code-copied{font-size:11px;color:var(--g);display:none;margin-top:.3rem;}
-    .codes-note{font-size:12px;color:var(--ts);text-align:center;margin-top:.75rem;line-height:1.5;}
-    @media(max-width:480px){.codes-grid{grid-template-columns:1fr;}}
-    .codes-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
-    .code-item{background:white;border-radius:var(--r);padding:.75rem;text-align:center;border:1px solid var(--go);}
-    .code-item-label{font-size:11px;color:var(--ts);margin-bottom:.3rem;line-height:1.4;}
-    .code-item-value{font-size:20px;font-weight:800;color:var(--go);letter-spacing:.1em;font-family:monospace;margin-bottom:.4rem;}
-    .code-copy{font-size:11px;color:var(--go);background:none;border:1px solid var(--go);border-radius:6px;padding:3px 10px;cursor:pointer;}
-    .code-copy:hover{background:var(--gol);}
-    .code-copied{font-size:11px;color:var(--g);display:none;margin-top:.3rem;}
-    .codes-note{font-size:12px;color:var(--ts);text-align:center;margin-top:.75rem;line-height:1.5;}
-    @media(max-width:480px){.codes-grid{grid-template-columns:1fr;}}
-    .br-footer a{color:var(--g);text-decoration:none;}
-    .loading-dots::after{content:'...';animation:dots 1.2s steps(4,end) infinite;}
-    @keyframes dots{0%,100%{content:'.'}33%{content:'..'}66%{content:'...'}}
-    .compass-loading{display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:1.5rem 1rem;}
-    .compass-needle{transform-origin:50% 50%;animation:needle-spin 6s linear infinite;}
-    @keyframes needle-spin{0%{transform:rotate(0deg)}40%{transform:rotate(720deg)}50%{transform:rotate(720deg)}90%{transform:rotate(0deg)}100%{transform:rotate(0deg)}}
-    .compass-loading-text{font-size:13px;color:var(--ts);font-style:italic;text-align:center;line-height:1.6;}
-    .compass-loading{display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:1.5rem;}
-    .compass-loading svg{animation:compass-spin 0s linear infinite;}
-    .compass-needle{transform-origin:50% 50%;animation:needle-spin 6s linear infinite;}
-    @keyframes needle-spin{0%{transform:rotate(0deg)}40%{transform:rotate(720deg)}50%{transform:rotate(720deg)}90%{transform:rotate(0deg)}100%{transform:rotate(0deg)}};
-    .compass-loading-text{font-size:13px;color:var(--ts);font-style:italic;text-align:center;line-height:1.6;}
-    @media(max-width:480px){body{padding:0;}.app{border-radius:0;box-shadow:none;}.id-grid{grid-template-columns:1fr;}.pb-grid{grid-template-columns:1fr;}.synth-choice{grid-template-columns:1fr;}.cta-btns{flex-direction:column;}.action-btns{flex-direction:column;}}
-  </style>
-</head>
-<body>
-<div class="app">
-
-  <!-- ACCUEIL -->
-  <div class="step" id="s1">
-    <div class="prog-wrap"><div class="prog-bar"><div class="prog-fill" style="width:14%"></div></div><div class="prog-label">Étape 1 / 7</div></div>
-    <h2>Posez votre intention</h2>
-    <p class="sub">Un fil conducteur — pas un objectif, une orientation librement choisie.</p>
-    <div class="int-box">
-      <h3>✦ Mon intention pour cette Boussole</h3>
-      <textarea id="intention-text" style="margin-top:.5rem;" placeholder="Ex : Explorer avec honnêteté ce qui me retient... Voir plus clairement ce qui se joue dans ma relation à..."></textarea>
-    </div>
-    <div class="nav">
-      <button class="btn-back" onclick="show('s0')">← Retour</button>
-      <button class="btn btn-g" onclick="show('s2');window.scrollTo({top:0,behavior:'smooth'});">Continuer &rarr;</button>
-    </div>
-  </div>
-
-  <!-- POINT D'ENTRÉE — Boussole SVG cliquable -->
