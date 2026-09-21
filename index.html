@@ -118,7 +118,7 @@
     .ai-box p:last-child{margin-bottom:0;}
     .etape-phrase{font-size:12px;font-style:italic;color:var(--ts);line-height:1.6;margin:-.25rem 0 .5rem;padding:.4rem .6rem;background:var(--gp);border-radius:6px;border-left:2px solid var(--go);}
     .ai-titre{font-family:"Montserrat",sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g);margin-top:1.5rem;margin-bottom:.5rem;padding-top:.5rem;border-top:2px solid var(--gm);}
-    .ai-titre:first-child{margin-top:0;border-top:none;padding-top:0;}
+    .ai-titre:first-child{margin-top:0;border-top:none;padding-top:0;}.etape-phrase{background:var(--gl);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:.6rem .875rem;margin:.4rem 0 .6rem;font-size:13px;color:var(--gdp);line-height:1.7;font-style:italic;}
     .ai-mot{font-weight:700;color:var(--gdp);font-style:italic;}
     .ai-note{font-size:11px;color:var(--ts);font-style:italic;line-height:1.5;margin-bottom:.75rem;}
     .approfondie-invite{background:linear-gradient(135deg,var(--gol),#fff8e6);border:1.5px solid var(--go);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-top:1.25rem;text-align:center;}
@@ -1214,9 +1214,25 @@ function generateAI(approfondie){
             'ÉTAPE 4': 'Contrairement à ce que vos conditionnements vous ont fait croire, ces deux qualités ne sont pas incompatibles : elles sont complémentaires. Mises en alliance, elles produisent quelque chose qu\'aucune des deux ne pourrait créer seule — et ouvrent l\'accès à vos besoins réels.',
             'ÉTAPE 5': 'Ce travail subtil et puissant s\'effectue en séance — il ne s\'explique pas, il se vit. En revisitant les 4 espaces de votre Boussole à travers vos sensations, vos émotions et vos ressentis, vous intégrerez l\'alliance de vos qualités comme une ressource réelle et disponible — pour nourrir vos besoins réels et retrouver, par vous-même, ce qui avait été mis de côté depuis l\'enfance.',
           };
-          var phraseKey = Object.keys(phrasesFixe).find(function(k){ return titre.toUpperCase().indexOf(k.toUpperCase()) >= 0; });
+          var etapeMap = {
+            'EXPLORER': 'ÉTAPE 1', 'QUALITÉS ALLIÉES': 'ÉTAPE 1',
+            'EXPRESSION': 'ÉTAPE 2', 'EXCESSIVE': 'ÉTAPE 2', 'COMPRENDRE': 'ÉTAPE 2',
+            'DÉCONFUSIONNER': 'ÉTAPE 3', 'DÉCONFUSION': 'ÉTAPE 3',
+            'ALLIANCE': 'ÉTAPE 4', 'METTRE EN ALLIANCE': 'ÉTAPE 4',
+            'DISCERNER': 'ÉTAPE 5', 'ANCRER': 'ÉTAPE 5'
+          };
+          var titreUp = titre.toUpperCase();
+          var phraseKey = null;
+          var etapeKeys = Object.keys(etapeMap);
+          for(var ki=0; ki<etapeKeys.length; ki++){
+            if(titreUp.indexOf(etapeKeys[ki]) >= 0){ phraseKey = etapeMap[etapeKeys[ki]]; break; }
+          }
           var phraseHtml = phraseKey ? '<p class="etape-phrase">'+phrasesFixe[phraseKey]+'</p>' : '';
-          return '<div class="ai-titre">'+icone+titre+'</div>'+phraseHtml;
+          var etapeStyle = 'margin-top:1.5rem;padding-top:1rem;border-top:2px solid var(--gm);';
+          if(titre.indexOf('ÉTAPE 1') >= 0) etapeStyle += '';
+          var titreHtml = '<div class="ai-titre" style="'+etapeStyle+'">'+titre+'</div>';
+          var phraseFixeHtml = phraseKey ? '<div style="background:var(--gl);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:.6rem .875rem;margin:.4rem 0 .6rem;font-size:13px;color:var(--gdp);line-height:1.7;font-style:italic;">'+phrasesFixe[phraseKey]+'</div>' : '';
+          return titreHtml + phraseFixeHtml;
         }
         mots.forEach(function(mot){
           var esc=mot.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
@@ -1597,7 +1613,7 @@ document.addEventListener("DOMContentLoaded",function(){
     .ai-box p{margin-bottom:.875rem;}
     .ai-box p:last-child{margin-bottom:0;}
     .ai-titre{font-family:"Montserrat",sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--g);margin-top:1.5rem;margin-bottom:.5rem;padding-top:.5rem;border-top:2px solid var(--gm);}
-    .ai-titre:first-child{margin-top:0;border-top:none;padding-top:0;}
+    .ai-titre:first-child{margin-top:0;border-top:none;padding-top:0;}.etape-phrase{background:var(--gl);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:.6rem .875rem;margin:.4rem 0 .6rem;font-size:13px;color:var(--gdp);line-height:1.7;font-style:italic;}
     .ai-mot{font-weight:700;color:var(--gdp);font-style:italic;}
     .ai-note{font-size:11px;color:var(--ts);font-style:italic;line-height:1.5;margin-bottom:.75rem;}
     .approfondie-invite{background:linear-gradient(135deg,var(--gol),#fff8e6);border:1.5px solid var(--go);border-radius:var(--rl);padding:1.1rem 1.25rem;margin-top:1.25rem;text-align:center;}
