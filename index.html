@@ -1138,16 +1138,17 @@ function buildPrompt(approfondie){
     +'- Qualité à s\'autoriser (Nord) : être "'+N+'" — mots : '+Nw+'\n'
     +'- Allergie-dépendance (Est) : être "'+E+'" — mots : '+Ew+'\n'
     +(intention?'Si intention formulée : commencer le résumé par une phrase directe du type [Prénom], vous cherchez à [intention] - sans nuance. Puis continuer.\\n':'')
-    +'\\nCOMMENCE par un résumé de 3 à 5 paragraphes courts, précédé du titre ---RESUME---. Écris en langage simple et accessible, sans jargon technique, pour quelqu\'un qui découvre cet univers. Ton nuancé et bienveillant : utilise des formulations comme il semble que, vous pourriez avoir tendance à, on pourrait observer chez vous, il se peut que plutôt que des affirmations directes. Ce résumé doit donner envie de lire la synthèse complète ou de contacter Lionel Drouvin. Nomme les qualités avec leurs mots. Après le résumé, écris ---FIN RESUME--- puis démarre la synthèse par cette phrase exacte : Ci-dessous, je vous présente les étapes que nous aurons l\'occasion de parcourir ensemble lors de l\'accompagnement spécifique Boussole relationnelle. Puis continue avec les 9 titres.\n'
+    +'\\nCOMMENCE par un résumé de 3 à 5 paragraphes courts, précédé du titre ---RESUME---. Écris en langage simple et accessible, sans jargon technique, pour quelqu\'un qui découvre cet univers. Ton nuancé et bienveillant : utilise des formulations comme il semble que, vous pourriez avoir tendance à, on pourrait observer chez vous, il se peut que plutôt que des affirmations directes. Ce résumé doit donner envie de lire la synthèse complète ou de contacter Lionel Drouvin. Nomme les qualités avec leurs mots. Après le résumé, écris ---FIN RESUME--- puis démarre la synthèse par cette phrase exacte : Ci-dessous, je vous présente les étapes que nous aurons l\'occasion de parcourir ensemble lors de l\'accompagnement spécifique Boussole relationnelle. Puis continue avec exactement ces 5 étapes et rien d\'autre. Ne pas ajouter d\'autres rubriques. Pour chaque étape : 3 à 4 phrases maximum en reprenant les mots de la personne. Ton nuancé et bienveillant.\n'
     +'§EXPLORER ET DÉCOUVRIR VOS QUALITÉS ALLIÉES\n'
     +'Il semblerait que **'+S+'** soit déjà présent en vous — et que **'+N+'** attende encore autorisation pour s’exprimer pleinement.\n'
     +'§COMPRENDRE L\'EXPRESSION EXCESSIVE DE VOS QUALITÉS\n'
     +'Il se peut que sous pression, **'+S+'** bascule vers **'+O+'** — et que ce que vous percevez de **'+E+'** chez l\'autre mette en réaction quelque chose en vous.\n'
     +'§DÉCONFUSIONNER VOS QUALITÉS DE LEURS EXCÈS\n'
+    +'C\'est une étape de ré-information essentielle dans le processus de libération de l\'emprise des conditionnements hérités dès l\'enfance.\n'
     +'§METTRE EN ALLIANCE VOS DEUX QUALITÉS NATURELLES\n'
     +'Il semblerait que **'+S+'** et **'+N+'** ensemble puissent créer quelque chose de plus stable et de plus vivant — un équilibre qui n\'est pas une ligne de crête, mais une plénitude.\n'
     +'§DISCERNER ET ANCRER\n'
-    +'Ce travail d\'ancrage s\'effectue en réalisant plusieurs Boussoles pour intégrer durablement l\'alliance de vos qualités. C\'est l\'objet de l\'accompagnement en 3 séances.\n\n'
+    +'Il se peut que ce travail d\'ancrage vous permette de reconnaître, de plus en plus tôt, le moment où le mécanisme s\'enclenche — et de choisir autrement.\n\n'
     +'Terminer par ce paragraphe exact : "Ce que vous venez d\'explorer et de découvrir demeure déjà une avancée précieuse. Je vous propose une ou trois séances en visio pour parcourir ensemble les étapes présentées dans votre synthèse. Ensemble, nous pourrons entrer dans le nœud du mécanisme et vous permettre de desserrer l\'emprise des conditionnements — pour retrouver l\'accès à vos qualités naturelles, nourrir vos besoins réels et vous exprimer pleinement, quel que soit le contexte relationnel."';
 
   return prompt;
@@ -1211,7 +1212,7 @@ function generateAI(approfondie){
             'ÉTAPE 2': 'Chacune de vos qualités naturelles peut, sous pression et par conditionnement, basculer dans son excès, sans que vous en ayez conscience. La qualité incarnée vous fait basculer dans un piège — qui est aussi un refuge, la qualité interdite alimente une allergie qui a tendance à devenir une dépendance. L\'observer sans se juger, c\'est déjà commencer à s\'en responsabiliser.',
             'ÉTAPE 3': 'Votre cerveau a engrammé des informations qui confondent la qualité et son excès. Les distinguer clairement, c\'est réinformer votre cerveau — et commencer à desserrer l\'emprise des conditionnements hérités.',
             'ÉTAPE 4': 'Contrairement à ce que vos conditionnements vous ont fait croire, ces deux qualités ne sont pas incompatibles : elles sont complémentaires. Mises en alliance, elles produisent quelque chose qu\'aucune des deux ne pourrait créer seule — et ouvrent l\'accès à vos besoins réels.',
-            'ÉTAPE 5': 'Ce travail d\'ancrage vous permettra d\'intégrer durablement l\'alliance de vos deux qualités — pour qu\'elle devienne un réflexe naturel plutôt qu\'un effort conscient.'
+            'ÉTAPE 5': 'Ce travail subtil et puissant s\'effectue en séance — il ne s\'explique pas, il se vit. En revisitant les 4 espaces de votre Boussole à travers vos sensations, vos émotions et vos ressentis, vous intégrerez l\'alliance de vos qualités comme une ressource réelle et disponible — pour nourrir vos besoins réels et retrouver, par vous-même, ce qui avait été mis de côté depuis l\'enfance.',
           };
           var phraseKey = Object.keys(phrasesFixe).find(function(k){ return titre.toUpperCase().indexOf(k.toUpperCase()) >= 0; });
           var phraseHtml = phraseKey ? '<p class="etape-phrase">'+phrasesFixe[phraseKey]+'</p>' : '';
