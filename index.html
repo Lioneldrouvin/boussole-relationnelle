@@ -817,7 +817,7 @@ function fetchSynoWords(word){
   fetch(API_URL,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:80,messages:[{role:'user',content:synoPrompt}]})
+    body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:80,messages:[{role:'user',content:synoPrompt}]})
   }).then(function(r){return r.json();})
   .then(function(d){
     var text=d.content&&d.content[0]?d.content[0].text:'';
@@ -1110,7 +1110,7 @@ function generateBesoins(){
     +'2. Être "'+S+'" exprime un besoin de [besoin en résonance directe avec '+Sw+'].\n'
     +'3. Être "'+N+'" révèle un besoin de [besoin en résonance avec '+Nw+']. Leur alliance nourrit [résultat concret].\n'
     +'Soyez précis, chaleureux.';
-  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:300,messages:[{role:'user',content:prompt}]})})
+  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:300,messages:[{role:'user',content:prompt}]})})
     .then(function(r){return r.json();})
     .then(function(data){
       var text=data.content&&data.content[0]?data.content[0].text:null;
@@ -1179,7 +1179,7 @@ function generateAI(approfondie){
     method:'POST',
     headers:{
       'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:maxTok,messages:[{role:'user',content:prompt}]})
+    body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:maxTok,messages:[{role:'user',content:prompt}]})
   }).then(function(r){return r.json();})
   .then(function(data){
     var raw=data.content&&data.content[0]?data.content[0].text:null;
