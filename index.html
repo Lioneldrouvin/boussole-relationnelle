@@ -1059,7 +1059,7 @@ function generateBesoinsInline(){
     +'Phrase 2 : Être "'+N+'" révèle un besoin réel de [besoin précis en résonance avec '+Nw+']. Nouvelle ligne : Alliance de être "'+S+'" et être "'+N+'" nourrit [ce que leur alliance rend possible concrètement, en une formulation courte et nuancée].\n'
     +'Ne pas écrire "Voici les deux phrases" ni aucun texte d\'introduction. Commencer directement par Être.'
     +'Soyez précis, concis, en résonance directe avec les mots cités.';
-  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,messages:[{role:'user',content:prompt}]})})
+  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:400,messages:[{role:'user',content:prompt}]})})
     .then(function(r){return r.json();})
     .then(function(data){
       var text=data.content&&data.content[0]?data.content[0].text:null;
