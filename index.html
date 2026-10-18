@@ -817,10 +817,10 @@ function fetchSynoWords(word){
   fetch(API_URL,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:80,thinking:{type:'disabled'},messages:[{role:'user',content:synoPrompt}]})
+    body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:80,thinking:{type:'between_tools'},messages:[{role:'user',content:synoPrompt}]})
   }).then(function(r){return r.json();})
   .then(function(d){
-    var text=d.content&&d.content[0]?d.content[0].text:'';
+    var text=extractText(d);
     var mots=text.split(',').map(function(w){return {word:w.trim()};}).filter(function(x){return x.word.length>1;});
     synoWords=mots;
     if(synoVisible) renderSyno();
@@ -1181,7 +1181,7 @@ function extractText(data){
 function callClaude(payload, timeoutMs, retries){
   timeoutMs=timeoutMs||120000; retries=(retries===undefined)?1:retries;
   // Désactiver le raisonnement étendu (thinking) pour éviter la consommation silencieuse de tokens
-  var safePayload=Object.assign({},payload,{thinking:{type:'disabled'}});
+  var safePayload=Object.assign({},payload,{thinking:{type:'between_tools'}});
   var ctrl=(typeof AbortController!=='undefined')?new AbortController():null;
   var timer=ctrl?setTimeout(function(){ctrl.abort();},timeoutMs):null;
   return fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
