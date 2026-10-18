@@ -554,28 +554,6 @@
       <p class="sub" style="text-align:center;margin-bottom:.875rem;font-weight:700;">Et là, maintenant — qu'avez-vous envie de faire de ce que vous venez de voir ?</p>
       <div class="cta-grid">
 
-        <div class="cta-opt">
-          <div class="cta-tag">⚡ Aller plus loin maintenant</div>
-          <div class="cta-title">Speed-coaching — 1h visio</div>
-          <div class="cta-prix">80 € — Google Meet</div>
-          <div class="cta-desc">Une heure pour explorer la synthèse de votre Boussole, sortir des confusions nommées et poser les premières alliances.</div>
-          <div class="cta-btns">
-            <button class="btn btn-g btn-sm" style="width:100%;justify-content:center;" onclick="window.open('https://calendly.com/contact-8hjw/speed-coaching-60mn','_blank')">Prendre rendez-vous &rarr;</button>
-            <button class="btn-out btn-sm" style="width:100%;text-align:center;" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter</button>
-          </div>
-        </div>
-
-        <div class="cta-opt">
-          <div class="cta-tag">🧭 Ancrer durablement</div>
-          <div class="cta-title">Accompagnement — 3 séances de 1h en visio</div>
-          <div class="cta-prix">210 € — Google Meet</div>
-          <div class="cta-desc">Vivre et intégrer ce que votre Boussole a mis en lumière — mentalement, émotionnellement, corporellement.</div>
-          <div class="cta-btns">
-            <button class="btn btn-g btn-sm" style="width:100%;justify-content:center;" onclick="window.open('https://calendly.com/contact-8hjw/accompagnement-3-seances','_blank')">Prendre rendez-vous &rarr;</button>
-            <button class="btn-out btn-sm" style="width:100%;text-align:center;" onclick="window.open('https://www.lioneldrouvin.com/contact-lionel-drouvin','_blank')">Me contacter</button>
-          </div>
-        </div>
-
         <div class="cta-opt gold">
           <div class="cta-tag go">✦ Accompagnement signature</div>
           <div class="cta-title">Mon accompagnement signature — La Relation comme chemin de vie</div>
@@ -1271,10 +1249,10 @@ function generateAI(approfondie){
           else if(titre.indexOf('CONFLIT')>-1){icone=''; titre='ÉTAPE 8 — '+titre;}
           else if(titre.indexOf('CHEMIN')>-1&&titre.indexOf('ALLIANCE')<0&&titre.indexOf('DISCERNER')<0){icone='🧭 '; titre='🧭 VOTRE CHEMIN DE LIBÉRATION';}
           var phrasesFixe = {
-            'ÉTAPE 1': 'Votre Boussole met en lumière deux qualités naturelles — l\'une que vous incarnez déjà en partie et qu\'il s\'agit de stabiliser pleinement, l\'autre que vous vous interdisez d\'exprimer et qu\'il s\'agit de vous autoriser.',
-            'ÉTAPE 2': 'Chacune de vos qualités naturelles peut, sous pression et par conditionnement, basculer dans son excès, sans que vous en ayez conscience. La qualité incarnée vous fait basculer dans un piège — qui est aussi un refuge, la qualité interdite alimente une allergie qui a tendance à devenir une dépendance. L\'observer sans se juger, c\'est déjà commencer à s\'en responsabiliser.',
-            'ÉTAPE 3': 'Notre cerveau a engrammé des informations qui confondent la qualité et son excès. Les distinguer clairement, c\'est réinformer notre cerveau — et commencer à desserrer l\'emprise des conditionnements dont nous avons hérité.',
-            'ÉTAPE 4': 'Contrairement à ce que vos conditionnements vous ont fait croire, ces deux qualités ne sont pas incompatibles : elles sont complémentaires. Mises en alliance, elles produisent quelque chose qu\'aucune des deux ne pourrait créer seule — et ouvrent l\'accès à vos besoins réels.',
+            'ÉTAPE 1': 'La Boussole que vous venez de réaliser met en lumière deux qualités naturelles — l\'une que vous incarnez déjà en partie et qu\'il s\'agit de stabiliser pleinement (être <span class=\"ai-mot\">'+S+'</span>), l\'autre que vous vous interdisez d\'exprimer et qu\'il s\'agit de vous autoriser (être <span class=\"ai-mot\">'+N+'</span>).',
+            'ÉTAPE 2': 'Chacune de vos qualités naturelles peut, sous pression et par conditionnement, basculer dans son excès, sans que vous en ayez conscience. La qualité incarnée être <span class=\"ai-mot\">'+S+'</span> vous fait basculer dans un piège — qui est aussi un refuge : être <span class=\"ai-mot\">'+O+'</span>. La qualité interdite être <span class=\"ai-mot\">'+N+'</span> alimente pour vous une allergie qui a tendance à devenir une dépendance : être <span class=\"ai-mot\">'+E+'</span>. L\'observer sans se juger, c\'est déjà commencer à s\'en responsabiliser.',
+            'ÉTAPE 3': 'Notre cerveau a engrammé des informations qui confondent la qualité et son excès (dans votre Boussole, être <span class=\"ai-mot\">'+S+'</span> se confond avec être <span class=\"ai-mot\">'+O+'</span>, et être <span class=\"ai-mot\">'+N+'</span> est confondu avec être <span class=\"ai-mot\">'+E+'</span>). Les distinguer clairement, c\'est réinformer notre cerveau — et commencer à desserrer l\'emprise des conditionnements dont nous avons hérité.',
+            'ÉTAPE 4': 'Contrairement à ce que vos conditionnements vous ont fait croire, ces deux qualités être <span class=\"ai-mot\">'+S+'</span> et être <span class=\"ai-mot\">'+N+'</span> ne sont pas incompatibles : elles sont complémentaires. Mises en alliance, elles produisent quelque chose qu\'aucune des deux ne pourrait créer seule — et ouvrent l\'accès à vos besoins réels.',
             'ÉTAPE 5': 'Ce travail subtil et puissant s\'effectue en séance — il ne s\'explique pas, il se vit. En revisitant les 4 espaces de votre Boussole à travers vos sensations, vos émotions et vos ressentis, vous intégrerez l\'alliance de vos qualités comme une ressource réelle et disponible — pour nourrir vos besoins réels et retrouver, par vous-même, ce qui avait été mis de côté depuis l\'enfance.',
           };
           var etapeMap = {
