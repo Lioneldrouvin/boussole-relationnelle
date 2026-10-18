@@ -817,7 +817,7 @@ function fetchSynoWords(word){
   fetch(API_URL,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:80,messages:[{role:'user',content:synoPrompt}]})
+    body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:80,thinking:{type:'disabled'},messages:[{role:'user',content:synoPrompt}]})
   }).then(function(r){return r.json();})
   .then(function(d){
     var text=d.content&&d.content[0]?d.content[0].text:'';
@@ -1108,7 +1108,7 @@ function generateBesoins(){
     +'2. Être "'+S+'" exprime un besoin de [besoin en résonance directe avec '+Sw+'].\n'
     +'3. Être "'+N+'" révèle un besoin de [besoin en résonance avec '+Nw+']. Leur alliance nourrit [résultat concret].\n'
     +'Soyez précis, chaleureux.';
-  callClaude({model:'claude-sonnet-5-5',max_tokens:300,messages:[{role:'user',content:prompt}]},60000,1)
+  callClaude({model:'claude-sonnet-5-5',max_tokens:500,messages:[{role:'user',content:prompt}]},60000,1)
     .then(function(text){
       if(text){
         var html=text.split(/\n\n+/).map(function(p){return '<p>'+p.trim()+'</p>';}).join('');
@@ -1180,10 +1180,12 @@ function extractText(data){
 }
 function callClaude(payload, timeoutMs, retries){
   timeoutMs=timeoutMs||120000; retries=(retries===undefined)?1:retries;
+  // Désactiver le raisonnement étendu (thinking) pour éviter la consommation silencieuse de tokens
+  var safePayload=Object.assign({},payload,{thinking:{type:'disabled'}});
   var ctrl=(typeof AbortController!=='undefined')?new AbortController():null;
   var timer=ctrl?setTimeout(function(){ctrl.abort();},timeoutMs):null;
   return fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(payload),signal:ctrl?ctrl.signal:undefined})
+    body:JSON.stringify(safePayload),signal:ctrl?ctrl.signal:undefined})
   .then(function(r){
     return r.text().then(function(body){
       var data=null; try{data=JSON.parse(body);}catch(e){}
@@ -1221,7 +1223,7 @@ function retrySynth(){
 
 function generateAI(approfondie){
   var prompt=buildPrompt(approfondie);
-  var maxTok=approfondie?3000:2000;
+  var maxTok=approfondie?4000:2500;
   var d=state.data;
   var S=d.S?d.S.main:'?', O=d.O?d.O.main:'?', N=d.N?d.N.main:'?', E=d.E?d.E.main:'?';
   callClaude({model:'claude-sonnet-5-5',max_tokens:maxTok,messages:[{role:'user',content:prompt}]},120000,1)
