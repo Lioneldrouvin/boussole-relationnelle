@@ -1059,10 +1059,8 @@ function generateBesoinsInline(){
     +'Phrase 2 : Être "'+N+'" révèle un besoin réel de [besoin précis en résonance avec '+Nw+']. Nouvelle ligne : Alliance de être "'+S+'" et être "'+N+'" nourrit [ce que leur alliance rend possible concrètement, en une formulation courte et nuancée].\n'
     +'Ne pas écrire "Voici les deux phrases" ni aucun texte d\'introduction. Commencer directement par Être.'
     +'Soyez précis, concis, en résonance directe avec les mots cités.';
-  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:400,messages:[{role:'user',content:prompt}]})})
-    .then(function(r){return r.json();})
-    .then(function(data){
-      var text=data.content&&data.content[0]?data.content[0].text:null;
+  callClaude({model:'claude-sonnet-5-5',max_tokens:400,messages:[{role:'user',content:prompt}]},60000,1)
+    .then(function(text){
       if(text){
         var parts=text.split('---');
         var besoinText=parts[0].trim();
@@ -1110,10 +1108,8 @@ function generateBesoins(){
     +'2. Être "'+S+'" exprime un besoin de [besoin en résonance directe avec '+Sw+'].\n'
     +'3. Être "'+N+'" révèle un besoin de [besoin en résonance avec '+Nw+']. Leur alliance nourrit [résultat concret].\n'
     +'Soyez précis, chaleureux.';
-  fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:300,messages:[{role:'user',content:prompt}]})})
-    .then(function(r){return r.json();})
-    .then(function(data){
-      var text=data.content&&data.content[0]?data.content[0].text:null;
+  callClaude({model:'claude-sonnet-5-5',max_tokens:300,messages:[{role:'user',content:prompt}]},60000,1)
+    .then(function(text){
       if(text){
         var html=text.split(/\n\n+/).map(function(p){return '<p>'+p.trim()+'</p>';}).join('');
         document.getElementById('besoin-content').innerHTML=html;
@@ -1170,19 +1166,66 @@ function buildPrompt(approfondie){
   return prompt;
 }
 
+// ============================================================
+// APPEL IA ROBUSTE : délai max, relance automatique, erreur lisible
+// ============================================================
+function extractText(data){
+  if(!data) return '';
+  if(data.content && data.content.length){
+    return data.content.filter(function(b){return b && b.type==='text' && b.text;})
+      .map(function(b){return b.text;}).join('\n').trim();
+  }
+  if(typeof data.completion==='string') return data.completion.trim();
+  return '';
+}
+function callClaude(payload, timeoutMs, retries){
+  timeoutMs=timeoutMs||120000; retries=(retries===undefined)?1:retries;
+  var ctrl=(typeof AbortController!=='undefined')?new AbortController():null;
+  var timer=ctrl?setTimeout(function(){ctrl.abort();},timeoutMs):null;
+  return fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload),signal:ctrl?ctrl.signal:undefined})
+  .then(function(r){
+    return r.text().then(function(body){
+      var data=null; try{data=JSON.parse(body);}catch(e){}
+      if(!r.ok){
+        var msg=(data&&data.error&&(data.error.message||data.error.type))||body.slice(0,200)||('HTTP '+r.status);
+        throw new Error('HTTP '+r.status+' — '+msg);
+      }
+      if(data&&data.error) throw new Error(data.error.message||JSON.stringify(data.error));
+      var text=extractText(data);
+      if(!text) throw new Error('Réponse vide'+(data&&data.stop_reason?' ('+data.stop_reason+')':'')+' : '+body.slice(0,200));
+      return text;
+    });
+  })
+  .catch(function(err){
+    if(err&&err.name==='AbortError') err=new Error('Délai dépassé ('+Math.round(timeoutMs/1000)+' s)');
+    if(retries>0){ console.warn('Nouvel essai après erreur :',err.message); return callClaude(payload,timeoutMs,retries-1); }
+    throw err;
+  })
+  .finally(function(){ if(timer) clearTimeout(timer); });
+}
+function showSynthError(err){
+  var cl=document.getElementById('compass-loading');
+  if(cl) cl.style.display='none';
+  console.error('Synthèse :',err);
+  var box=document.getElementById('ai-text');
+  box.innerHTML='<p>La synthèse n\'a pas pu être générée. <button class="btn btn-g btn-sm" onclick="retrySynth()">Réessayer</button></p>'
+    +'<p style="font-size:11px;color:var(--ts);">Détail technique : '+String(err&&err.message||err).replace(/</g,'&lt;')+'</p>';
+}
+function retrySynth(){
+  var cl=document.getElementById('compass-loading');
+  if(cl) cl.style.display='flex';
+  document.getElementById('ai-text').innerHTML='';
+  generateAI(true);
+}
+
 function generateAI(approfondie){
   var prompt=buildPrompt(approfondie);
-  var maxTok=approfondie?5000:3000;
+  var maxTok=approfondie?3000:2000;
   var d=state.data;
   var S=d.S?d.S.main:'?', O=d.O?d.O.main:'?', N=d.N?d.N.main:'?', E=d.E?d.E.main:'?';
-  fetch(API_URL,{
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:maxTok,messages:[{role:'user',content:prompt}]})
-  }).then(function(r){return r.json();})
-  .then(function(data){
-    var raw=data.content&&data.content[0]?data.content[0].text:null;
+  callClaude({model:'claude-sonnet-5-5',max_tokens:maxTok,messages:[{role:'user',content:prompt}]},120000,1)
+  .then(function(raw){
     if(raw){
       // Extraire le résumé s'il existe
       var resumeMatch=raw.match(/---RESUME---([\s\S]*?)---FIN RESUME---/);
@@ -1293,11 +1336,9 @@ function generateAI(approfondie){
       document.getElementById('ai-text').innerHTML=html;
       state.synthHtml=html;
     } else {
-      document.getElementById('ai-text').textContent="La synthèse n\'a pas pu être générée.";
+      showSynthError(new Error('Texte vide'));
     }
-  }).catch(function(){
-    document.getElementById('ai-text').textContent="La synthèse n\'a pas pu être générée.";
-  });
+  }).catch(showSynthError);
 }
 
 function switchToApprofondie(){
